@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './Toolbar-styles.js';
 
-export default () => {
-  return (
-    <div style={styles.main}>Tools</div>
-  );
-};
+export default () => (
+  <div style={styles.main}>Tools</div>
+);
