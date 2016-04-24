@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 <body>
     <div id="app">${appHtml}</div>
 
-    <script src="${scriptSrc}"></script>
+    <script async src="${scriptSrc}"></script>
 </body>
 </html>`;
 
