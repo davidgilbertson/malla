@@ -1,4 +1,3 @@
-console.log('client.js');
 import React from 'react';
 const ReactDom = require('react-dom');
 

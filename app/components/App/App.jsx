@@ -7,7 +7,6 @@ import Page from '../Page/Page.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
-    console.log('App.jsx constructor');
   }
 
   render() {
