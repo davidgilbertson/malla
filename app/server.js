@@ -7,6 +7,8 @@ const app = express();
 
 app.use(express.static('public'));
 
+const port = process.env.PORT || 8080;
+
 app.get('/', (req, res) => {
   const appHtml = ReactDomServer.renderToString(<App />);
 
@@ -31,7 +33,7 @@ app.get('/', (req, res) => {
   res.send(html);
 });
 
-app.listen(process.env.PORT || 8080, (err) => {
+app.listen(port, '0.0.0.0', (err) => {
   err && console.error(err);
-  console.log('Server running, woot.');
+  console.log(`App listening on port ${port}`);
 });
