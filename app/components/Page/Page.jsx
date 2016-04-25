@@ -3,7 +3,6 @@ import Radium, {Style} from 'radium';
 
 import Header from '../Header/Header.jsx';
 import Body from '../Body/Body.jsx';
-import Toolbar from '../Toolbar/Toolbar.jsx';
 
 const styleRules = {
   html: {
@@ -12,11 +11,19 @@ const styleRules = {
   '*': {
     'box-sizing': 'inherit',
   },
+  '*:before': {
+    'box-sizing': 'inherit',
+  },
+  '*:after': {
+    'box-sizing': 'inherit',
+  },
   body: {
     padding: 0,
     margin: 0,
     overflowY: 'scroll',
     fontFamily: 'sans-serif',
+    height: '100vh', // so the gradient knows to fill the page
+    backgroundImage: 'linear-gradient(0deg, rgba(33, 33, 33, 0.9), rgba(33, 33, 33, 0.8))',
   },
   h1: {
     margin: 0,
@@ -28,14 +35,10 @@ const styleRules = {
 
 const Page = () => (
   <div>
-    <Style
-      rules={styleRules}
-    />
+    <Style rules={styleRules} />
     <Header />
 
     <Body />
-
-    <Toolbar />
   </div>
 );
 

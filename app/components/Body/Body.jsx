@@ -1,6 +1,14 @@
 import React from 'react';
-import styles from './Body-styles.js';
+import Screen from '../Screen/Screen.jsx';
+
+const styles = {
+  main: {
+    position: 'relative',
+  },
+};
 
 export default () => (
-  <div style={styles.main}>Your 6th wireframe!</div>
+  <div style={styles.main}>
+    <Screen />
+  </div>
 );
