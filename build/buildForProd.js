@@ -9,7 +9,7 @@ const config = {
     './app/client.js',
   ],
   output: {
-    path: path.resolve(__dirname, '../public'),
+    path: path.resolve(__dirname, '../public/js'),
     filename: 'main.js', // todo hash
   },
   module: {
