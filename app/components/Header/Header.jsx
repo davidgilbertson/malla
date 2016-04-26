@@ -6,6 +6,10 @@ const styles = {
     // height: CSS.DIMENSIONS.LAYOUT.HEADER_HEIGHT,
     backgroundColor: CSS.COLORS.PRIMARY_DARK,
     textAlign: 'center',
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100%',
   },
   title: {
     fontSize: 25,

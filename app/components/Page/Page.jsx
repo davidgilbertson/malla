@@ -2,7 +2,8 @@ import React from 'react';
 import Radium, {Style} from 'radium';
 
 import Header from '../Header/Header.jsx';
-import Body from '../Body/Body.jsx';
+// import Desktop from '../Desktop/Desktop.jsx';
+import Screen from '../Screen/Screen.jsx';
 
 const styleRules = {
   html: {
@@ -20,7 +21,7 @@ const styleRules = {
   body: {
     padding: 0,
     margin: 0,
-    overflowY: 'scroll',
+    overflow: 'scroll',
     fontFamily: 'sans-serif',
     height: '100vh', // so the gradient knows to fill the page
     backgroundImage: 'linear-gradient(0deg, rgba(33, 33, 33, 0.9), rgba(33, 33, 33, 0.8))',
@@ -36,9 +37,10 @@ const styleRules = {
 const Page = () => (
   <div>
     <Style rules={styleRules} />
+
     <Header />
 
-    <Body />
+    <Screen />
   </div>
 );
 
