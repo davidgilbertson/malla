@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
   const scriptSrc = process.env.APP_ENV === 'DEV'
     ? 'http://localhost:8081/webpack-bundle.js'
-    : 'main.js';
+    : 'js/main.js';
 
   const html =
 `<!DOCTYPE html>
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 <body>
     <div id="app">${appHtml}</div>
 
-    <script async src="js/${scriptSrc}"></script>
+    <script async src="${scriptSrc}"></script>
 </body>
 </html>`;
 
