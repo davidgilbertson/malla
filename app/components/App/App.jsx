@@ -1,8 +1,11 @@
 import React from 'react';
+import Radium from 'radium';
 import Page from '../Page/Page.jsx';
 
 // TODO connect to store, etc, pass into <Page>
 
-export default () => (
+const App = () => (
   <Page />
 );
+
+export default Radium(App);

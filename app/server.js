@@ -10,7 +10,9 @@ app.use(express.static('public'));
 const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
-  const appHtml = ReactDomServer.renderToString(<App />);
+  const appHtml = ReactDomServer.renderToString(
+    <App radiumConfig={{userAgent: req.headers['user-agent']}} />
+  );
 
   const scriptSrc = process.env.APP_ENV === 'DEV'
     ? 'http://localhost:8081/webpack-bundle.js'
