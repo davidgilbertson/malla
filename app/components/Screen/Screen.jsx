@@ -2,7 +2,13 @@ import React from 'react';
 const {Component} = React;
 import Radium from 'radium';
 
-import CSS from '../../utils/css.js';
+import Box from '../Box/Box.jsx';
+import css from '../../utils/css';
+import {
+  COLORS,
+  CLICK_LENGTH_MS,
+  GRID_SIZE,
+} from '../../utils/constants';
 
 let ID = 0;
 const getGuid = () => ID++;
@@ -15,9 +21,9 @@ const styles = {
     top: 160,
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: CSS.COLORS.WHITE,
+    backgroundColor: COLORS.WHITE,
     backgroundImage: 'url(/images/grid-dot_10x10.gif)',
-    ...CSS.shadow('large'),
+    ...css.shadow('large'),
     cursor: 'crosshair',
   },
 };
@@ -29,13 +35,15 @@ class Screen extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.selectBox = this.selectBox.bind(this);
 
+    this.dragStartTime = null;
     this.isMoving = false;
     this.startX = 0;
     this.startY = 0;
     this.placeholderStyle = {
       display: 'none',
-      border: '2px solid grey',
+      border: '1px solid grey',
       width: 100,
       height: 100,
       position: 'fixed',
@@ -49,10 +57,12 @@ class Screen extends Component {
   }
 
   onDragStart(e) {
-    console.log('onDragStart');
-    if (e.target !== e.currentTarget) return;
+    if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
+
+    this.selectBox(null); // deselect all boxes
 
     this.isMoving = true;
+    this.dragStartTime = performance.now();
     e.preventDefault();
 
     const mouseDims = e.touches ? e.touches[0] : e;
@@ -85,10 +95,18 @@ class Screen extends Component {
   }
 
   onDragEnd() {
-    // console.log('onDragEnd');
+    // const dims = e.touches ? e.touches[0] : e;
     this.isMoving = false;
 
-    this.addBox(this.getRelativeDims(this.placeholderEl));
+    const relativeDims = this.getRelativeDims(this.placeholderEl);
+
+    const moreThanGridWide = relativeDims.width >= GRID_SIZE;
+    const moreThanGridHight = relativeDims.height >= GRID_SIZE;
+    const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
+
+    if (moreThanAClick && (moreThanGridWide || moreThanGridHight)) {
+      this.addBox(relativeDims);
+    }
 
     this.placeholderEl.style.display = 'none';
 
@@ -124,8 +142,8 @@ class Screen extends Component {
     this.setState({boxes: newBoxes});
   }
 
-  snap(num, grid = 10) {
-    return Math.round(num / grid) * grid;
+  snap(num) {
+    return Math.ceil(num / GRID_SIZE) * GRID_SIZE;
   }
 
   selectBox(boxId) {
@@ -142,40 +160,13 @@ class Screen extends Component {
   }
 
   render() {
-    const baseBoxStyle = {
-      position: 'absolute',
-      border: '2px dotted lightgrey',
-      padding: 10,
-      cursor: 'pointer',
-      ':hover': {
-        border: '2px solid lightgrey',
-        boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
-      },
-    };
-
-    const selectedBoxStyle = {
-      background: 'pink',
-    };
-
-    const boxEls = this.state.boxes.map((box, i) => {
-      const boxStyle = {
-        ...baseBoxStyle,
-        left: box.left,
-        top: box.top,
-        width: box.width,
-        height: box.height,
-      };
-
-      return (
-        <div
-          key={i}
-          style={[boxStyle, box.selected && selectedBoxStyle]}
-          onClick={() => this.selectBox(box.id)}
-        >
-          {box.name}
-        </div>
-      );
-    });
+    const boxEls = this.state.boxes.map(box => (
+      <Box
+        key={box.id}
+        box={box}
+        selectBox={this.selectBox}
+      />
+    ));
 
     return (
       <div
@@ -184,11 +175,12 @@ class Screen extends Component {
         onMouseDown={this.onDragStart}
         onTouchStart={this.onDragStart}
       >
+        {boxEls}
+
         <div
           ref={el => this.placeholderEl = el}
           style={this.placeholderStyle}
         ></div>
-        {boxEls}
       </div>
     );
   }

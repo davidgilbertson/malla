@@ -1,10 +1,11 @@
 import React from 'react';
-import CSS from '../../utils/css.js';
+import {
+  COLORS,
+} from '../../utils/constants';
 
 const styles = {
   main: {
-    // height: CSS.DIMENSIONS.LAYOUT.HEADER_HEIGHT,
-    backgroundColor: CSS.COLORS.PRIMARY_DARK,
+    backgroundColor: COLORS.PRIMARY_DARK,
     textAlign: 'center',
     position: 'fixed',
     left: 0,
@@ -13,7 +14,7 @@ const styles = {
   },
   title: {
     fontSize: 25,
-    color: CSS.COLORS.WHITE,
+    color: COLORS.WHITE,
     padding: '20px 0',
   },
 };
