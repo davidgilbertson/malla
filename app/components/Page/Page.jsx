@@ -2,7 +2,6 @@ import React from 'react';
 import Radium, {Style} from 'radium';
 
 import Header from '../Header/Header.jsx';
-// import Desktop from '../Desktop/Desktop.jsx';
 import Screen from '../Screen/Screen.jsx';
 
 const styleRules = {
