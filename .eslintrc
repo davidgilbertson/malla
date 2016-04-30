@@ -24,6 +24,7 @@
   "globals": {
     "expect": true,
     "sinon": true,
-    "fetch": true
+    "fetch": true,
+    "performance": true
   }
 }
