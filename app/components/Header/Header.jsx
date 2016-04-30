@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   COLORS,
-} from '../../utils/constants';
+} from '../../constants';
 
 const styles = {
   main: {

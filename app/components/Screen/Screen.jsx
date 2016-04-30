@@ -1,17 +1,16 @@
 import React from 'react';
-const {Component} = React;
+const {Component, PropTypes} = React;
 import Radium from 'radium';
 
-import Box from '../Box/Box.jsx';
+import BoxListContainer from '../BoxListContainer/BoxListContainer.jsx';
 import css from '../../utils/css';
 import {
   COLORS,
   CLICK_LENGTH_MS,
   GRID_SIZE,
-} from '../../utils/constants';
+} from '../../constants';
 
 let ID = 0;
-const getGuid = () => ID++;
 
 const styles = {
   main: {
@@ -35,7 +34,6 @@ class Screen extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.selectBox = this.selectBox.bind(this);
 
     this.dragStartTime = null;
     this.isMoving = false;
@@ -50,16 +48,12 @@ class Screen extends Component {
       top: 0,
       left: 0,
     };
-
-    this.state = {
-      boxes: [],
-    };
   }
 
   onDragStart(e) {
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
 
-    this.selectBox(null); // deselect all boxes
+    this.props.selectBox(null); // deselect all boxes
 
     this.isMoving = true;
     this.dragStartTime = performance.now();
@@ -105,7 +99,7 @@ class Screen extends Component {
     const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
 
     if (moreThanAClick && (moreThanGridWide || moreThanGridHight)) {
-      this.addBox(relativeDims);
+      this.props.addBox(relativeDims);
     }
 
     this.placeholderEl.style.display = 'none';
@@ -128,46 +122,11 @@ class Screen extends Component {
     };
   }
 
-  addBox(dims) {
-    const newBoxes = this.state.boxes.slice();
-
-    const box = {
-      ...dims,
-      id: getGuid(),
-      name: `Box number ${newBoxes.length}`,
-    };
-
-    newBoxes.push(box);
-
-    this.setState({boxes: newBoxes});
-  }
-
   snap(num) {
     return Math.ceil(num / GRID_SIZE) * GRID_SIZE;
   }
 
-  selectBox(boxId) {
-    const newBoxes = this.state.boxes.map(box => {
-      const isSelected = box.id === boxId;
-
-      return {
-        ...box,
-        selected: isSelected,
-      };
-    });
-
-    this.setState({boxes: newBoxes});
-  }
-
   render() {
-    const boxEls = this.state.boxes.map(box => (
-      <Box
-        key={box.id}
-        box={box}
-        selectBox={this.selectBox}
-      />
-    ));
-
     return (
       <div
         ref={el => this.screenEl = el}
@@ -175,7 +134,7 @@ class Screen extends Component {
         onMouseDown={this.onDragStart}
         onTouchStart={this.onDragStart}
       >
-        {boxEls}
+        <BoxListContainer />
 
         <div
           ref={el => this.placeholderEl = el}
@@ -185,5 +144,10 @@ class Screen extends Component {
     );
   }
 }
+
+Screen.propTypes = {
+  addBox: PropTypes.func.isRequired,
+  selectBox: PropTypes.func.isRequired,
+};
 
 export default Radium(Screen);

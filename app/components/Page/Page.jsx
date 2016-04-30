@@ -2,7 +2,7 @@ import React from 'react';
 import Radium, {Style} from 'radium';
 
 import Header from '../Header/Header.jsx';
-import Screen from '../Screen/Screen.jsx';
+import ScreenContainer from '../ScreenContainer/ScreenContainer.jsx';
 
 const styleRules = {
   html: {
@@ -39,7 +39,7 @@ const Page = () => (
 
     <Header />
 
-    <Screen />
+    <ScreenContainer />
   </div>
 );
 

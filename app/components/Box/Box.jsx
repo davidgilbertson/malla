@@ -6,7 +6,7 @@ import css from '../../utils/css';
 import {
   ANIMATION_DURATION,
   COLORS,
-} from '../../utils/constants';
+} from '../../constants';
 
 const Box = ({box, selectBox}) => {
   const boxStyle = {
@@ -49,4 +49,5 @@ Box.propTypes = {
   selectBox: PropTypes.func.isRequired,
 };
 
+// export default Box;
 export default Radium(Box);

@@ -21,7 +21,9 @@
     "lodash": "^4.11.1",
     "radium": "^0.17.1",
     "react": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "react-dom": "^15.0.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2"
   },
   "description": "Wireframe CMS",
   "devDependencies": {
@@ -33,11 +35,13 @@
     "eslint-plugin-jsx-a11y": "^1.0.2",
     "eslint-plugin-react": "^5.0.1",
     "react-hot-loader": "^1.3.0",
+    "redux-devtools": "^3.2.0",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   },
   "engines": {
-    "node": "^4.2.0"
+    "node": "^4.2.0",
+    "npm": "^3.8.0"
   },
   "homepage": "https://github.com/davidgilbertson/malla",
   "keywords": [

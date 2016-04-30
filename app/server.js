@@ -1,17 +1,21 @@
-console.log('server.js');
 import express from 'express';
 import React from 'react';
 import ReactDomServer from 'react-dom/server';
-import App from './components/App/App.jsx';
-const app = express();
+import {Provider} from 'react-redux';
 
+import App from './components/App/App.jsx';
+import store from './data/store.js';
+
+const app = express();
 app.use(express.static('public'));
 
 const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
   const appHtml = ReactDomServer.renderToString(
-    <App radiumConfig={{userAgent: req.headers['user-agent']}} />
+    <Provider store={store}>
+      <App radiumConfig={{userAgent: req.headers['user-agent']}} />
+    </Provider>,
   );
 
   const scriptSrc = process.env.APP_ENV === 'DEV'
@@ -24,6 +28,7 @@ app.get('/', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <title>Malla | Wireframe CMS</title>
+    <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
 </head>
 <body>
     <div id="app">${appHtml}</div>
