@@ -10,7 +10,7 @@ export const ACTIONS = {
 
 export const GRID_SIZE = 10;
 
-export const CLICK_LENGTH_MS = 200;
+export const CLICK_LENGTH_MS = 150;
 
 export const ANIMATION_DURATION = 150;
 

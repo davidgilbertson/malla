@@ -24,5 +24,4 @@ BoxList.propTypes = {
   selectBox: PropTypes.func.isRequired,
 };
 
-// export default BoxList;
 export default Radium(BoxList);

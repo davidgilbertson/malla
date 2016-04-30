@@ -10,8 +10,6 @@ import {
   GRID_SIZE,
 } from '../../constants';
 
-let ID = 0;
-
 const styles = {
   main: {
     position: 'absolute',
@@ -22,6 +20,7 @@ const styles = {
     transform: 'translateX(-50%)',
     backgroundColor: COLORS.WHITE,
     backgroundImage: 'url(/images/grid-dot_10x10.gif)',
+    backgroundPosition: '1px 1px',
     ...css.shadow('large'),
     cursor: 'crosshair',
   },
@@ -67,6 +66,7 @@ class Screen extends Component {
 
     const x = this.snap(mouseDims.clientX - screenElDims.left);
     const y = this.snap(mouseDims.clientY - screenElDims.top);
+
     this.placeholderEl.style.transform = `translate(${x}px, ${y}px)`;
     this.placeholderEl.style.width = '0px';
     this.placeholderEl.style.height = '0px';
@@ -79,26 +79,24 @@ class Screen extends Component {
   }
 
   onDragMove(e) {
-    // console.log('onDragMove');
     if (!this.isMoving) return;
 
     const dims = e.touches ? e.touches[0] : e;
 
-    this.placeholderEl.style.width = `${this.snap(dims.clientX - this.startX)}px`;
-    this.placeholderEl.style.height = `${this.snap(dims.clientY - this.startY)}px`;
+    this.placeholderEl.style.width = `${this.snap(dims.clientX) - this.startX}px`;
+    this.placeholderEl.style.height = `${this.snap(dims.clientY) - this.startY}px`;
   }
 
   onDragEnd() {
-    // const dims = e.touches ? e.touches[0] : e;
     this.isMoving = false;
 
     const relativeDims = this.getRelativeDims(this.placeholderEl);
 
-    const moreThanGridWide = relativeDims.width >= GRID_SIZE;
-    const moreThanGridHight = relativeDims.height >= GRID_SIZE;
+    const moreThanGridWidth = relativeDims.width >= GRID_SIZE;
+    const moreThanGridHeight = relativeDims.height >= GRID_SIZE;
     const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
 
-    if (moreThanAClick && (moreThanGridWide || moreThanGridHight)) {
+    if (moreThanAClick && (moreThanGridWidth || moreThanGridHeight)) {
       this.props.addBox(relativeDims);
     }
 
@@ -123,7 +121,7 @@ class Screen extends Component {
   }
 
   snap(num) {
-    return Math.ceil(num / GRID_SIZE) * GRID_SIZE;
+    return Math.round(num / GRID_SIZE) * GRID_SIZE;
   }
 
   render() {
