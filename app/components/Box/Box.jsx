@@ -49,5 +49,4 @@ Box.propTypes = {
   selectBox: PropTypes.func.isRequired,
 };
 
-// export default Box;
 export default Radium(Box);

@@ -1,6 +1,6 @@
 import React from 'react';
 const {PropTypes} = React;
-// import Radium from 'radium';
+import Radium from 'radium';
 
 import Box from '../Box/Box.jsx';
 
@@ -24,5 +24,5 @@ BoxList.propTypes = {
   selectBox: PropTypes.func.isRequired,
 };
 
-export default BoxList;
-// export default Radium(BoxList);
+// export default BoxList;
+export default Radium(BoxList);
