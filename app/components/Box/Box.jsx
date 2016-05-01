@@ -3,6 +3,7 @@ const {PropTypes} = React;
 import Radium from 'radium';
 
 import css from '../../utils/css';
+import snap from '../../utils/snap';
 
 import {
   ANIMATION_DURATION,
