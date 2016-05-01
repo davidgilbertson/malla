@@ -232,7 +232,10 @@ const Box = ({box, selectBox, updateBox}) => {
 
       <div
         style={styles.contents}
-        onClick={() => selectBox(box.id)} // TODO (davidg): let a user select text without selecting box
+        onClick={() => {
+          if (window.getSelection().toString()) return; // do nothing if the user was selecting text
+          selectBox(box.id);
+        }}
         onMouseDown={onDragStart.bind(null, DRAG_TYPES.MOVE)}
         onTouchStart={onDragStart.bind(null, DRAG_TYPES.MOVE)}
       >
