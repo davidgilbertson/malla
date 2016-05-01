@@ -81,10 +81,10 @@ class Screen extends Component {
   onDragMove(e) {
     if (!this.isMoving) return;
 
-    const dims = e.touches ? e.touches[0] : e;
+    const mouseDims = e.touches ? e.touches[0] : e;
 
-    this.placeholderEl.style.width = `${this.snap(dims.clientX) - this.startX}px`;
-    this.placeholderEl.style.height = `${this.snap(dims.clientY) - this.startY}px`;
+    this.placeholderEl.style.width = `${this.snap(mouseDims.clientX) - this.startX}px`;
+    this.placeholderEl.style.height = `${this.snap(mouseDims.clientY) - this.startY}px`;
   }
 
   onDragEnd() {
