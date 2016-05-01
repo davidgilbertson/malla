@@ -1,6 +1,6 @@
 import {ACTIONS} from '../../constants';
 
-const deleteBox = (id) => {
+const deleteBox = id => {
   return {
     type: ACTIONS.DELETE_BOX,
     id,

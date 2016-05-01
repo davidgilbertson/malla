@@ -31,6 +31,12 @@ const styleRules = {
   h2: {
     margin: 0,
   },
+  button: {
+    background: 'none',
+    border: 0,
+    color: 'inherit',
+    cursor: 'pointer',
+  }
 };
 
 const Page = () => (

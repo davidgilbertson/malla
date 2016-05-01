@@ -19,7 +19,9 @@ const DRAG_TYPES = {
   LEFT: 'LEFT',
 };
 
-const Box = ({box, selectBox, updateBox}) => {
+const Box = props => {
+  const {box} = props;
+
   const styles = {
     box: {
       position: 'absolute',
@@ -39,8 +41,18 @@ const Box = ({box, selectBox, updateBox}) => {
       cursor: 'move',
       zIndex: 1,
     },
-    handles: {
+    controls: {
       display: 'none',
+    },
+    deleteText: {
+      position: 'absolute',
+      bottom: -30,
+      right: 0,
+      padding: 5,
+      textAlign: 'right',
+      textDecoration: 'underline',
+      color: COLORS.ACCENT,
+      fontWeight: 700,
     },
     handle: {
       position: 'absolute',
@@ -80,7 +92,7 @@ const Box = ({box, selectBox, updateBox}) => {
   };
 
   if (box.selected) {
-    styles.handles.display = 'block';
+    styles.controls.display = 'block';
     styles.box = {
       ...styles.box,
       ...styles.boxSelected,
@@ -95,6 +107,15 @@ const Box = ({box, selectBox, updateBox}) => {
     boxElement: null,
     dragType: null,
     isMoving: null,
+  };
+
+  const maybeDeleteBox = () => {
+    const sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
+
+    if (sure) {
+      console.log('  --  >  Box.jsx:103 > maybeDeleteBox');
+      props.deleteBox(box.id);
+    }
   };
 
   const resize = () => {
@@ -191,7 +212,7 @@ const Box = ({box, selectBox, updateBox}) => {
       newBoxProps.width = box.width - x;
     }
 
-    updateBox(box.id, newBoxProps);
+    props.updateBox(box.id, newBoxProps);
     
     window.removeEventListener('mousemove', onDragMove, false);
     window.removeEventListener('mouseup', onDragEnd, false);
@@ -206,8 +227,12 @@ const Box = ({box, selectBox, updateBox}) => {
       style={styles.box}
     >
       <div
-        style={styles.handles}
+        style={styles.controls}
       >
+        <button
+          style={styles.deleteText}
+          onClick={maybeDeleteBox}
+        >Delete</button>
         <div
           style={[styles.handle, styles.handleTop]}
           onMouseDown={onDragStart.bind(null, DRAG_TYPES.TOP)}
@@ -234,7 +259,7 @@ const Box = ({box, selectBox, updateBox}) => {
         style={styles.contents}
         onClick={() => {
           if (window.getSelection().toString()) return; // do nothing if the user was selecting text
-          selectBox(box.id);
+          props.selectBox(box.id);
         }}
         onMouseDown={onDragStart.bind(null, DRAG_TYPES.MOVE)}
         onTouchStart={onDragStart.bind(null, DRAG_TYPES.MOVE)}
@@ -248,6 +273,8 @@ const Box = ({box, selectBox, updateBox}) => {
 Box.propTypes = {
   box: PropTypes.object.isRequired,
   selectBox: PropTypes.func.isRequired,
+  updateBox: PropTypes.func.isRequired,
+  deleteBox: PropTypes.func.isRequired,
 };
 
 export default Radium(Box);

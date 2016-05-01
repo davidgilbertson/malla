@@ -11,12 +11,11 @@ const defaultScreen = {
 const screens = (state = [defaultScreen], action) => {
   switch (action.type) {
     case ACTIONS.ADD_SCREEN :
-      return [
-        ...state,
-        action.screen,
-      ];
+      return [...state, action.screen];
+
     case ACTIONS.DELETE_SCREEN :
       return state.filter(screen => screen.id !== action.id);
+
     default:
       return state;
   }
@@ -25,37 +24,29 @@ const screens = (state = [defaultScreen], action) => {
 const boxes = (state = [], action) => {
   switch (action.type) {
     case ACTIONS.ADD_BOX :
-      return [
-        ...state,
-        action.box,
-      ];
-    case ACTIONS.SELECT_BOX :
-      return state.map(box => {
-        if (box.id === action.id) {
-          return {
-            ...box,
-            selected: true,
-          }
-        }
+      return [...state, action.box];
 
-        return {
-          ...box,
-          selected: false,
-        }
-      });
     case ACTIONS.UPDATE_BOX :
       return state.map(box => {
         if (box.id === action.id) {
-          return {
-            ...box,
-            ...action.newProps,
-          }
+          return {...box, ...action.newProps}
         }
 
         return {...box}
       });
+
     case ACTIONS.DELETE_BOX :
       return state.filter(box => box.id !== action.id);
+
+    case ACTIONS.SELECT_BOX :
+      return state.map(box => {
+        if (box.id === action.id) {
+          return {...box, selected: true}
+        }
+
+        return {...box, selected: false}
+      });
+
     default:
       return state;
   }
@@ -71,9 +62,4 @@ if (onClient) {
   initialState = window.MALLA_STATE || {};
 }
 
-const store = createStore(reducers, initialState);
-
-// testing
-if (onClient) window.MALLA_STORE = store;
-
-export default store;
+export default createStore(reducers, initialState);
