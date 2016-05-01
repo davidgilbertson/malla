@@ -43,6 +43,17 @@ const boxes = (state = [], action) => {
           selected: false,
         }
       });
+    case ACTIONS.UPDATE_BOX :
+      return state.map(box => {
+        if (box.id === action.id) {
+          return {
+            ...box,
+            ...action.newProps,
+          }
+        }
+
+        return {...box}
+      });
     case ACTIONS.DELETE_BOX :
       return state.filter(box => box.id !== action.id);
     default:

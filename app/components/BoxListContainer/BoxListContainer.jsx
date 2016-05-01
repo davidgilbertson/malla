@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 
 import addBox from '../../data/actionCreatros/addBox.js';
 import selectBox from '../../data/actionCreatros/selectBox.js';
+import updateBox from '../../data/actionCreatros/updateBox.js';
 import BoxList from '../BoxList/BoxList.jsx';
 
 const mapStateToProps = (state) => {
@@ -17,6 +18,9 @@ const mapDispatchToProps = dispatch => {
     },
     selectBox: id => {
       dispatch(selectBox(id));
+    },
+    updateBox: (id, newProps) => {
+      dispatch(updateBox(id, newProps));
     },
   };
 };
