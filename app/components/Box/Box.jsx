@@ -125,29 +125,31 @@ const Box = props => {
 
     if (!drag.lastX || !drag.lastY) return;
 
-    if (drag.dragType === DRAG_TYPES.MOVE) {
-      const x = snap(drag.lastX - drag.startX);
-      const y = snap(drag.lastY - drag.startY);
+    const x = snap(drag.lastX - drag.startX);
+    const y = snap(drag.lastY - drag.startY);
 
-      drag.boxElement.style.transform = `translate(${box.left + x}px, ${box.top + y}px)`;
-    } else if (drag.dragType === DRAG_TYPES.TOP) {
-      const y = snap(drag.lastY - drag.startY);
+    switch (drag.dragType) {
+      case DRAG_TYPES.MOVE :
+        drag.boxElement.style.transform = `translate(${box.left + x}px, ${box.top + y}px)`;
+        break;
 
-      drag.boxElement.style.height = `${box.height - y}px`;
-      drag.boxElement.style.transform = `translate(${box.left}px, ${box.top + y}px)`;
-    } else if (drag.dragType === DRAG_TYPES.RIGHT) {
-      const x = snap(drag.lastX - drag.startX);
+      case DRAG_TYPES.TOP :
+        drag.boxElement.style.height = `${box.height - y}px`;
+        drag.boxElement.style.transform = `translate(${box.left}px, ${box.top + y}px)`;
+        break;
 
-      drag.boxElement.style.width = `${box.width + x}px`;
-    } else if (drag.dragType === DRAG_TYPES.BOTTOM) {
-      const y = snap(drag.lastY - drag.startY);
+      case DRAG_TYPES.RIGHT :
+        drag.boxElement.style.width = `${box.width + x}px`;
+        break;
 
-      drag.boxElement.style.height = `${box.height + y}px`;
-    } else if (drag.dragType === DRAG_TYPES.LEFT) {
-      const x = snap(drag.lastX - drag.startX);
+      case DRAG_TYPES.BOTTOM :
+        drag.boxElement.style.height = `${box.height + y}px`;
+        break;
 
-      drag.boxElement.style.width = `${box.width - x}px`;
-      drag.boxElement.style.transform = `translate(${box.left + x}px, ${box.top}px)`;
+      case DRAG_TYPES.LEFT :
+        drag.boxElement.style.width = `${box.width - x}px`;
+        drag.boxElement.style.transform = `translate(${box.left + x}px, ${box.top}px)`;
+        break;
     }
   };
 
@@ -161,7 +163,7 @@ const Box = props => {
   };
 
   const onDragStart = (dragType, e) => {
-    if (!box.selected) return; // move do things if a box is selected
+    if (!box.selected) return; // only move a box if it is selected
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the element
     
     e.preventDefault();
@@ -169,8 +171,8 @@ const Box = props => {
     const {x, y} = getDims(e);
     drag.isMoving = true;
     drag.dragType = dragType;
-    drag.startX = x; // TODO (davidg): do I need to snap here?
-    drag.startY = y; // TODO (davidg): do I need to snap here?
+    drag.startX = x;
+    drag.startY = y;
     drag.lastX = x;
     drag.lastY = y;
 
@@ -197,19 +199,29 @@ const Box = props => {
     const x = snap(drag.lastX - drag.startX);
     const y = snap(drag.lastY - drag.startY);
 
-    if (drag.dragType === DRAG_TYPES.MOVE) {
-      newBoxProps.left = box.left + x;
-      newBoxProps.top = box.top + y;
-    } else if (drag.dragType === DRAG_TYPES.TOP) {
-      newBoxProps.top = box.top + y;
-      newBoxProps.height = box.height - y;
-    } else if (drag.dragType === DRAG_TYPES.RIGHT) {
-      newBoxProps.width = box.width + x;
-    } else if (drag.dragType === DRAG_TYPES.BOTTOM) {
-      newBoxProps.height = box.height + y;
-    } else if (drag.dragType === DRAG_TYPES.LEFT) {
-      newBoxProps.left = box.left + x;
-      newBoxProps.width = box.width - x;
+    switch (drag.dragType) {
+      case DRAG_TYPES.MOVE :
+        newBoxProps.left = box.left + x;
+        newBoxProps.top = box.top + y;
+        break;
+
+      case DRAG_TYPES.TOP :
+        newBoxProps.top = box.top + y;
+        newBoxProps.height = box.height - y;
+        break;
+
+      case DRAG_TYPES.RIGHT :
+        newBoxProps.width = box.width + x;
+        break;
+
+      case DRAG_TYPES.BOTTOM :
+        newBoxProps.height = box.height + y;
+        break;
+
+      case DRAG_TYPES.LEFT :
+        newBoxProps.left = box.left + x;
+        newBoxProps.width = box.width - x;
+        break;
     }
 
     props.updateBox(box.id, newBoxProps);
@@ -259,6 +271,7 @@ const Box = props => {
         style={styles.contents}
         onClick={() => {
           if (window.getSelection().toString()) return; // do nothing if the user was selecting text
+          // really this should be a three-way toggle. Sitting/moving/typing
           props.selectBox(box.id);
         }}
         onMouseDown={onDragStart.bind(null, DRAG_TYPES.MOVE)}
