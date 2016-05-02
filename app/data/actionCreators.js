@@ -1,4 +1,7 @@
-import {ACTIONS} from '../constants.js';
+import {
+  ACTIONS,
+  BOX_MODES,
+} from '../constants.js';
 
 let nextId = 1;
 
@@ -22,8 +25,9 @@ export function add(box) {
     type: ACTIONS.ADD_BOX,
     box: {
       ...box,
-      name: `Box ${nextId}`,
-      id: nextId++,
+      text: '',
+      id: `label${nextId++}`,
+      mode: BOX_MODES.TYPING,
     },
   };
 }
@@ -32,5 +36,13 @@ export function remove(id) {
   return {
     type: ACTIONS.DELETE_BOX,
     id,
+  };
+}
+
+export function setMode(id, mode) {
+  return {
+    type: ACTIONS.SET_BOX_MODE,
+    id,
+    mode,
   };
 }

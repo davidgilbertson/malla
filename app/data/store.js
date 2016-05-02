@@ -1,6 +1,9 @@
 import {combineReducers, createStore} from 'redux';
 
-import {ACTIONS} from '../constants.js';
+import {
+  ACTIONS,
+  BOX_MODES,
+} from '../constants.js';
 
 const defaultScreen = {
   id: 1,
@@ -45,6 +48,15 @@ const boxes = (state = [], action) => {
         }
 
         return {...box, selected: false}
+      });
+
+    case ACTIONS.SET_BOX_MODE :
+      return state.map(box => {
+        if (box.id === action.id) {
+          return {...box, mode: action.mode}
+        }
+
+        return {...box, mode: BOX_MODES.SITTING}
       });
 
     default:

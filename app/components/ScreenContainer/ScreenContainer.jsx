@@ -6,11 +6,14 @@ import Screen from '../Screen/Screen.jsx';
 const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
-      add: id => {
-        dispatch(boxActions.add(id));
+      add: box => {
+        dispatch(boxActions.add(box));
       },
       select: id => {
         dispatch(boxActions.select(id));
+      },
+      setMode: (id, mode) => {
+        dispatch(boxActions.setMode(id, mode));
       },
     },
   };

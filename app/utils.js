@@ -1,4 +1,7 @@
-import {GRID_SIZE} from './constants.js';
+import {
+  GRID_SIZE,
+  CLICK_LENGTH_MS,
+} from './constants.js';
 
 export function snap(num) {
   return Math.round(num / GRID_SIZE) * GRID_SIZE;
@@ -18,6 +21,10 @@ export function getEventDims(e) {
     x: dims.pageX,
     y: dims.pageY,
   };
+}
+
+export function eventWasAClick(dragInfo) {
+  return performance.now() - dragInfo.dragStartTime < CLICK_LENGTH_MS;
 }
 
 export const css = {

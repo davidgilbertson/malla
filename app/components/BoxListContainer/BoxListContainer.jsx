@@ -12,9 +12,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
-      add: id => {
-        dispatch(boxActions.add(id));
-      },
       select: id => {
         dispatch(boxActions.select(id));
       },
@@ -23,6 +20,9 @@ const mapDispatchToProps = dispatch => {
       },
       remove: id => {
         dispatch(boxActions.remove(id));
+      },
+      setMode: (id, mode) => {
+        dispatch(boxActions.setMode(id, mode));
       },
     }
   };

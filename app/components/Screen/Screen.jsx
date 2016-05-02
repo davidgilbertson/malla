@@ -43,7 +43,7 @@ class Screen extends Component {
   onDragStart(e) {
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
 
-    this.props.boxActions.select(null); // deselect all boxes
+    this.props.boxActions.setMode(null); // deselect all boxes
 
     this.isMoving = true;
     this.dragStartTime = performance.now();
