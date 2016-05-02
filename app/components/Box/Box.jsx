@@ -28,8 +28,8 @@ const Box = props => {
       ...css.border(1, 'dashed', COLORS.GRAY_LIGHT),
       left: 0,
       top: 0,
-      width: box.width,
-      height: box.height,
+      width: box.width + 1, // so it covers the grid
+      height: box.height + 1, // so it covers the grid
       transform: `translate(${box.left}px, ${box.top}px)`,
       backgroundColor: COLORS.WHITE,
       cursor: 'pointer',
@@ -157,8 +157,8 @@ const Box = props => {
     const dims = e.touches ? e.touches[0] : e;
 
     return {
-      x: dims.clientX,
-      y: dims.clientY,
+      x: dims.pageX,
+      y: dims.pageY,
     };
   };
 

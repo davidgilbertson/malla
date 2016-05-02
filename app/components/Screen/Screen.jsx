@@ -3,26 +3,17 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 
 import BoxListContainer from '../BoxListContainer/BoxListContainer.jsx';
-import css from '../../utils/css';
+import snap from '../../utils/snap';
 import {
-  COLORS,
   CLICK_LENGTH_MS,
   GRID_SIZE,
 } from '../../constants';
 
 const styles = {
   main: {
-    position: 'absolute',
-    width: 1366,
-    height: 768,
-    top: 160,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor: COLORS.WHITE,
-    backgroundImage: 'url(/images/grid-dot_10x10.gif)',
-    backgroundPosition: '1px 1px',
-    ...css.shadow('large'),
-    cursor: 'crosshair',
+    flex: '0 1 100%',
+    position: 'relative', // to contain absolute descendants
+    overflow: 'auto',
   },
 };
 
@@ -59,13 +50,11 @@ class Screen extends Component {
     e.preventDefault();
 
     const mouseDims = e.touches ? e.touches[0] : e;
-    this.startX = this.snap(mouseDims.clientX);
-    this.startY = this.snap(mouseDims.clientY);
+    this.startX = snap(mouseDims.pageX);
+    this.startY = snap(mouseDims.pageY);
 
-    const screenElDims = this.screenEl.getBoundingClientRect();
-
-    const x = this.snap(mouseDims.clientX - screenElDims.left);
-    const y = this.snap(mouseDims.clientY - screenElDims.top);
+    const x = snap(mouseDims.pageX);
+    const y = snap(mouseDims.pageY);
 
     this.placeholderEl.style.transform = `translate(${x}px, ${y}px)`;
     this.placeholderEl.style.width = '0px';
@@ -83,8 +72,8 @@ class Screen extends Component {
 
     const mouseDims = e.touches ? e.touches[0] : e;
 
-    this.placeholderEl.style.width = `${this.snap(mouseDims.clientX) - this.startX}px`;
-    this.placeholderEl.style.height = `${this.snap(mouseDims.clientY) - this.startY}px`;
+    this.placeholderEl.style.width = `${snap(mouseDims.pageX) - this.startX}px`;
+    this.placeholderEl.style.height = `${snap(mouseDims.pageY) - this.startY}px`;
   }
 
   onDragEnd() {
@@ -113,15 +102,11 @@ class Screen extends Component {
     const parentDims = el.parentElement.getBoundingClientRect();
 
     return {
-      top: childDims.top - parentDims.top,
-      left: childDims.left - parentDims.left,
-      width: childDims.width,
-      height: childDims.height,
+      top: snap(childDims.top - parentDims.top),
+      left: snap(childDims.left - parentDims.left),
+      width: snap(childDims.width),
+      height: snap(childDims.height),
     };
-  }
-
-  snap(num) {
-    return Math.round(num / GRID_SIZE) * GRID_SIZE;
   }
 
   render() {

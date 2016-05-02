@@ -5,12 +5,9 @@ import {
 
 const styles = {
   main: {
+    flex: '0 0 50px',
     backgroundColor: COLORS.PRIMARY_DARK,
     textAlign: 'center',
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    width: '100%',
   },
   title: {
     fontSize: 25,
