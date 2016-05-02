@@ -23,8 +23,7 @@ const DRAG_TYPES = {
   LEFT: 'LEFT',
 };
 
-const Box = props => {
-  const {box} = props;
+const Box = ({box, boxActions}) => {
 
   const styles = {
     box: {
@@ -117,7 +116,7 @@ const Box = props => {
     const sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
 
     if (sure) {
-      props.deleteBox(box.id);
+      boxActions.remove(box.id);
     }
   };
 
@@ -216,7 +215,8 @@ const Box = props => {
         break;
     }
 
-    props.updateBox(box.id, newBoxProps);
+    console.log('  --  >  Box.jsx:219 > onDragEnd');
+    boxActions.update(box.id, newBoxProps);
     
     window.removeEventListener('mousemove', onDragMove, false);
     window.removeEventListener('mouseup', onDragEnd, false);
@@ -264,7 +264,7 @@ const Box = props => {
         onClick={() => {
           if (window.getSelection().toString()) return; // do nothing if the user was selecting text
           // really this should be a three-way toggle. Sitting/moving/typing
-          props.selectBox(box.id);
+          boxActions.select(box.id);
         }}
         onMouseDown={onDragStart.bind(null, DRAG_TYPES.MOVE)}
         onTouchStart={onDragStart.bind(null, DRAG_TYPES.MOVE)}
@@ -277,9 +277,7 @@ const Box = props => {
 
 Box.propTypes = {
   box: PropTypes.object.isRequired,
-  selectBox: PropTypes.func.isRequired,
-  updateBox: PropTypes.func.isRequired,
-  deleteBox: PropTypes.func.isRequired,
+  boxActions: PropTypes.object.isRequired,
 };
 
 export default Radium(Box);

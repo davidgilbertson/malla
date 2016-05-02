@@ -43,7 +43,7 @@ class Screen extends Component {
   onDragStart(e) {
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
 
-    this.props.selectBox(null); // deselect all boxes
+    this.props.boxActions.select(null); // deselect all boxes
 
     this.isMoving = true;
     this.dragStartTime = performance.now();
@@ -86,7 +86,7 @@ class Screen extends Component {
     const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
 
     if (moreThanAClick && (moreThanGridWidth || moreThanGridHeight)) {
-      this.props.addBox(relativeDims);
+      this.props.boxActions.add(relativeDims);
     }
 
     this.placeholderEl.style.display = 'none';
@@ -129,8 +129,7 @@ class Screen extends Component {
 }
 
 Screen.propTypes = {
-  addBox: PropTypes.func.isRequired,
-  selectBox: PropTypes.func.isRequired,
+  boxActions: PropTypes.object.isRequired,
 };
 
 export default Radium(Screen);

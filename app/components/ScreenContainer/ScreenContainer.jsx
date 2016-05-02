@@ -1,16 +1,17 @@
 import {connect} from 'react-redux';
 
-import addBox from '../../data/actionCreatros/addBox.js';
-import selectBox from '../../data/actionCreatros/selectBox.js';
+import * as boxActions from '../../data/actionCreators.js';
 import Screen from '../Screen/Screen.jsx';
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBox: box => {
-      dispatch(addBox(box));
-    },
-    selectBox: id => {
-      dispatch(selectBox(id));
+    boxActions: {
+      add: id => {
+        dispatch(boxActions.add(id));
+      },
+      select: id => {
+        dispatch(boxActions.select(id));
+      },
     },
   };
 };

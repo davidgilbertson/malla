@@ -4,14 +4,12 @@ import Radium from 'radium';
 
 import Box from '../Box/Box.jsx';
 
-const BoxList = ({boxes, selectBox, updateBox, deleteBox}) => {
+const BoxList = ({boxes, boxActions}) => {
   const boxComponents = boxes.map(box => (
       <Box
         key={box.id}
         box={box}
-        selectBox={selectBox}
-        updateBox={updateBox}
-        deleteBox={deleteBox}
+        boxActions={boxActions}
       />
   ));
   return (
@@ -23,9 +21,7 @@ const BoxList = ({boxes, selectBox, updateBox, deleteBox}) => {
 
 BoxList.propTypes = {
   boxes: PropTypes.array.isRequired,
-  selectBox: PropTypes.func.isRequired,
-  updateBox: PropTypes.func.isRequired,
-  deleteBox: PropTypes.func.isRequired,
+  boxActions: PropTypes.object.isRequired,
 };
 
 export default Radium(BoxList);
