@@ -1,4 +1,4 @@
-import {ACTIONS} from '../../constants';
+import {ACTIONS} from '../../constants.js';
 
 let nextId = 1;
 

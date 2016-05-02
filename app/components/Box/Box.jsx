@@ -8,7 +8,7 @@ import snap from '../../utils/snap';
 import {
   ANIMATION_DURATION,
   COLORS,
-} from '../../constants';
+} from '../../constants.js';
 
 const HANDLE_SIZE = 40;
 const DRAG_TYPES = {

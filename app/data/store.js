@@ -1,6 +1,6 @@
 import {combineReducers, createStore} from 'redux';
 
-import {ACTIONS} from '../constants';
+import {ACTIONS} from '../constants.js';
 
 const defaultScreen = {
   id: 1,

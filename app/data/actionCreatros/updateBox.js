@@ -1,4 +1,4 @@
-import {ACTIONS} from '../../constants';
+import {ACTIONS} from '../../constants.js';
 
 const updateBox = (id, newProps) => {
   return {

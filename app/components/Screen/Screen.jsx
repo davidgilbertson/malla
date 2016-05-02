@@ -7,7 +7,7 @@ import snap from '../../utils/snap';
 import {
   CLICK_LENGTH_MS,
   GRID_SIZE,
-} from '../../constants';
+} from '../../constants.js';
 
 const styles = {
   main: {
