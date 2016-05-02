@@ -3,7 +3,7 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 
 import BoxListContainer from '../BoxListContainer/BoxListContainer.jsx';
-import snap from '../../utils/snap';
+import {snap} from '../../utils';
 import {
   CLICK_LENGTH_MS,
   GRID_SIZE,

@@ -2,8 +2,11 @@ import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
 
-import css from '../../utils/css';
-import snap from '../../utils/snap';
+import {
+  css,
+  getDeltaXY,
+  getEventDims,
+} from '../../utils';
 
 import {
   ANIMATION_DURATION,
