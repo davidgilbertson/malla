@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Malla | Wireframe CMS</title>
     <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
 </head>
