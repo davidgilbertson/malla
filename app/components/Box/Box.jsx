@@ -11,6 +11,7 @@ import {
 import {
   ANIMATION_DURATION,
   COLORS,
+  GRID_SIZE,
 } from '../../constants.js';
 
 const HANDLE_SIZE = 40;
@@ -103,20 +104,19 @@ const Box = props => {
   }
 
   const drag = {
-    startX: null,
-    startY: null,
-    lastX: null,
-    lastY: null,
+    startX: 0,
+    startY: 0,
+    lastX: 0,
+    lastY: 0,
     boxElement: null,
-    dragType: null,
-    isMoving: null,
+    dragType: '',
+    isMoving: false,
   };
 
   const maybeDeleteBox = () => {
     const sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
 
     if (sure) {
-      console.log('  --  >  Box.jsx:103 > maybeDeleteBox');
       props.deleteBox(box.id);
     }
   };
@@ -128,8 +128,7 @@ const Box = props => {
 
     if (!drag.lastX || !drag.lastY) return;
 
-    const x = snap(drag.lastX - drag.startX);
-    const y = snap(drag.lastY - drag.startY);
+    const {x, y} = getDeltaXY(drag);
 
     switch (drag.dragType) {
       case DRAG_TYPES.MOVE :
@@ -156,22 +155,13 @@ const Box = props => {
     }
   };
 
-  const getDims = (e) => {
-    const dims = e.touches ? e.touches[0] : e;
-
-    return {
-      x: dims.pageX,
-      y: dims.pageY,
-    };
-  };
-
   const onDragStart = (dragType, e) => {
     if (!box.selected) return; // only move a box if it is selected
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the element
     
     e.preventDefault();
 
-    const {x, y} = getDims(e);
+    const {x, y} = getEventDims(e);
     drag.isMoving = true;
     drag.dragType = dragType;
     drag.startX = x;
@@ -188,7 +178,7 @@ const Box = props => {
   };
 
   const onDragMove = (e) => {
-    const {x, y} = getDims(e);
+    const {x, y} = getEventDims(e);
 
     drag.lastX = x;
     drag.lastY = y;
@@ -199,31 +189,30 @@ const Box = props => {
 
     const newBoxProps = {};
 
-    const x = snap(drag.lastX - drag.startX);
-    const y = snap(drag.lastY - drag.startY);
+    const {x, y} = getDeltaXY(drag);
 
     switch (drag.dragType) {
       case DRAG_TYPES.MOVE :
-        newBoxProps.left = box.left + x;
-        newBoxProps.top = box.top + y;
+        newBoxProps.left = Math.max(0, box.left + x);
+        newBoxProps.top = Math.max(0, box.top + y);
         break;
 
       case DRAG_TYPES.TOP :
-        newBoxProps.top = box.top + y;
-        newBoxProps.height = box.height - y;
+        newBoxProps.top = Math.max(0, box.top + y);
+        newBoxProps.height = Math.max(GRID_SIZE, box.height - y);
         break;
 
       case DRAG_TYPES.RIGHT :
-        newBoxProps.width = box.width + x;
+        newBoxProps.width = Math.max(GRID_SIZE, box.width + x);
         break;
 
       case DRAG_TYPES.BOTTOM :
-        newBoxProps.height = box.height + y;
+        newBoxProps.height = Math.max(GRID_SIZE, box.height + y);
         break;
 
       case DRAG_TYPES.LEFT :
-        newBoxProps.left = box.left + x;
-        newBoxProps.width = box.width - x;
+        newBoxProps.left = Math.max(0, box.left + x);
+        newBoxProps.width = Math.max(GRID_SIZE, box.width - x);
         break;
     }
 
@@ -254,11 +243,6 @@ const Box = props => {
           onTouchStart={onDragStart.bind(null, DRAG_TYPES.TOP)}
         ></div>
         <div
-          style={[styles.handle, styles.handleRight]}
-          onMouseDown={onDragStart.bind(null, DRAG_TYPES.RIGHT)}
-          onTouchStart={onDragStart.bind(null, DRAG_TYPES.RIGHT)}
-        ></div>
-        <div
           style={[styles.handle, styles.handleBottom]}
           onMouseDown={onDragStart.bind(null, DRAG_TYPES.BOTTOM)}
           onTouchStart={onDragStart.bind(null, DRAG_TYPES.BOTTOM)}
@@ -267,6 +251,11 @@ const Box = props => {
           style={[styles.handle, styles.handleLeft]}
           onMouseDown={onDragStart.bind(null, DRAG_TYPES.LEFT)}
           onTouchStart={onDragStart.bind(null, DRAG_TYPES.LEFT)}
+        ></div>
+        <div
+          style={[styles.handle, styles.handleRight]}
+          onMouseDown={onDragStart.bind(null, DRAG_TYPES.RIGHT)}
+          onTouchStart={onDragStart.bind(null, DRAG_TYPES.RIGHT)}
         ></div>
       </div>
 
