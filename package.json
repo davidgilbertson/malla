@@ -64,7 +64,7 @@
     "build": "node build/buildForProd.js",
     "dev": "nodemon startDevMode.js",
     "deploy": "npm run build && gcloud preview app deploy",
-    "postinstall": "npm run build"
+    "heroku-postbuild": "npm run build"
   },
   "version": "0.0.1"
 }

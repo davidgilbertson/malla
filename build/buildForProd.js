@@ -58,6 +58,6 @@ webpack(config, (err, stats) => {
     mainJs: stats.toJson().assetsByChunkName.main,
   };
 
-  fs.writeFile(path.resolve(__dirname, '../app/fileNames.json'), JSON.stringify(fileNames), 'utf8');
+  fs.writeFile(path.resolve(__dirname, './stats/fileNames.json'), JSON.stringify(fileNames), 'utf8');
 });
 

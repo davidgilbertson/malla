@@ -13,7 +13,7 @@ app.use(express.static('public', {maxAge: '1000d'}));
 
 const port = process.env.PORT || 8080;
 
-import fileNames from './fileNames.json';
+const fileNames = require('../build/stats/fileNames.json');
 
 app.get('/', (req, res) => {
   const appHtml = ReactDomServer.renderToString(
