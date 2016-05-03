@@ -61,6 +61,7 @@ export const COLORS = {
   ACCENT: '#FF5722', // orange
   GRAY_DARK: '#212121',
   GRAY: '#727272',
+  GRAY_FADE: 'rgba(0, 0, 0, 0.618)',
   GRAY_LIGHT: '#B6B6B6',
   WHITE: '#FFFFFF',
 };

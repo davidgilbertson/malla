@@ -34,6 +34,7 @@ const styles = {
     },
     h1: {
       margin: 0,
+      letterSpacing: 1,
     },
     h2: {
       margin: 0,

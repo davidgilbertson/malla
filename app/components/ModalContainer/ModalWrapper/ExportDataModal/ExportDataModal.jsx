@@ -7,6 +7,7 @@ const ExportDataModal = (props) => {
     <Modal
       {...props}
       title="Export data"
+      width={800}
     >
       <div>The body of the export data modal</div>
     </Modal>
