@@ -1,38 +1,155 @@
 [
   {
-    "top": 50,
-    "left": 220,
+    "top": 10,
+    "left": 200,
     "width": 580,
-    "height": 60,
-    "text": "The world's best music player",
-    "id": "label1",
+    "height": 40,
+    "text": "JOIN MORE THAN 6 MILLION AUSTRALIANS SHOPPING WITH PAYPAL.",
+    "id": "title",
     "mode": "SITTING"
   },
   {
-    "top": 120,
-    "left": 220,
+    "top": 70,
+    "left": 200,
+    "width": 580,
+    "height": 70,
+    "text": "Skip the long forms and forget entering your card details every time. PayPal is the smarter, faster and safer way to pay. Try it out – it’s free to sign up.",
+    "id": "sub",
+    "mode": "SITTING"
+  },
+  {
+    "top": 160,
+    "left": 200,
+    "width": 150,
+    "height": 80,
+    "text": "Sign Up for Free",
+    "id": "signUp",
+    "mode": "SITTING"
+  },
+  {
+    "top": 290,
+    "left": 200,
+    "width": 590,
+    "height": 40,
+    "text": "How PayPal works.",
+    "id": "howItWorks",
+    "mode": "SITTING"
+  },
+  {
+    "top": 160,
+    "left": 370,
+    "width": 420,
+    "height": 80,
+    "text": "Already a customer? Enter now to win a $15,000 trip of a lifetime! New Money takes you on new adventures.",
+    "id": "alreadyCustomer",
+    "mode": "SITTING"
+  },
+  {
+    "top": 330,
+    "left": 200,
+    "width": 190,
+    "height": 140,
+    "text": "Sign up to PayPal with your email address and create a password. It’s free to sign up.",
+    "id": "signUp2",
+    "mode": "SITTING"
+  },
+  {
+    "top": 330,
+    "left": 390,
+    "width": 190,
+    "height": 140,
+    "text": "Add your bank accounts, credit cards and debit cards. We’ll securely encrypt them, ready for when you shop.",
+    "id": "addAccount",
+    "mode": "SITTING"
+  },
+  {
+    "top": 330,
+    "left": 580,
     "width": 210,
-    "height": 90,
-    "text": "Play your favourites",
-    "id": "label2",
+    "height": 140,
+    "text": "Look out for the PayPal button and check out with your email and password on sites and apps worldwide.",
+    "id": "sub2",
     "mode": "SITTING"
   },
   {
-    "top": 120,
-    "left": 440,
-    "width": 360,
-    "height": 90,
-    "text": "Listen to my favourites",
-    "id": "label3",
+    "top": 490,
+    "left": 40,
+    "width": 900,
+    "height": 50,
+    "text": "Why PayPal?",
+    "id": "why",
     "mode": "SITTING"
   },
   {
-    "top": 220,
-    "left": 220,
-    "width": 580,
-    "height": 210,
-    "text": "Praesent turpis. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Praesent egestas neque eu enim. Praesent ut ligula non mi varius sagittis. Praesent turpis. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Praesent egestas neque eu enim. Praesent ut ligula non mi varius sagittis.",
-    "id": "label4",
+    "top": 550,
+    "left": 40,
+    "width": 210,
+    "height": 40,
+    "text": "Safer",
+    "id": "why.safer.title",
+    "mode": "SITTING"
+  },
+  {
+    "top": 600,
+    "left": 40,
+    "width": 210,
+    "height": 200,
+    "text": "Your financial information is securely encrypted within our servers so you can shop with confidence.",
+    "id": "why.safer.desc",
+    "mode": "SITTING"
+  },
+  {
+    "top": 550,
+    "left": 270,
+    "width": 210,
+    "height": 40,
+    "text": "Flexible",
+    "id": "why.flexible.title",
+    "mode": "SITTING"
+  },
+  {
+    "top": 600,
+    "left": 270,
+    "width": 210,
+    "height": 200,
+    "text": "Add all your cards and bank accounts and choose which one to use at checkout. You don’t need money in your PayPal account to shop and you’ll keep earning reward points with most cards.*",
+    "id": "why.flexible.desc",
+    "mode": "SITTING"
+  },
+  {
+    "top": 550,
+    "left": 500,
+    "width": 210,
+    "height": 40,
+    "text": "Convenient",
+    "id": "why.convenient.title",
+    "mode": "SITTING"
+  },
+  {
+    "top": 600,
+    "left": 500,
+    "width": 210,
+    "height": 200,
+    "text": "Pay with PayPal on millions of mobile sites and apps, or use our app to send money to friends or family. Log in with your mobile number and PIN and check out in seconds.",
+    "id": "why.convenient.desc",
+    "mode": "SITTING"
+  },
+  {
+    "top": 550,
+    "left": 730,
+    "width": 210,
+    "height": 40,
+    "text": "Protected",
+    "id": "why.protected.title",
+    "mode": "SITTING"
+  },
+  {
+    "top": 600,
+    "left": 730,
+    "width": 210,
+    "height": 200,
+    "text": "Shop with peace of mind. If an eligible item doesn’t arrive or arrives significantly differently to how the seller described it, we’ll help you get your money back – up to $20,000.",
+    "id": "why.protected.desc",
     "mode": "SITTING"
   }
 ]
