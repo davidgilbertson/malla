@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import * as actions from '../../data/actionCreators.js';
-import Header from '../Header/Header.jsx';
+import Header from './Header/Header.jsx';
 
 const mapDispatchToProps = dispatch => {
   return {

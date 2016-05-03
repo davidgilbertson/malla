@@ -8,14 +8,14 @@ import {
   eventWasAClick,
   getDeltaXY,
   getEventDims,
-} from '../../utils';
+} from '../../../../utils.js';
 
 import {
   BOX_MODES,
   COLORS,
   GRID_SIZE,
   Z_INDEXES,
-} from '../../constants.js';
+} from '../../../../constants.js';
 
 const HANDLE_SIZE = 40;
 const DRAG_TYPES = {

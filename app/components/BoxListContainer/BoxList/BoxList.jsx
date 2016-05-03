@@ -2,7 +2,7 @@ import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
 
-import Box from '../Box/Box.jsx';
+import Box from './Box/Box.jsx';
 
 const BoxList = ({boxes, boxActions}) => {
   const boxComponents = boxes.map(box => (

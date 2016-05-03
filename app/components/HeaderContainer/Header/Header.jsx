@@ -6,7 +6,7 @@ import {
   COLORS,
   DIMENSIONS,
   MODALS,
-} from '../../constants.js';
+} from '../../../constants.js';
 
 const HEIGHT = DIMENSIONS.LAYOUT.HEADER_HEIGHT;
 const GUTTER = 6;

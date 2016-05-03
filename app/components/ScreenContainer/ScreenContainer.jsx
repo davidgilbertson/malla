@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import * as actionCreators from '../../data/actionCreators.js';
-import Screen from '../Screen/Screen.jsx';
+import Screen from './Screen/Screen.jsx';
 
 const mapDispatchToProps = dispatch => {
   return {

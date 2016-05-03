@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import * as boxActions from '../../data/actionCreators.js';
-import BoxList from '../BoxList/BoxList.jsx';
+import BoxList from './BoxList/BoxList.jsx';
 
 const mapStateToProps = (state) => {
   return {

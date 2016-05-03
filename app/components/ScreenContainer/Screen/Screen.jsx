@@ -2,12 +2,12 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
 
-import BoxListContainer from '../BoxListContainer/BoxListContainer.jsx';
-import {snap} from '../../utils';
+import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
+import {snap} from '../../../utils.js';
 import {
   CLICK_LENGTH_MS,
   GRID_SIZE,
-} from '../../constants.js';
+} from '../../../constants.js';
 
 const styles = {
   main: {
