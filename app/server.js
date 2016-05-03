@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 <body>
     <div id="app">${appHtml}</div>
 
+    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <script async src="${scriptSrc}"></script>
 </body>
 </html>`;
