@@ -2,4 +2,4 @@
 node_modules
 private
 public/js
-build/stats
+build/stats/fileNames.json
