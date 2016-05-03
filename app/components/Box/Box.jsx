@@ -14,6 +14,7 @@ import {
   BOX_MODES,
   COLORS,
   GRID_SIZE,
+  Z_INDEXES,
 } from '../../constants.js';
 
 const HANDLE_SIZE = 40;
@@ -291,7 +292,7 @@ class Box extends Component {
         ...css.border(1, 'solid', COLORS.GRAY),
         ...css.shadow('large'),
         cursor: 'move',
-        zIndex: 1,
+        zIndex: Z_INDEXES.MOVING_BOX,
       };
     }
 

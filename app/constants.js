@@ -57,3 +57,8 @@ export const COLORS = {
   GRAY_LIGHT: '#B6B6B6',
   WHITE: '#FFFFFF',
 };
+
+export const Z_INDEXES = {
+  MOVING_BOX: 1,
+  MODAL: 2,
+};
