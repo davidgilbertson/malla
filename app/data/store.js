@@ -3,6 +3,7 @@ import {combineReducers, createStore} from 'redux';
 import {
   ACTIONS,
   BOX_MODES,
+  MODALS,
 } from '../constants.js';
 
 const defaultScreen = {
@@ -24,9 +25,21 @@ const screens = (state = [defaultScreen], action) => {
   }
 };
 
-const boxes = (state = [], action) => {
-  console.log(JSON.stringify(state, null, 2));
+const modal = (state = MODALS.NONE, action) => {
+  switch (action.type) {
+    case ACTIONS.SHOW_MODAL :
+      if (!MODALS[action.modal]) {
+        console.warn(action.modal, 'is not a recognised modal name')
+        return MODALS.NONE;
+      }
 
+      return action.modal;
+    default :
+      return MODALS.NONE;
+  }
+};
+
+const boxes = (state = [], action) => {
   switch (action.type) {
     case ACTIONS.ADD_BOX :
       return [...state, action.box];
@@ -66,7 +79,11 @@ const boxes = (state = [], action) => {
   }
 };
 
-const reducers = combineReducers({screens, boxes});
+const reducers = combineReducers({
+  boxes,
+  modal,
+  screens,
+});
 
 let initialState;
 

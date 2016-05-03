@@ -82,6 +82,7 @@ const baseStyles = {
     width: '100%',
     height: '100%',
     padding: 10,
+    overflow: 'auto',
   },
   textArea: {
     display: 'none',
@@ -228,7 +229,6 @@ class Box extends Component {
   }
 
   updateBoxAfterDrag(dragInfo) {
-    console.log('  --  >  Box.jsx:225 > updateBoxAfterDrag' );
     const {box, boxActions} = this.props;
     const newBoxProps = {};
 
@@ -287,6 +287,7 @@ class Box extends Component {
 
     if (box.mode === BOX_MODES.MOVING) {
       styles.handles.display = 'block';
+
       styles.box = {
         ...styles.box,
         ...css.border(1, 'solid', COLORS.GRAY),
@@ -294,6 +295,8 @@ class Box extends Component {
         cursor: 'move',
         zIndex: Z_INDEXES.MOVING_BOX,
       };
+
+      styles.displayText.overflow = 'hidden';
     }
 
     if (box.mode === BOX_MODES.TYPING) {
@@ -351,18 +354,6 @@ class Box extends Component {
           style={styles.displayText}
           onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
           onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
-          // onClick={(e) => {
-          //   console.log('clicked:', e.target);
-          //   if (window.getSelection().toString()) return; // do nothing if the user was selecting text
-          //
-          //   if (box.mode === BOX_MODES.SITTING) {
-          //     boxActions.setMode(box.id, BOX_MODES.MOVING);
-          //   } else if (box.mode === BOX_MODES.MOVING) {
-          //     boxActions.setMode(box.id, BOX_MODES.TYPING); // TODO (davidg): no possible as hidden when TYPING
-          //   } else {
-          //     boxActions.setMode(box.id, BOX_MODES.SITTING);
-          //   }
-          // }}
         >
           {box.text}
       </div>

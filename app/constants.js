@@ -7,12 +7,19 @@ export const ACTIONS = {
   ADD_SCREEN: 'ADD_SCREEN',
   DELETE_SCREEN: 'DELETE_SCREEN',
   EDIT_SCREEN: 'EDIT_SCREEN',
+  SHOW_MODAL: 'SHOW_MODAL',
+  HIDE_MODAL: 'HIDE_MODAL',
 };
 
 export const BOX_MODES = {
   SITTING: 'SITTING',
   MOVING: 'MOVING',
   TYPING: 'TYPING',
+};
+
+export const MODALS = {
+  NONE: 'NONE',
+  EXPORT_DATA: 'EXPORT_DATA',
 };
 
 export const GRID_SIZE = 10;
@@ -36,7 +43,7 @@ export const BREAKPOINTS = {
 
 export const DIMENSIONS = {
   LAYOUT: {
-    HEADER_HEIGHT: 60,
+    HEADER_HEIGHT: 48,
     TOOLBAR_WIDTH: 120,
   },
   TEXT: {

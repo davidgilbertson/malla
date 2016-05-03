@@ -46,3 +46,16 @@ export function setMode(id, mode) {
     mode,
   };
 }
+
+export function showModal(modal) {
+  return {
+    type: ACTIONS.SHOW_MODAL,
+    modal,
+  };
+}
+
+export function hideModal() {
+  return {
+    type: ACTIONS.HIDE_MODAL,
+  };
+}

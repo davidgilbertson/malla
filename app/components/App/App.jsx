@@ -1,8 +1,9 @@
 import React from 'react';
 import Radium, {Style} from 'radium';
 
-import Header from '../Header/Header.jsx';
+import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import ScreenContainer from '../ScreenContainer/ScreenContainer.jsx';
+import ModalContainer from '../ModalContainer/ModalContainer.jsx';
 
 const styles = {
   app: {
@@ -50,9 +51,11 @@ const App = () => (
   <div style={styles.app}>
     <Style rules={styles.css} />
 
-    <Header />
+    <HeaderContainer />
 
     <ScreenContainer />
+
+    <ModalContainer />
   </div>
 );
 

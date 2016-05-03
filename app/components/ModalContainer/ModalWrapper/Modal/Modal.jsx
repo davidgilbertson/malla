@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import {
   COLORS,
   Z_INDEXES,
-} from '../../constants.js';
+} from '../../../../constants.js';
 
 const baseStyles = {
   back: {
@@ -65,8 +65,6 @@ class Modal extends Component {
   }
 
   render() {
-    if (!this.props.visible) return null;
-
     const styles = cloneDeep(baseStyles);
 
     if (this.props.width) {
@@ -85,7 +83,7 @@ class Modal extends Component {
 
             <button
               style={styles.close}
-              onClick={this.props.onClose}
+              onClick={this.props.hideModal}
             >
               Close
             </button>
@@ -110,8 +108,9 @@ Modal.propTypes = {
     PropTypes.element,
     PropTypes.string,
   ]).isRequired,
-  onClose: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
   width: PropTypes.number,
+  modal: PropTypes.string,
 };
 
 export default Radium(Modal);
