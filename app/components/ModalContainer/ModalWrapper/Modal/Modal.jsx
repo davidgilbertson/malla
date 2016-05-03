@@ -7,6 +7,7 @@ import {
   COLORS,
   Z_INDEXES,
 } from '../../../../constants.js';
+import Button from '../../../Button/Button.jsx';
 
 const baseStyles = {
   back: {
@@ -21,6 +22,7 @@ const baseStyles = {
     height: '100%',
     backgroundColor: COLORS.GRAY_FADE,
     zIndex: Z_INDEXES.MODAL,
+    cursor: 'default',
   },
   panelAboveSpacer: {
     flex: '2 0 auto',
@@ -31,7 +33,7 @@ const baseStyles = {
     flexFlow: 'column',
     width: 400,
     maxHeight: '94vh',
-    maxWidth: '98vh',
+    maxWidth: '98vw',
     backgroundColor: COLORS.WHITE,
   },
   panelBelowSpacer: {
@@ -62,11 +64,23 @@ const baseStyles = {
     padding: 20,
     overflow: 'auto',
   },
+  actions: {
+    padding: 20,
+    textAlign: 'center',
+  },
 };
 
 class Modal extends Component {
   constructor(props) {
     super(props);
+
+    this.maybeClose = this.maybeClose.bind(this);
+  }
+
+  maybeClose(e) {
+    if (e.target !== e.currentTarget) return;
+
+    this.props.hideModal();
   }
 
   render() {
@@ -76,8 +90,20 @@ class Modal extends Component {
       styles.panel.width = this.props.width;
     }
 
+    const actions = this.props.showOK
+      ? (
+        <div style={styles.actions}>
+          <Button onClick={this.props.hideModal}>
+            OK
+          </Button>
+        </div>
+      ) : null;
+
     return (
-      <div style={styles.back}>
+      <div
+        style={styles.back}
+        onClick={this.maybeClose}
+      >
         <div style={styles.panelAboveSpacer}></div>
 
         <div style={styles.panel}>
@@ -97,6 +123,8 @@ class Modal extends Component {
           <div style={styles.body}>
             {this.props.children}
           </div>
+
+          {actions}
         </div>
 
         <div style={styles.panelBelowSpacer}></div>
@@ -106,7 +134,6 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
-  visible: PropTypes.bool,
   title: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.array,
@@ -115,7 +142,7 @@ Modal.propTypes = {
   ]).isRequired,
   hideModal: PropTypes.func.isRequired,
   width: PropTypes.number,
-  modal: PropTypes.string,
+  showOK: PropTypes.bool,
 };
 
 export default Radium(Modal);

@@ -92,6 +92,7 @@ const baseStyles = {
     fontFamily: 'inherit', // TODO (davidg): put in a reset
     fontSize: 'inherit', // TODO (davidg): ditto
     border: 0,
+    resize: 'none',
   },
 };
 

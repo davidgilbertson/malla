@@ -4,9 +4,7 @@ import * as actions from '../../data/actionCreators.js';
 import ModalWrapper from './ModalWrapper/ModalWrapper.jsx';
 
 const mapStateToProps = (state) => {
-  return {
-    modal: state.modal
-  }
+  return {...state}; // modals potentially need everything
 };
 
 const mapDispatchToProps = dispatch => {
