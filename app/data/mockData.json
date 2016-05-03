@@ -1,0 +1,38 @@
+[
+  {
+    "top": 50,
+    "left": 220,
+    "width": 580,
+    "height": 60,
+    "text": "The world's best music player",
+    "id": "label1",
+    "mode": "SITTING"
+  },
+  {
+    "top": 120,
+    "left": 220,
+    "width": 210,
+    "height": 90,
+    "text": "Play your favourites",
+    "id": "label2",
+    "mode": "SITTING"
+  },
+  {
+    "top": 120,
+    "left": 440,
+    "width": 360,
+    "height": 90,
+    "text": "Listen to my favourites",
+    "id": "label3",
+    "mode": "SITTING"
+  },
+  {
+    "top": 220,
+    "left": 220,
+    "width": 580,
+    "height": 210,
+    "text": "Praesent turpis. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Praesent egestas neque eu enim. Praesent ut ligula non mi varius sagittis. Praesent turpis. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Praesent egestas neque eu enim. Praesent ut ligula non mi varius sagittis.",
+    "id": "label4",
+    "mode": "SITTING"
+  }
+]

@@ -25,6 +25,8 @@ const screens = (state = [defaultScreen], action) => {
 };
 
 const boxes = (state = [], action) => {
+  console.log(JSON.stringify(state, null, 2));
+
   switch (action.type) {
     case ACTIONS.ADD_BOX :
       return [...state, action.box];
@@ -72,6 +74,10 @@ const onClient = typeof window !== 'undefined';
 
 if (onClient) {
   initialState = window.MALLA_STATE || {};
+} else {
+  initialState = {
+    boxes: require('./mockData.json'),
+  };
 }
 
 export default createStore(reducers, initialState);
