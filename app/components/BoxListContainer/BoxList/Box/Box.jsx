@@ -122,7 +122,7 @@ class Box extends Component {
   maybeDeleteBox() {
     const sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
 
-    if (sure) this.props.boxActions.remove(this.props.box.id);
+    if (sure) this.props.boxActions.remove(this.props.id);
   };
 
   resize() {
@@ -199,15 +199,15 @@ class Box extends Component {
 
   onDragEnd() {
     this.dragInfo.isMoving = false;
-    const {box, boxActions} = this.props;
+    const {box, boxActions, id} = this.props;
 
     if (eventWasAClick(this.dragInfo)) {
       if (box.mode === BOX_MODES.SITTING) { // put the sitting box into move mode
         if (window.getSelection().toString()) return; // do nothing if the user was selecting text
 
-        boxActions.setMode(box.id, BOX_MODES.MOVING);
+        boxActions.setMode(id, BOX_MODES.MOVING);
       } else if (box.mode === BOX_MODES.MOVING) { // if it was clicked in move mode, put it into typing mode
-        boxActions.setMode(box.id, BOX_MODES.TYPING);
+        boxActions.setMode(id, BOX_MODES.TYPING);
       }
     } else if (box.mode === BOX_MODES.MOVING) { // if it was dragged in move mode, move the thing
       // else this was a drag, move the box
@@ -224,13 +224,13 @@ class Box extends Component {
     const text = e.target.value;
 
     this.props.boxActions.update(
-      this.props.box.id,
+      this.props.id,
       {text},
     );
   }
 
   updateBoxAfterDrag(dragInfo) {
-    const {box, boxActions} = this.props;
+    const {box, boxActions, id} = this.props;
     const newBoxProps = {};
 
     const {x, y} = getDeltaXY(dragInfo);
@@ -260,7 +260,7 @@ class Box extends Component {
         break;
     }
 
-    boxActions.update(box.id, newBoxProps);
+    boxActions.update(id, newBoxProps);
   }
 
   componentDidUpdate(prevProps) {
@@ -311,7 +311,6 @@ class Box extends Component {
 
     return (
       <div
-        // key={box.id}
         ref={el => this.boxElement = el}
         style={styles.box}
       >
@@ -357,7 +356,7 @@ class Box extends Component {
           onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
         >
           {box.text}
-      </div>
+        </div>
       </div>
     );
   }
@@ -366,6 +365,7 @@ class Box extends Component {
 Box.propTypes = {
   box: PropTypes.object.isRequired,
   boxActions: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default Radium(Box);

@@ -1,5 +1,6 @@
 import React from 'react';
 const {Component, PropTypes} = React;
+import forOwn from 'lodash/forOwn';
 
 import Modal from '../Modal/Modal.jsx';
 import {COLORS} from '../../../../constants.js';
@@ -25,12 +26,12 @@ class ExportDataModal extends Component {
 
   render() {
     const exportData = {};
-    this.props.boxes.forEach(box => {
+    forOwn(this.props.boxes, box => {
       // TODO (davidg): nest
       // TODO (davidg): check for duplicate properties
       exportData[box.id] = box.text;
     });
-    
+
     return (
       <Modal
         {...this.props}
@@ -51,7 +52,7 @@ class ExportDataModal extends Component {
 }
 
 ExportDataModal.propTypes = {
-  boxes: PropTypes.array.isRequired,
+  boxes: PropTypes.object.isRequired,
 };
 
 export default ExportDataModal;

@@ -1,4 +1,7 @@
 import {combineReducers, createStore} from 'redux';
+import forOwn from 'lodash/forOwn';
+import mapValues from 'lodash/mapValues';
+import cloneDeep from 'lodash/cloneDeep';
 
 import {
   ACTIONS,
@@ -39,39 +42,41 @@ const modal = (state = MODALS.NONE, action) => {
   }
 };
 
-const boxes = (state = [], action) => {
+const boxes = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.ADD_BOX :
-      return [...state, action.box];
+      return {...state, ...action.box};
 
     case ACTIONS.UPDATE_BOX :
-      return state.map(box => {
-        if (box.id === action.id) {
-          return {...box, ...action.newProps}
+      return mapValues(state, (box, id) => {
+        if (id === action.id) {
+          return {...box, ...action.newProps};
         }
 
-        return {...box}
+        return {...box};
       });
 
     case ACTIONS.DELETE_BOX :
-      return state.filter(box => box.id !== action.id);
+      const newState = cloneDeep(state);
+      delete newState[action.id];
+      return newState;
 
     case ACTIONS.SELECT_BOX :
-      return state.map(box => {
-        if (box.id === action.id) {
-          return {...box, selected: true}
+      return mapValues(state, (box, id) => {
+        if (id === action.id) {
+          return {...box, selected: true};
         }
 
-        return {...box, selected: false}
+        return {...box, selected: false};
       });
 
     case ACTIONS.SET_BOX_MODE :
-      return state.map(box => {
-        if (box.id === action.id) {
-          return {...box, mode: action.mode}
+      return mapValues(state, (box, id) => {
+        if (id === action.id) {
+          return {...box, mode: action.mode};
         }
 
-        return {...box, mode: BOX_MODES.SITTING}
+        return {...box, mode: BOX_MODES.SITTING};
       });
 
     default:
@@ -92,8 +97,10 @@ const onClient = typeof window !== 'undefined';
 if (onClient) {
   initialState = window.MALLA_STATE || {};
 } else {
+  const mockData = require('./mockData.json');
+
   initialState = {
-    boxes: require('./mockData.json'),
+    boxes: mockData[0].data.boxes, // we get errors if mockData isn't an array
   };
 }
 

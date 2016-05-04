@@ -1,91 +1,119 @@
 {
+  "metadata": {
+    "name": "Malla",
+    "schemaVersion": 1,
+    "words": {
+      "headingTitle": "Malla",
+      "siteTitle": "Malla | Words are good"
+    }
+  },
+
+  "data": {
+    "boxes": {
+      "-KGu8pgKQuKY1knnU614": {
+        "top": 10,
+        "left": 200,
+        "width": 580,
+        "height": 40,
+        "text": "JOIN MORE THAN 6 MILLION AUSTRALIANS SHOPPING WITH PAYPAL.",
+        "id": "title",
+        "mode": "SITTING"
+      },
+      "-KGu8pgKQuKY1knnU615": {
+        "top": 70,
+        "left": 200,
+        "width": 580,
+        "height": 70,
+        "text": "Skip the long forms and forget entering your card details every time. PayPal is the smarter, faster and safer way to pay. Try it out – it’s free to sign up.",
+        "id": "sub",
+        "mode": "SITTING"
+      },
+      "-KGu8pgLPSYbB9YEPMmL": {
+        "top": 160,
+        "left": 200,
+        "width": 150,
+        "height": 80,
+        "text": "Sign Up for Free",
+        "id": "signUp",
+        "mode": "SITTING"
+      },
+      "-KGu8pgLPSYbB9YEPMmM": {
+        "top": 290,
+        "left": 200,
+        "width": 590,
+        "height": 40,
+        "text": "How PayPal works.",
+        "id": "howItWorks",
+        "mode": "SITTING"
+      },
+      "-KGu8pgMqSHAlTrRk2Hm": {
+        "top": 160,
+        "left": 370,
+        "width": 420,
+        "height": 80,
+        "text": "Already a customer? Enter now to win a $15,000 trip of a lifetime! New Money takes you on new adventures.",
+        "id": "alreadyCustomer",
+        "mode": "SITTING"
+      },
+      "-KGu8pgNeesWz5yUxPad": {
+        "top": 330,
+        "left": 200,
+        "width": 190,
+        "height": 140,
+        "text": "Sign up to PayPal with your email address and create a password. It’s free to sign up.",
+        "id": "signUp2",
+        "mode": "SITTING"
+      },
+      "-KGuCp4wZiAGKHWOfI3P": {
+        "top": 330,
+        "left": 390,
+        "width": 190,
+        "height": 140,
+        "text": "Add your bank accounts, credit cards and debit cards. We’ll securely encrypt them, ready for when you shop.",
+        "id": "addAccount",
+        "mode": "SITTING"
+      },
+      "-KGuD0-Gij3j5ZxcCl7Y": {
+        "top": 330,
+        "left": 580,
+        "width": 210,
+        "height": 140,
+        "text": "Look out for the PayPal button and check out with your email and password on sites and apps worldwide.",
+        "id": "sub2",
+        "mode": "SITTING"
+      }
+    },
+
+    "sites": {
+      "-KGu88FqBYwWEkKYFIz8": {
+        "description": "The startup bank",
+        "name": "TSB",
+        "owner": "78c40ad2-d59f-4f90-b1cd-7fd142135bc2",
+        "boxes": {
+          "-KGu8pgKQuKY1knnU614": true,
+          "-KGu8pgKQuKY1knnU615": true,
+          "-KGu8pgLPSYbB9YEPMmL": true,
+          "-KGu8pgLPSYbB9YEPMmM": true,
+          "-KGu8pgMqSHAlTrRk2Hm": true,
+          "-KGu8pgNeesWz5yUxPad": true,
+          "-KGuCp4wZiAGKHWOfI3P": true,
+          "-KGuD0-Gij3j5ZxcCl7Y": true
+        }
+      }
+    }
+  },
+
   "users": {
-    "user1": {
-      "firstName": "David",
-      "lastName": "Gilbertson",
+    "335b1c30-6d48-4602-a738-d067da206906": {
+      "email": "david@email.com",
+      "lastLogin": 1462343420753
+    },
+    "78c40ad2-d59f-4f90-b1cd-7fd142135bc2": {
+      "email": "demo@user.com",
+      "lastLogin": 1462344176360,
       "sites": {
-        "site1": true
+        "-KGu88FqBYwWEkKYFIz8": true
       }
-    },
-    "user2": {
-      "firstName": "Alan",
-      "lastName": "Turing",
-      "sites": {
-        "site2": true,
-        "site3": true
-      }
-    }
-  },
-  "sites": {
-    "site1": {
-      "name": "TSB",
-      "owner": "user1",
-      "description": "The startup bank",
-      "boxes": {
-        "box1": true,
-        "box2": true
-      }
-    },
-    "site2": {
-      "name": "Ebay",
-      "owner": "user2",
-      "boxes": {
-        "box3": true,
-        "box4": true
-      }
-    },
-    "site3": {
-      "name": "Ebay - the new version!",
-      "description": "Ebay - the new version",
-      "owner": "user2",
-      "boxes": {
-        "box5": true,
-        "box6": true
-      }
-    }
-  },
-  "boxes": {
-    "box1": {
-      "siteId": "site1",
-      "label": "siteTitle",
-      "text": "The Startup Bank",
-      "top": 10,
-      "left": 50
-    },
-    "box2": {
-      "siteId": "site1",
-      "label": "siteSubTitle",
-      "text": "Money, no questions asked",
-      "top": 100,
-      "left": 50
-    },
-    "box3": {
-      "siteId": "site2",
-      "label": "siteTitle",
-      "text": "ebay",
-      "top": 10,
-      "left": 50
-    },
-    "box4": {
-      "siteId": "site2",
-      "label": "siteSubTitle",
-      "text": "Buy crap at lunchtime",
-      "top": 100,
-      "left": 50
-    },
-    "box5": {
-      "siteId": "site3",
-      "label": "siteTitle",
-      "text": "ebay got better",
-      "top": 10,
-      "left": 50
-    },
-    "box6": {
-      "siteId": "site3",
-      "label": "siteSubTitle",
-      "text": "Buy good stuff at lunchtime",
-      "top": 100,
-      "left": 50
     }
   }
 }

@@ -1,4 +1,6 @@
 process.env.APP_ENV = 'DEV';
+process.env.NODE_ENV = 'NOT production';
 
-require('./index.js');
+require('babel-register');
+require('./app/server.js');
 require('./build/runDevServer.js');
