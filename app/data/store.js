@@ -61,15 +61,6 @@ const boxes = (state = {}, action) => {
       delete newState[action.id];
       return newState;
 
-    case ACTIONS.SELECT_BOX :
-      return mapValues(state, (box, id) => {
-        if (id === action.id) {
-          return {...box, selected: true};
-        }
-
-        return {...box, selected: false};
-      });
-
     case ACTIONS.SET_BOX_MODE :
       return mapValues(state, (box, id) => {
         if (id === action.id) {

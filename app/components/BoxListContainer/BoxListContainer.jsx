@@ -12,9 +12,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
-      select: id => {
-        dispatch(boxActions.select(id));
-      },
       update: (id, newProps) => {
         dispatch(boxActions.update(id, newProps));
       },

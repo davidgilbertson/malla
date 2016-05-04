@@ -13,13 +13,6 @@ export function update(id, newProps) {
   };
 }
 
-export function select(id) {
-  return {
-    type: ACTIONS.SELECT_BOX,
-    id,
-  };
-}
-
 export function add(box) {
   return {
     type: ACTIONS.ADD_BOX,

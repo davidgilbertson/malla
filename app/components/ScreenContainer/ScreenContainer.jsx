@@ -9,9 +9,6 @@ const mapDispatchToProps = dispatch => {
       add: box => {
         dispatch(actionCreators.add(box));
       },
-      select: id => {
-        dispatch(actionCreators.select(id));
-      },
       setMode: (id, mode) => {
         dispatch(actionCreators.setMode(id, mode));
       },
