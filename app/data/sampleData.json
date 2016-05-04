@@ -1,0 +1,91 @@
+{
+  "users": {
+    "user1": {
+      "firstName": "David",
+      "lastName": "Gilbertson",
+      "sites": {
+        "site1": true
+      }
+    },
+    "user2": {
+      "firstName": "Alan",
+      "lastName": "Turing",
+      "sites": {
+        "site2": true,
+        "site3": true
+      }
+    }
+  },
+  "sites": {
+    "site1": {
+      "name": "TSB",
+      "owner": "user1",
+      "description": "The startup bank",
+      "boxes": {
+        "box1": true,
+        "box2": true
+      }
+    },
+    "site2": {
+      "name": "Ebay",
+      "owner": "user2",
+      "boxes": {
+        "box3": true,
+        "box4": true
+      }
+    },
+    "site3": {
+      "name": "Ebay - the new version!",
+      "description": "Ebay - the new version",
+      "owner": "user2",
+      "boxes": {
+        "box5": true,
+        "box6": true
+      }
+    }
+  },
+  "boxes": {
+    "box1": {
+      "siteId": "site1",
+      "label": "siteTitle",
+      "text": "The Startup Bank",
+      "top": 10,
+      "left": 50
+    },
+    "box2": {
+      "siteId": "site1",
+      "label": "siteSubTitle",
+      "text": "Money, no questions asked",
+      "top": 100,
+      "left": 50
+    },
+    "box3": {
+      "siteId": "site2",
+      "label": "siteTitle",
+      "text": "ebay",
+      "top": 10,
+      "left": 50
+    },
+    "box4": {
+      "siteId": "site2",
+      "label": "siteSubTitle",
+      "text": "Buy crap at lunchtime",
+      "top": 100,
+      "left": 50
+    },
+    "box5": {
+      "siteId": "site3",
+      "label": "siteTitle",
+      "text": "ebay got better",
+      "top": 10,
+      "left": 50
+    },
+    "box6": {
+      "siteId": "site3",
+      "label": "siteSubTitle",
+      "text": "Buy good stuff at lunchtime",
+      "top": 100,
+      "left": 50
+    }
+  }
+}
