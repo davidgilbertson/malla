@@ -80,15 +80,6 @@ const boxes = (state = {}, action) => {
       delete newState[action.id];
       return newState;
 
-    case ACTIONS.SET_BOX_MODE :
-      return mapValues(state, (box, id) => {
-        if (id === action.id) {
-          return {...box, mode: action.mode};
-        }
-
-        return {...box, mode: BOX_MODES.SITTING};
-      });
-
     default:
       return state;
   }
