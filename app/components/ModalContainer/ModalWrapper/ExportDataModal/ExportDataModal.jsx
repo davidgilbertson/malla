@@ -26,10 +26,9 @@ class ExportDataModal extends Component {
 
   render() {
     const exportData = {};
-    forOwn(this.props.boxes, box => {
+    forOwn(this.props.boxes, (box, id) => {
       // TODO (davidg): nest
-      // TODO (davidg): check for duplicate properties
-      exportData[box.id] = box.text;
+      exportData[box.label || id] = box.text;
     });
 
     return (

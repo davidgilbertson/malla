@@ -19,7 +19,6 @@ export function add(dims) {
   const box = {
     ...dims,
     text: '',
-    label: `label${nextId++}`, // TODO (davidg): this isn't good enough
   };
 
   const newBoxRef = db.child('data/boxes').push(box);
