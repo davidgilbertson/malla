@@ -43,7 +43,7 @@ const Header = ({showModal}) => (
         onClick={() => {
           showModal(MODALS.EXPORT_DATA)
         }}
-      >Get words as JSON</button>
+      >Preview the API results</button>
     </div>
   </header>
 );

@@ -34,10 +34,12 @@ class ExportDataModal extends Component {
     return (
       <Modal
         {...this.props}
-        title="Export data"
+        title="Preview of the API response"
         showOK={true}
         width={1200}
       >
+        <p>To access this data, go to {location.origin}.json</p>
+
         <textarea
           ref={el => this.textAreaEl = el}
           value={JSON.stringify(exportData, null, 2)}
