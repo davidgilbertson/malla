@@ -117,6 +117,9 @@ class Box extends Component {
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onTextAreaChange = this.onTextAreaChange.bind(this);
+    // this.isInSittingMode = this.isInSittingMode.bind(this);
+    // this.isInMovingMode = this.isInMovingMode.bind(this);
+    // this.isInTypingMode = this.isInTypingMode.bind(this);
   }
 
   maybeDeleteBox() {
@@ -160,16 +163,26 @@ class Box extends Component {
     }
   };
 
-  onDragStart(dragType, e) {
-    const {box} = this.props;
+  isInSittingMode({activeBox, id}) {
+    return id !== activeBox.id;
+  }
 
-    if (box.mode === BOX_MODES.TYPING) return; // only move a box in move mode
+  isInMovingMode({activeBox, id}) {
+    return id === activeBox.id && activeBox.mode === BOX_MODES.MOVING;
+  }
+
+  isInTypingMode({activeBox, id}) {
+    return id === activeBox.id && activeBox.mode === BOX_MODES.TYPING;
+  }
+
+  onDragStart(dragType, e) {
+    if (this.isInTypingMode(this.props)) return; // only move a box in move mode
 
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the element
 
     this.dragInfo.dragStartTime = performance.now();
 
-    if (box.mode === BOX_MODES.MOVING) {
+    if (this.isInMovingMode(this.props)) {
       e.preventDefault();
 
       const {x, y} = getEventDims(e);
@@ -199,17 +212,18 @@ class Box extends Component {
 
   onDragEnd() {
     this.dragInfo.isMoving = false;
-    const {box, boxActions, id} = this.props;
+    const {boxActions, id} = this.props;
 
     if (eventWasAClick(this.dragInfo)) {
-      if (box.mode === BOX_MODES.SITTING) { // put the sitting box into move mode
+      if (this.isInSittingMode(this.props)) { // put the sitting box into move mode
         if (window.getSelection().toString()) return; // do nothing if the user was selecting text
 
-        boxActions.setMode(id, BOX_MODES.MOVING);
-      } else if (box.mode === BOX_MODES.MOVING) { // if it was clicked in move mode, put it into typing mode
-        boxActions.setMode(id, BOX_MODES.TYPING);
+        boxActions.setActiveBox(id, BOX_MODES.MOVING);
+      } else if (this.isInMovingMode(this.props)) { // if it was clicked in move mode, put it into typing mode
+        // actually, unless the target was one of the handles. Then it shouldn't change the mode (a quick resize is a click)
+        boxActions.setActiveBox(id, BOX_MODES.TYPING);
       }
-    } else if (box.mode === BOX_MODES.MOVING) { // if it was dragged in move mode, move the thing
+    } else if (this.isInMovingMode(this.props)) { // if it was dragged in move mode, move the thing
       // else this was a drag, move the box
       this.updateBoxAfterDrag(this.dragInfo);
     } // If this was a drag, but the box wasn't in moving mode, ignore it
@@ -264,15 +278,31 @@ class Box extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // If the box just entered typing mode, focus the input element
-    if (prevProps.box.mode !== BOX_MODES.TYPING && this.props.box.mode === BOX_MODES.TYPING) {
+    const wasNotInTypingMode = !this.isInTypingMode(prevProps);
+    const isNowInTypingMode = this.isInTypingMode(this.props);
+
+    if (wasNotInTypingMode && isNowInTypingMode) {
       this.textAreaEl.focus();
+    }
+  }
+
+  shouldComponentUpdate() {
+    // don't update the component while the textarea is focused (messes with the cursor)
+    return document.activeElement !== this.textAreaEl;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const iAmTyping = document.activeElement === this.textAreaEl;
+    const thereIsNewText = nextProps.box.text !== this.props.box.text;
+
+    if (thereIsNewText && !iAmTyping) {
+      this.textAreaEl.value = nextProps.box.text;
     }
   }
 
   componentDidMount() {
     // a box will mount in typing mode when it's just been added
-    if (this.props.box.mode === BOX_MODES.TYPING) {
+    if (this.isInTypingMode(this.props)) {
       this.textAreaEl.focus();
     }
   }
@@ -286,7 +316,7 @@ class Box extends Component {
     styles.box.height = box.height + 1; // so it covers the grid
     styles.box.transform = `translate(${box.left}px, ${box.top}px)`;
 
-    if (box.mode === BOX_MODES.MOVING) {
+    if (this.isInMovingMode(this.props)) {
       styles.handles.display = 'block';
 
       styles.box = {
@@ -300,10 +330,11 @@ class Box extends Component {
       styles.displayText.overflow = 'hidden';
     }
 
-    if (box.mode === BOX_MODES.TYPING) {
+    if (this.isInTypingMode(this.props)) {
       styles.textArea.display = 'block';
       styles.box = {
         ...styles.box,
+        // TODO (davidg): a box can be in typing mode without focus (click outside the browser). Give it a border
         borderWidth: 0, // the text area will get focus ring
       };
       styles.displayText.display = 'none';
@@ -363,6 +394,7 @@ class Box extends Component {
 }
 
 Box.propTypes = {
+  activeBox: PropTypes.object.isRequired,
   box: PropTypes.object.isRequired,
   boxActions: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,

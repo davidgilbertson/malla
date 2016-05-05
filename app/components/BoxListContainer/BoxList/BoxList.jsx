@@ -5,7 +5,7 @@ import forOwn from 'lodash/forOwn';
 
 import Box from './Box/Box.jsx';
 
-const BoxList = ({boxes, boxActions}) => {
+const BoxList = ({activeBox, boxes, boxActions}) => {
   const boxComponents = [];
   
   forOwn(boxes, (box, id) => {
@@ -15,6 +15,7 @@ const BoxList = ({boxes, boxActions}) => {
         id={id}
         box={box}
         boxActions={boxActions}
+        activeBox={activeBox}
       />
     );
   });
@@ -28,6 +29,7 @@ const BoxList = ({boxes, boxActions}) => {
 
 BoxList.propTypes = {
   boxes: PropTypes.object.isRequired,
+  activeBox: PropTypes.object.isRequired,
   boxActions: PropTypes.object.isRequired,
 };
 

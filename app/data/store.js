@@ -1,8 +1,8 @@
 import {combineReducers, createStore} from 'redux';
-import forOwn from 'lodash/forOwn';
 import mapValues from 'lodash/mapValues';
 import cloneDeep from 'lodash/cloneDeep';
 
+import * as cloudData from './cloudData.js';
 import {
   ACTIONS,
   BOX_MODES,
@@ -28,6 +28,22 @@ const screens = (state = [defaultScreen], action) => {
   }
 };
 
+const activeBox = (state = {}, action) => {
+  switch (action.type) {
+    case ACTIONS.SET_ACTIVE_BOX :
+      if (!action.id) {
+        return {};
+      }
+
+      return {
+        id: action.id,
+        mode: action.mode,
+      };
+    default :
+      return state;
+  }
+};
+
 const modal = (state = MODALS.NONE, action) => {
   switch (action.type) {
     case ACTIONS.SHOW_MODAL :
@@ -44,7 +60,10 @@ const modal = (state = MODALS.NONE, action) => {
 
 const boxes = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.ADD_BOX :
+    case ACTIONS.SET_BOXES :
+      return action.boxes;
+
+    case ACTIONS.ADD_OR_UPDATE_BOX :
       return {...state, ...action.box};
 
     case ACTIONS.UPDATE_BOX :
@@ -76,23 +95,18 @@ const boxes = (state = {}, action) => {
 };
 
 const reducers = combineReducers({
+  activeBox,
   boxes,
   modal,
   screens,
 });
 
-let initialState;
-
 const onClient = typeof window !== 'undefined';
 
-if (onClient) {
-  initialState = window.MALLA_STATE || {};
-} else {
-  const mockData = require('./mockData.json');
+const store = createStore(reducers);
 
-  initialState = {
-    boxes: mockData[0].data.boxes, // we get errors if mockData isn't an array
-  };
+if (onClient) {
+  cloudData.bindStoreToCloud(store);
 }
 
-export default createStore(reducers, initialState);
+export default store;

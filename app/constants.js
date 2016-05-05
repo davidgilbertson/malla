@@ -1,6 +1,8 @@
 export const ACTIONS = {
-  ADD_BOX: 'ADD_BOX',
+  ADD_OR_UPDATE_BOX: 'ADD_OR_UPDATE_BOX',
+  SET_BOXES: 'SET_BOXES',
   SET_BOX_MODE: 'SET_BOX_MODE',
+  SET_ACTIVE_BOX: 'SET_ACTIVE_BOX',
   DELETE_BOX: 'DELETE_BOX',
   UPDATE_BOX: 'UPDATE_BOX',
   ADD_SCREEN: 'ADD_SCREEN',
@@ -15,6 +17,8 @@ export const BOX_MODES = {
   MOVING: 'MOVING',
   TYPING: 'TYPING',
 };
+
+export const FIREBASE_URL = 'https://blazing-fire-4854.firebaseio.com';
 
 export const MODALS = {
   NONE: 'NONE',

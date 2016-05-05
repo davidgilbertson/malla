@@ -17,7 +17,7 @@
           "width": 580,
           "height": 40,
           "text": "JOIN MORE THAN 6 MILLION AUSTRALIANS SHOPPING WITH PAYPAL.",
-          "id": "title",
+          "label": "title",
           "mode": "SITTING"
         },
         "-KGu8pgKQuKY1knnU615": {
@@ -26,7 +26,7 @@
           "width": 580,
           "height": 70,
           "text": "Skip the long forms and forget entering your card details every time. PayPal is the smarter, faster and safer way to pay. Try it out – it’s free to sign up.",
-          "id": "sub",
+          "label": "sub",
           "mode": "SITTING"
         },
         "-KGu8pgLPSYbB9YEPMmL": {
@@ -35,7 +35,7 @@
           "width": 150,
           "height": 80,
           "text": "Sign Up for Free",
-          "id": "signUp",
+          "label": "signUp",
           "mode": "SITTING"
         },
         "-KGu8pgLPSYbB9YEPMmM": {
@@ -44,7 +44,7 @@
           "width": 590,
           "height": 40,
           "text": "How PayPal works.",
-          "id": "howItWorks",
+          "label": "howItWorks",
           "mode": "SITTING"
         },
         "-KGu8pgMqSHAlTrRk2Hm": {
@@ -53,7 +53,7 @@
           "width": 420,
           "height": 80,
           "text": "Already a customer? Enter now to win a $15,000 trip of a lifetime! New Money takes you on new adventures.",
-          "id": "alreadyCustomer",
+          "label": "alreadyCustomer",
           "mode": "SITTING"
         },
         "-KGu8pgNeesWz5yUxPad": {
@@ -62,7 +62,7 @@
           "width": 190,
           "height": 140,
           "text": "Sign up to PayPal with your email address and create a password. It’s free to sign up.",
-          "id": "signUp2",
+          "label": "signUp2",
           "mode": "SITTING"
         },
         "-KGuCp4wZiAGKHWOfI3P": {
@@ -71,7 +71,7 @@
           "width": 190,
           "height": 140,
           "text": "Add your bank accounts, credit cards and debit cards. We’ll securely encrypt them, ready for when you shop.",
-          "id": "addAccount",
+          "label": "addAccount",
           "mode": "SITTING"
         },
         "-KGuD0-Gij3j5ZxcCl7Y": {
@@ -80,7 +80,7 @@
           "width": 210,
           "height": 140,
           "text": "Look out for the PayPal button and check out with your email and password on sites and apps worldwide.",
-          "id": "sub2",
+          "label": "sub2",
           "mode": "SITTING"
         }
       },

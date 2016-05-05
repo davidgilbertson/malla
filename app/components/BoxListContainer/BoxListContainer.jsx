@@ -5,7 +5,8 @@ import BoxList from './BoxList/BoxList.jsx';
 
 const mapStateToProps = (state) => {
   return {
-    boxes: state.boxes
+    boxes: state.boxes,
+    activeBox: state.activeBox,
   }
 };
 
@@ -13,13 +14,13 @@ const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
       update: (id, newProps) => {
-        dispatch(boxActions.update(id, newProps));
+        boxActions.update(id, newProps);
       },
       remove: id => {
-        dispatch(boxActions.remove(id));
+        boxActions.remove(id);
       },
-      setMode: (id, mode) => {
-        dispatch(boxActions.setMode(id, mode));
+      setActiveBox: (id, mode) => {
+        dispatch(boxActions.setActiveBox(id, mode));
       },
     }
   };
