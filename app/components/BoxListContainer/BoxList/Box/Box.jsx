@@ -117,9 +117,6 @@ class Box extends Component {
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onTextAreaChange = this.onTextAreaChange.bind(this);
-    // this.isInSittingMode = this.isInSittingMode.bind(this);
-    // this.isInMovingMode = this.isInMovingMode.bind(this);
-    // this.isInTypingMode = this.isInTypingMode.bind(this);
   }
 
   maybeDeleteBox() {
@@ -144,20 +141,20 @@ class Box extends Component {
         break;
 
       case DRAG_TYPES.TOP :
-        this.boxElement.style.height = `${box.height - y}px`;
+        this.boxElement.style.height = `${box.height - y + 1}px`;
         this.boxElement.style.transform = `translate(${box.left}px, ${box.top + y}px)`;
         break;
 
       case DRAG_TYPES.RIGHT :
-        this.boxElement.style.width = `${box.width + x}px`;
+        this.boxElement.style.width = `${box.width + x + 1}px`;
         break;
 
       case DRAG_TYPES.BOTTOM :
-        this.boxElement.style.height = `${box.height + y}px`;
+        this.boxElement.style.height = `${box.height + y + 1}px`;
         break;
 
       case DRAG_TYPES.LEFT :
-        this.boxElement.style.width = `${box.width - x}px`;
+        this.boxElement.style.width = `${box.width - x + 1}px`;
         this.boxElement.style.transform = `translate(${box.left + x}px, ${box.top}px)`;
         break;
     }
@@ -197,6 +194,11 @@ class Box extends Component {
 
       window.addEventListener('mousemove', this.onDragMove, false);
       window.addEventListener('touchmove', this.onDragMove, false);
+    } else {
+      this.dragInfo.startX = 0;
+      this.dragInfo.startY = 0;
+      this.dragInfo.lastX = 0;
+      this.dragInfo.lastY = 0;
     }
 
     window.addEventListener('mouseup', this.onDragEnd, false);
@@ -286,9 +288,11 @@ class Box extends Component {
     }
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps) {
+    const textAreaNotFocused = document.activeElement !== this.textAreaEl;
+    const leavingTypingMode = !this.isInTypingMode(nextProps);
     // don't update the component while the textarea is focused (messes with the cursor)
-    return document.activeElement !== this.textAreaEl;
+    return textAreaNotFocused || leavingTypingMode;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -334,8 +338,6 @@ class Box extends Component {
       styles.textArea.display = 'block';
       styles.box = {
         ...styles.box,
-        // TODO (davidg): a box can be in typing mode without focus (click outside the browser). Give it a border
-        borderWidth: 0, // the text area will get focus ring
       };
       styles.displayText.display = 'none';
     }

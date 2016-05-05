@@ -10,9 +10,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    backgroundImage: 'url(/images/grid-dot_10x10.gif)',
-    backgroundPosition: '1px 1px',
-    cursor: 'crosshair',
   },
   css: {
     html: {

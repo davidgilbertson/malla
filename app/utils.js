@@ -24,7 +24,11 @@ export function getEventDims(e) {
 }
 
 export function eventWasAClick(dragInfo) {
-  return performance.now() - dragInfo.dragStartTime < CLICK_LENGTH_MS;
+  const shorterThanClickLength = performance.now() - dragInfo.dragStartTime < CLICK_LENGTH_MS;
+  const narrowerThanGrid = Math.abs(dragInfo.startX - dragInfo.lastX) < GRID_SIZE;
+  const shorterThanGrid = Math.abs(dragInfo.startY - dragInfo.lastY) < GRID_SIZE;
+
+  return shorterThanClickLength && narrowerThanGrid && shorterThanGrid;
 }
 
 export const css = {

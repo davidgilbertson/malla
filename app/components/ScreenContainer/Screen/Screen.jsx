@@ -6,6 +6,7 @@ import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import {snap} from '../../../utils.js';
 import {
   CLICK_LENGTH_MS,
+  COLORS,
   GRID_SIZE,
 } from '../../../constants.js';
 
@@ -14,6 +15,10 @@ const styles = {
     flex: '0 1 100%',
     position: 'relative', // to contain absolute descendants
     overflow: 'auto',
+    backgroundImage: 'url(/images/grid-dot_10x10.gif)',
+    backgroundPosition: '1px 1px',
+    cursor: 'crosshair',
+    boxShadow: `inset 1px 1px ${COLORS.WHITE}`, // covers the first dots
   },
 };
 
