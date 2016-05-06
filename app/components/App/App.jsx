@@ -69,11 +69,11 @@ const App = () => (
     <div style={styles.app}>
       <Style rules={styles.css} />
 
-      {/*<HeaderContainer />*/}
+      <HeaderContainer />
 
-      {/*<ScreenContainer />*/}
+      <ScreenContainer />
 
-      <HomePage />
+      {/*<HomePage />*/}
 
       <ModalContainer />
     </div>

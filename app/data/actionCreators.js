@@ -30,11 +30,15 @@ export function add(dims) {
   return newBoxId;
 }
 
-export function remove(id) {
+export function remove(boxId) {
   const currentSite = cloudData.getCurrentSite();
 
-  cloudData.getDb().child(`data/boxes/${id}`).remove();
-  cloudData.getDb().child(`data/sites/${currentSite}/boxes/${id}`).remove();
+  cloudData.getDb().child(`data/boxes/${boxId}`).remove(err => {
+    err && console.warn(`Error removing box from data/boxes/${boxId}:`, err);
+  });
+  cloudData.getDb().child(`data/sites/${currentSite}/boxes/${boxId}`).remove(err => {
+    err && console.warn(`Error removing box from data/sites/${currentSite}/boxes/${boxId}:`, err);
+  });
 }
 
 export function setActiveBox(id, mode) {
