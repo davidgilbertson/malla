@@ -22,9 +22,26 @@ app.get('/', (req, res) => {
     </Provider>,
   );
 
-  const scriptSrc = process.env.APP_ENV === 'DEV'
-    ? 'http://localhost:8081/webpack-bundle.js'
-    : `js/${fileNames.mainJs}`;
+  let scriptSrc;
+  let googleAnalyticsScript = '';
+
+  if (process.env.APP_ENV === 'DEV') {
+    scriptSrc = 'http://localhost:8081/webpack-bundle.js';
+  } else {
+    scriptSrc = `js/${fileNames.mainJs}`;
+    googleAnalyticsScript = `
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      
+        ga('create', 'UA-77392102-1', 'auto');
+        ga('send', 'pageview');
+      
+      </script>
+    `;
+  }
 
   const html =
 `<!DOCTYPE html>
@@ -32,7 +49,8 @@ app.get('/', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Malla | Wireframe CMS</title>
+    <title>Malla | The visual CMS</title>
+    <meta name="description" content="Malla is a crazy-fast, visual CMS">
     <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400,300' rel='stylesheet' type='text/css'>
 </head>
@@ -41,6 +59,7 @@ app.get('/', (req, res) => {
 
     <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <script async src="${scriptSrc}"></script>
+    ${googleAnalyticsScript}
 </body>
 </html>`;
 
