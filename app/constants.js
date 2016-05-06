@@ -31,16 +31,19 @@ export const CLICK_LENGTH_MS = 150;
 export const ANIMATION_DURATION = 150;
 
 export const BREAKPOINT_SIZES = {
-  SMALL_MED: 480,
-  MED_LARGE: 880,
-  LARGE_JUMBO: 1120,
+  // PHONES // iPhone, 6 Plus, Nexus 6
+  TABLET_PORTRAIT: 480,
+  TABLET_LANDSCAPE: 880,
+  LAPTOP: 1120, // ultrabook, macbook air, pro 13 and 15
+  DESKTOP: 1500, // iMac, most desktop monitors
 };
 
 export const BREAKPOINTS = {
-  SMALL_ONLY: `@media (max-width: ${BREAKPOINT_SIZES.SMALL_MED}px)`,
-  MEDIUM_UP: `@media (min-width: ${BREAKPOINT_SIZES.SMALL_MED}px)`,
-  LARGE_UP: `@media (min-width: ${BREAKPOINT_SIZES.MED_LARGE}px)`,
-  JUMBO_UP: `@media (min-width: ${BREAKPOINT_SIZES.LARGE_JUMBO}px)`,
+  PHONE_ONLY: `@media (max-width: ${BREAKPOINT_SIZES.TABLET_PORTRAIT}px)`,
+  TABLET_PORTRAIT: `@media (min-width: ${BREAKPOINT_SIZES.TABLET_PORTRAIT}px)`,
+  TABLET_LANDSCAPE: `@media (min-width: ${BREAKPOINT_SIZES.TABLET_LANDSCAPE}px)`,
+  LAPTOP: `@media (min-width: ${BREAKPOINT_SIZES.LAPTOP}px)`,
+  DESKTOP: `@media (min-width: ${BREAKPOINT_SIZES.DESKTOP}px)`,
 };
 
 export const DIMENSIONS = {
@@ -66,6 +69,11 @@ export const COLORS = {
   GRAY_FADE: 'rgba(0, 0, 0, 0.618)',
   GRAY_LIGHT: '#B6B6B6',
   WHITE: '#FFFFFF',
+};
+
+export const FONT_FAMILIES = {
+  SANS_SERIF: `'Open Sans', sans-serif`,
+  SERIF: `'Roboto Slab', serif`
 };
 
 export const Z_INDEXES = {

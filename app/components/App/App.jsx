@@ -1,6 +1,11 @@
 import React from 'react';
-import Radium, {Style} from 'radium';
+import Radium, {Style, StyleRoot} from 'radium';
 
+import {
+  FONT_FAMILIES,
+} from '../../constants.js';
+
+import HomePage from '../HomePage/HomePage.jsx';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import ScreenContainer from '../ScreenContainer/ScreenContainer.jsx';
 import ModalContainer from '../ModalContainer/ModalContainer.jsx';
@@ -27,34 +32,52 @@ const styles = {
     body: {
       padding: 0,
       margin: 0,
-      fontFamily: 'sans-serif',
+      fontFamily: FONT_FAMILIES.SANS_SERIF,
+      fontWeight: 300,
     },
     h1: {
       margin: 0,
       letterSpacing: 1,
+      lineHeight: 1,
+      fontWeight: '300',
     },
     h2: {
       margin: 0,
+      lineHeight: 1,
+      fontWeight: '300',
+    },
+    p: {
+      margin: 0,
+      lineHeight: 1.6,
     },
     button: {
       background: 'none',
       border: 0,
       color: 'inherit',
+      fontFamily: 'inherit',
+      fontWeight: 300,
+      fontSize: 'inherit',
       cursor: 'pointer',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
     }
   }
 };
 
 const App = () => (
-  <div style={styles.app}>
-    <Style rules={styles.css} />
+  <StyleRoot>
+    <div style={styles.app}>
+      <Style rules={styles.css} />
 
-    <HeaderContainer />
+      {/*<HeaderContainer />*/}
 
-    <ScreenContainer />
+      {/*<ScreenContainer />*/}
 
-    <ModalContainer />
-  </div>
+      <HomePage />
+
+      <ModalContainer />
+    </div>
+  </StyleRoot>
 );
 
 export default Radium(App);

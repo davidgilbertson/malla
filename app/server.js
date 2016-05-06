@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Malla | Wireframe CMS</title>
     <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <div id="app">${appHtml}</div>

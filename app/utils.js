@@ -88,12 +88,17 @@ export const css = {
     };
   },
 
-  shadow: (size = 'large') => {
-    const px = size === 'large' ? '10px' : '5px';
+  shadow: (style = 'large') => {
+    const px = style === 'large' ? '10px' : '5px';
 
-    return {
-      boxShadow: `0 0 ${px} rgba(51, 51, 51, .2)`,
-    };
+    switch (style) {
+      case 'light' :
+        return {boxShadow: `0 0 10px rgba(0, 0, 0, .2)`};
+      case 'large' :
+        return {boxShadow: `2px 2px 20px rgba(0, 0, 0, .2)`};
+      default :
+        return {boxShadow: `0 0 5px rgba(51, 51, 51, .2)`};
+    }
   },
 
   border: (...args) => {
