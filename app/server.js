@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import express from 'express';
 import compression from 'compression';
 
-import App from './components/App/App.jsx';
+import AppContainer from './components/AppContainer/AppContainer.jsx';
 import store from './data/store.js';
 
 const app = express();
@@ -17,9 +17,7 @@ const fileNames = require('../build/stats/fileNames.json');
 
 app.get('/', (req, res) => {
   const appHtml = ReactDomServer.renderToString(
-    <Provider store={store}>
-      <App radiumConfig={{userAgent: req.headers['user-agent']}} />
-    </Provider>,
+    <AppContainer radiumConfig={{userAgent: req.headers['user-agent']}} />
   );
 
   let scriptSrc;
