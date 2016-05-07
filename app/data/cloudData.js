@@ -30,23 +30,23 @@ export function getCurrentSite() {
   return currentSite;
 }
 
-export function bindStoreToCloud(store) {
+export function bindStoreToCloudForUser(store) {
   const db = getDb();
+  
   if (!db) {
     console.warn('Could not initialize cloud connection');
     return;
   }
 
-  var hasLoggedIn = false;
-
-  function getBoxesForUser(userId) {
-    db.child('users/' + userId + '/sites').once('child_added', siteSnapshot => {
+  function getDataForUser(userId) {
+    // note this must also fire and clear the store when the user signs out.
+    db.child(`users/${userId}/sites`).on('child_added', siteSnapshot => {
       currentSite = siteSnapshot.key();
 
-      db.child('data/sites/' + currentSite + '/boxes').on('child_added', boxSnapshot => {
+      db.child(`data/sites/${currentSite}/boxes`).on('child_added', boxSnapshot => {
         var boxId = boxSnapshot.key();
 
-        db.child('data/boxes/' + boxId).on('value', boxSnapshot => {
+        db.child(`data/boxes/${boxId}`).on('value', boxSnapshot => {
           const boxId = boxSnapshot.key();
           const box = boxSnapshot.val();
 
@@ -63,7 +63,7 @@ export function bindStoreToCloud(store) {
       });
 
       // boxes will be removed from data/boxes AND data/sites/boxes so we can just listen to data/sites/boxes
-      db.child('data/sites/' + currentSite + '/boxes').on('child_removed', boxSnapshot => {
+      db.child(`data/sites/${currentSite}/boxes`).on('child_removed', boxSnapshot => {
         store.dispatch({
           type: ACTIONS.DELETE_BOX,
           id: boxSnapshot.key(),
@@ -72,14 +72,30 @@ export function bindStoreToCloud(store) {
     });
   }
 
+  let loggedIn = false;
+  // as soon as the store is bound, start listening for user events
   db.onAuth(authData => {
-    if (!authData || hasLoggedIn) return;
-    hasLoggedIn = true;
-    getBoxesForUser(authData.uid);
-  });
+    if (authData && !loggedIn) { // user has signed in
+      loggedIn = true;
+  
+      db.child(`users/${authData.uid}`).on('value', userDataSnapshot => {
+        if (userDataSnapshot.val()) {
+          store.dispatch({
+            type: ACTIONS.SIGN_IN_OR_UPDATE_USER,
+            user: userDataSnapshot.val(),
+          });
+        }
+      });
+  
+      getDataForUser(authData.uid);
+    }
+    
+    if (!authData && loggedIn) { // user is signing out
+      loggedIn = false;
 
-  db.authWithPassword({
-    email: 'demo@user.com',
-    password: 'password',
+      store.dispatch({
+        type: ACTIONS.SIGN_OUT,
+      });
+    }
   });
 }

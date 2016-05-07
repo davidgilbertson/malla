@@ -9,6 +9,8 @@ export const ACTIONS = {
   EDIT_SCREEN: 'EDIT_SCREEN',
   SHOW_MODAL: 'SHOW_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
+  SIGN_IN_OR_UPDATE_USER: 'SIGN_IN_OR_UPDATE_USER',
+  SIGN_OUT: 'SIGN_OUT',
 };
 
 export const BOX_MODES = {
@@ -36,6 +38,11 @@ export const BREAKPOINT_SIZES = {
   TABLET_LANDSCAPE: 880,
   LAPTOP: 1120, // ultrabook, macbook air, pro 13 and 15
   DESKTOP: 1500, // iMac, most desktop monitors
+};
+
+export const SIGN_IN_STATUSES = {
+  SIGNED_IN: 'SIGNED_IN',
+  SIGNED_OUT: 'SIGNED_OUT',
 };
 
 export const BREAKPOINTS = {

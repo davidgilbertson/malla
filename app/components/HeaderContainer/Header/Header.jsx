@@ -6,6 +6,7 @@ import {
   COLORS,
   DIMENSIONS,
   MODALS,
+  SIGN_IN_STATUSES,
 } from '../../../constants.js';
 
 const HEIGHT = DIMENSIONS.LAYOUT.HEADER_HEIGHT;
@@ -32,24 +33,53 @@ const styles = {
     background: COLORS.PRIMARY,
     padding: '0 8px',
   },
+  signInOrOutButton: {
+    color: COLORS.WHITE,
+  }
 };
 
-const Header = ({showModal}) => (
-  <header style={styles.header}>
-    <h1 style={styles.title}>Malla</h1>
-    <div>
+const Header = ({user, showModal, signIn, signOut}) => {
+  const signInOrOutButton = user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN
+    ? (
+      <span>
+        {user.name}
+        {' '}
+        <button
+          style={styles.signInOrOutButton}
+          onClick={signOut}
+        >Sign out</button>
+      </span>
+    ) : (
       <button
-        style={styles.headerButton}
-        onClick={() => {
+        style={styles.signInOrOutButton}
+        onClick={signIn.bind(null, 'google')}
+      >Sign in</button>
+    );
+
+  return (
+    <header style={styles.header}>
+      <h1 style={styles.title}>Malla</h1>
+      <div>
+        {signInOrOutButton}
+
+        <button
+          style={styles.headerButton}
+          onClick={() => {
           showModal(MODALS.EXPORT_DATA)
         }}
-      >Preview the API results</button>
-    </div>
-  </header>
-);
+        >Preview the API results</button>
+      </div>
+    </header>
+  );
+};
 
 Header.propTypes = {
+  // state
+  user: PropTypes.object.isRequired,
+  // actions
   showModal: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
 };
 
 export default Radium(Header);

@@ -5,8 +5,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import * as cloudData from './cloudData.js';
 import {
   ACTIONS,
-  BOX_MODES,
   MODALS,
+  SIGN_IN_STATUSES,
 } from '../constants.js';
 
 const defaultScreen = {
@@ -22,6 +22,10 @@ const screens = (state = [defaultScreen], action) => {
 
     case ACTIONS.DELETE_SCREEN :
       return state.filter(screen => screen.id !== action.id);
+
+    case ACTIONS.SIGN_OUT :
+      return defaultScreen;
+      break;
 
     default:
       return state;
@@ -48,7 +52,6 @@ const modal = (state = MODALS.NONE, action) => {
   switch (action.type) {
     case ACTIONS.SHOW_MODAL :
       if (!MODALS[action.modal]) {
-        console.warn(action.modal, 'is not a recognised modal name')
         return MODALS.NONE;
       }
 
@@ -80,6 +83,29 @@ const boxes = (state = {}, action) => {
       delete newState[action.id];
       return newState;
 
+    case ACTIONS.SIGN_OUT :
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+const user = (state = {}, action) => {
+  switch (action.type) {
+    case ACTIONS.SIGN_IN_OR_UPDATE_USER :
+      return {
+        ...state,
+        ...action.user,
+        signInStatus: SIGN_IN_STATUSES.SIGNED_IN
+      };
+
+    case ACTIONS.SIGN_OUT :
+      return {
+        ...state,
+        signInStatus: SIGN_IN_STATUSES.SIGNED_OUT
+      };
+
     default:
       return state;
   }
@@ -90,6 +116,7 @@ const reducers = combineReducers({
   boxes,
   modal,
   screens,
+  user,
 });
 
 const onClient = typeof window !== 'undefined';
@@ -97,7 +124,7 @@ const onClient = typeof window !== 'undefined';
 const store = createStore(reducers);
 
 if (onClient) {
-  cloudData.bindStoreToCloud(store);
+  cloudData.bindStoreToCloudForUser(store);
 }
 
 export default store;
