@@ -15,6 +15,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(ModalWrapper);
-
-export default ModalContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWrapper);

@@ -23,6 +23,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ScreenContainer = connect(null, mapDispatchToProps)(Project);
-
-export default ScreenContainer;
+export default connect(null, mapDispatchToProps)(Project);

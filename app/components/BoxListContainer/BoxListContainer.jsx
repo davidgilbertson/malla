@@ -26,9 +26,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const BoxListContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(BoxList);
-
-export default BoxListContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(BoxList);
