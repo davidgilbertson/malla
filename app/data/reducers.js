@@ -8,29 +8,6 @@ import {
   SIGN_IN_STATUSES,
 } from '../constants.js';
 
-const defaultScreen = {
-  id: 1,
-  width: 1366,
-  height: 768,
-};
-
-const screens = (state = [defaultScreen], action) => {
-  switch (action.type) {
-    case ACTIONS.ADD_SCREEN :
-      return [...state, action.screen];
-
-    case ACTIONS.DELETE_SCREEN :
-      return state.filter(screen => screen.id !== action.id);
-
-    case ACTIONS.SIGN_OUT :
-      return defaultScreen;
-      break;
-
-    default:
-      return state;
-  }
-};
-
 const activeBox = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SET_ACTIVE_BOX :
@@ -111,7 +88,6 @@ const user = (state = {}, action) => {
 };
 
 export default combineReducers({
-  screens,
   activeBox,
   modal,
   boxes,
