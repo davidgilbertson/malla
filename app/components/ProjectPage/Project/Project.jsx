@@ -29,7 +29,7 @@ const styles = {
   },
 };
 
-class Screen extends Component {
+class Project extends Component {
   constructor(props) {
     super(props);
 
@@ -125,7 +125,6 @@ class Screen extends Component {
     return (
       <div style={styles.page}>
         <div
-          ref={el => this.screenEl = el}
           style={styles.main}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
@@ -142,8 +141,8 @@ class Screen extends Component {
   }
 }
 
-Screen.propTypes = {
+Project.propTypes = {
   boxActions: PropTypes.object.isRequired,
 };
 
-export default Radium(Screen);
+export default Radium(Project);
