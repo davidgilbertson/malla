@@ -13,7 +13,7 @@ export function update(id, newProps) {
 }
 
 export function add(dims) {
-  const currentSite = cloudData.getCurrentSite();
+  const currentProject = cloudData.getCurrentProject();
   const db = cloudData.getDb();
 
   const box = {
@@ -25,19 +25,19 @@ export function add(dims) {
 
   const newBoxId = newBoxRef.key();
 
-  db.child(`data/sites/${currentSite}/boxes/${newBoxId}`).set(true);
+  db.child(`data/projects/${currentProject}/boxes/${newBoxId}`).set(true);
 
   return newBoxId;
 }
 
 export function remove(boxId) {
-  const currentSite = cloudData.getCurrentSite();
+  const currentProject = cloudData.getCurrentProject();
 
   cloudData.getDb().child(`data/boxes/${boxId}`).remove(err => {
     err && console.warn(`Error removing box from data/boxes/${boxId}:`, err);
   });
-  cloudData.getDb().child(`data/sites/${currentSite}/boxes/${boxId}`).remove(err => {
-    err && console.warn(`Error removing box from data/sites/${currentSite}/boxes/${boxId}:`, err);
+  cloudData.getDb().child(`data/projects/${currentProject}/boxes/${boxId}`).remove(err => {
+    err && console.warn(`Error removing box from data/projects/${currentProject}/boxes/${boxId}:`, err);
   });
 }
 
@@ -70,10 +70,10 @@ export function signOut() {
   db.unauth();
 }
 
-export function addMockSiteForUser(userId) {
-  const mockSite = {
-    name: 'My first site',
-    description: 'A site to get you started',
+export function addMockProjectForUser(userId) {
+  const mockProject = {
+    name: 'My project',
+    description: 'A project to get you started',
   };
 
   // TODO (davidg): better boxes
@@ -82,7 +82,7 @@ export function addMockSiteForUser(userId) {
     left: 10,
     width: 400,
     height: 50,
-    text: 'Your site title goes here',
+    text: 'Hi there, I am your site title',
     label: 'title',
   };
 
@@ -91,21 +91,21 @@ export function addMockSiteForUser(userId) {
     left: 10,
     width: 400,
     height: 100,
-    text: 'Some more text goes here. Click a text box once to move/resize, click again to edit the text.',
+    text: 'I am another text box. You can click us once to move or resize me, click again to edit our text.',
     label: 'desc',
   };
 
   const db = cloudData.getDb();
 
-  // get a reference to what will be the new site (note the empty push())
-  const newSiteRef = db.child('data/sites').push();
+  // get a reference to what will be the new project (note the empty push())
+  const newProjectRef = db.child('data/projects').push();
 
-  // add a reference to that site in the user's list of sites
-  db.child(`users/${userId}/sites/${newSiteRef.key()}`).set(true);
+  // add a reference to that project in the user's list of projects
+  db.child(`users/${userId}/projects/${newProjectRef.key()}`).set(true);
 
-  // add the actual site (since it now exists in the user's list of sites)
-  db.child(`data/sites/${newSiteRef.key()}`).set({
-    ...mockSite,
+  // add the actual project (since it now exists in the user's list of projects)
+  db.child(`data/projects/${newProjectRef.key()}`).set({
+    ...mockProject,
     owner: userId,
   });
 
@@ -113,9 +113,9 @@ export function addMockSiteForUser(userId) {
   const box1Ref = db.child('data/boxes').push(mockBox1);
   const box2Ref = db.child('data/boxes').push(mockBox2);
 
-  // reference those boxes from the site
-  db.child(`data/sites/${newSiteRef.key()}/boxes/${box1Ref.key()}`).set(true);
-  db.child(`data/sites/${newSiteRef.key()}/boxes/${box2Ref.key()}`).set(true);
+  // reference those boxes from the project
+  db.child(`data/projects/${newProjectRef.key()}/boxes/${box1Ref.key()}`).set(true);
+  db.child(`data/projects/${newProjectRef.key()}/boxes/${box2Ref.key()}`).set(true);
 }
 
 export function createUser(authData) {
@@ -128,7 +128,7 @@ export function createUser(authData) {
     google: authData.google,
   });
 
-  addMockSiteForUser(authData.uid);
+  addMockProjectForUser(authData.uid);
 }
 
 export function signIn(provider = 'google') {

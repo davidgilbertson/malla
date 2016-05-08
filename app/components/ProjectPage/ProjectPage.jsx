@@ -1,9 +1,28 @@
-import React from 'react';
-import ScreenContainer from '../ScreenContainer/ScreenContainer.jsx';
+import {connect} from 'react-redux';
 
-// TODO (davidg): don't know if I need this. Seems not.
-const ProjectPage = () => (
-  <ScreenContainer />
-);
+import * as actionCreators from '../../data/actionCreators.js';
+import Project from './Project/Project.jsx';
+import {
+  BOX_MODES,
+} from '../../constants.js';
 
-export default ProjectPage;
+const mapDispatchToProps = dispatch => {
+  return {
+    boxActions: {
+      add: box => {
+        const newBoxId = actionCreators.add(box);
+        dispatch(actionCreators.setActiveBox(newBoxId, BOX_MODES.TYPING));
+      },
+      setActiveBox: (id, mode) => {
+        dispatch(actionCreators.setActiveBox(id, mode));
+      },
+    },
+    hideModal: () => {
+      dispatch(actionCreators.hideModal());
+    },
+  };
+};
+
+const ScreenContainer = connect(null, mapDispatchToProps)(Project);
+
+export default ScreenContainer;

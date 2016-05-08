@@ -7,7 +7,7 @@ const onClient = typeof window !== 'undefined';
 
 let cloudDb;
 
-let currentSite;
+let currentProject;
 
 export function getDb() {
   if (!onClient) {
@@ -26,8 +26,8 @@ export function getDb() {
   }
 }
 
-export function getCurrentSite() {
-  return currentSite;
+export function getCurrentProject() {
+  return currentProject;
 }
 
 export function bindStoreToCloudForUser(store) {
@@ -40,17 +40,17 @@ export function bindStoreToCloudForUser(store) {
 
   function getDataForUser(userId) {
     // note this must also fire and clear the store when the user signs out.
-    db.child(`users/${userId}/sites`).on('child_added', siteSnapshot => {
-      currentSite = siteSnapshot.key();
+    db.child(`users/${userId}/projects`).on('child_added', projectSnapshot => {
+      currentProject = projectSnapshot.key();
 
-      db.child(`data/sites/${currentSite}/boxes`).on('child_added', boxSnapshot => {
+      db.child(`data/projects/${currentProject}/boxes`).on('child_added', boxSnapshot => {
         var boxId = boxSnapshot.key();
 
         db.child(`data/boxes/${boxId}`).on('value', boxSnapshot => {
           const boxId = boxSnapshot.key();
           const box = boxSnapshot.val();
 
-          // safeguard - if a box is removed from data/boxes but not data/sites/boxes, box would be null
+          // safeguard - if a box is removed from data/boxes but not data/projects/boxes, box would be null
           if (!box) return;
 
           store.dispatch({
@@ -62,8 +62,8 @@ export function bindStoreToCloudForUser(store) {
         });
       });
 
-      // boxes will be removed from data/boxes AND data/sites/boxes so we can just listen to data/sites/boxes
-      db.child(`data/sites/${currentSite}/boxes`).on('child_removed', boxSnapshot => {
+      // boxes will be removed from data/boxes AND data/projects/boxes so we can just listen to data/projects/boxes
+      db.child(`data/projects/${currentProject}/boxes`).on('child_removed', boxSnapshot => {
         store.dispatch({
           type: ACTIONS.DELETE_BOX,
           id: boxSnapshot.key(),
