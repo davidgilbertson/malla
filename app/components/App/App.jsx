@@ -58,6 +58,12 @@ const styles = {
       cursor: 'pointer',
       textTransform: 'uppercase',
       letterSpacing: 1,
+    },
+    textarea: {
+      color: 'inherit',
+      fontFamily: 'inherit',
+      fontWeight: 'inherit',
+      fontSize: 'inherit',
     }
   }
 };

@@ -58,7 +58,7 @@ function getHtml(req, props) {
           <title>Malla | The visual CMS</title>
           <meta name="description" content="Malla is a crazy-fast, visual CMS">
           <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
-          <link href='https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400,300' rel='stylesheet' type='text/css'>
+          <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300|Open+Sans:400,300' rel='stylesheet' type='text/css'>
       </head>
       <body>
           <div id="app">${appHtml}</div>

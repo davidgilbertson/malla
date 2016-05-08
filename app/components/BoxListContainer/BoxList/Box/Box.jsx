@@ -13,6 +13,7 @@ import {
 import {
   BOX_MODES,
   COLORS,
+  FONT_FAMILIES,
   GRID_SIZE,
   Z_INDEXES,
 } from '../../../../constants.js';
@@ -26,6 +27,8 @@ const DRAG_TYPES = {
   LEFT: 'LEFT',
 };
 
+const TEXT_PADDING = '4px 8px';
+
 const baseStyles = {
   box: {
     position: 'absolute',
@@ -33,7 +36,10 @@ const baseStyles = {
     left: 0,
     top: 0,
     backgroundColor: COLORS.WHITE,
+    whiteSpace: 'pre-line', // keep line breaks
     cursor: 'pointer',
+    fontFamily: FONT_FAMILIES.SERIF,
+    fontSize: 15,
   },
   handles: {
     display: 'none',
@@ -81,16 +87,14 @@ const baseStyles = {
   displayText: {
     width: '100%',
     height: '100%',
-    padding: 10,
+    padding: TEXT_PADDING,
     overflow: 'auto',
   },
   textArea: {
     display: 'none',
     width: '100%',
     height: '100%',
-    padding: 10,
-    fontFamily: 'inherit', // TODO (davidg): put in a reset
-    fontSize: 'inherit', // TODO (davidg): ditto
+    padding: TEXT_PADDING,
     border: 0,
     resize: 'none',
   },
