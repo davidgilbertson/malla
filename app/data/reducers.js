@@ -1,3 +1,4 @@
+import {combineReducers} from 'redux';
 import mapValues from 'lodash/mapValues';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -13,7 +14,7 @@ const defaultScreen = {
   height: 768,
 };
 
-export const screens = (state = [defaultScreen], action) => {
+const screens = (state = [defaultScreen], action) => {
   switch (action.type) {
     case ACTIONS.ADD_SCREEN :
       return [...state, action.screen];
@@ -30,7 +31,7 @@ export const screens = (state = [defaultScreen], action) => {
   }
 };
 
-export const activeBox = (state = {}, action) => {
+const activeBox = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SET_ACTIVE_BOX :
       if (!action.id) {
@@ -46,7 +47,7 @@ export const activeBox = (state = {}, action) => {
   }
 };
 
-export const modal = (state = MODALS.NONE, action) => {
+const modal = (state = MODALS.NONE, action) => {
   switch (action.type) {
     case ACTIONS.SHOW_MODAL :
       if (!MODALS[action.modal]) {
@@ -59,7 +60,7 @@ export const modal = (state = MODALS.NONE, action) => {
   }
 };
 
-export const boxes = (state = {}, action) => {
+const boxes = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SET_BOXES :
       return action.boxes;
@@ -89,7 +90,7 @@ export const boxes = (state = {}, action) => {
   }
 };
 
-export const user = (state = {}, action) => {
+const user = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SIGN_IN_OR_UPDATE_USER :
       return {
@@ -108,3 +109,11 @@ export const user = (state = {}, action) => {
       return state;
   }
 };
+
+export default combineReducers({
+  screens,
+  activeBox,
+  modal,
+  boxes,
+  user,
+});

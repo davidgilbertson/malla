@@ -1,13 +1,11 @@
-import {combineReducers, createStore} from 'redux';
+import {createStore} from 'redux';
 
 import * as cloudData from './cloudData.js';
-import * as reducers from './reducers.js';
-
-const combinedReducers = combineReducers(reducers);
+import reducers from './reducers.js';
 
 const onClient = typeof window !== 'undefined';
 
-const store = createStore(combinedReducers);
+const store = createStore(reducers);
 
 if (onClient) {
   cloudData.bindStoreToCloudForUser(store);
