@@ -1,4 +1,5 @@
 import * as cloudData from './cloudData.js';
+import mockBoxes from './mockBoxes.json';
 
 import {
   ACTIONS,
@@ -76,25 +77,6 @@ export function addMockProjectForUser(userId) {
     description: 'A project to get you started',
   };
 
-  // TODO (davidg): better boxes
-  const mockBox1 = {
-    top: 10,
-    left: 10,
-    width: 400,
-    height: 50,
-    text: 'Hi there, I am your site title',
-    label: 'title',
-  };
-
-  const mockBox2 = {
-    top: 100,
-    left: 10,
-    width: 400,
-    height: 100,
-    text: 'I am another text box. You can click us once to move or resize me, click again to edit our text.',
-    label: 'desc',
-  };
-
   const db = cloudData.getDb();
 
   // get a reference to what will be the new project (note the empty push())
@@ -109,13 +91,11 @@ export function addMockProjectForUser(userId) {
     owner: userId,
   });
 
-  // add some boxes
-  const box1Ref = db.child('data/boxes').push(mockBox1);
-  const box2Ref = db.child('data/boxes').push(mockBox2);
-
-  // reference those boxes from the project
-  db.child(`data/projects/${newProjectRef.key()}/boxes/${box1Ref.key()}`).set(true);
-  db.child(`data/projects/${newProjectRef.key()}/boxes/${box2Ref.key()}`).set(true);
+  // add some boxes and reference them from the project
+  mockBoxes.forEach((mockBox, i) => {
+    const boxRef = db.child('data/boxes').push(mockBoxes[i]);
+    db.child(`data/projects/${newProjectRef.key()}/boxes/${boxRef.key()}`).set(true);
+  });
 }
 
 export function createUser(authData) {
