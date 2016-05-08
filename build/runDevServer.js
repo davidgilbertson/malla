@@ -47,6 +47,10 @@ const compiler = webpack(config);
 const devServerOptions = {
   contentBase,
   publicPath: config.output.publicPath,
+  // historyApiFallback: true,
+  // historyApiFallback: {
+  //   index: `${contentBase}/`,
+  // },
   hot: true,
   noInfo: true,
   stats: {

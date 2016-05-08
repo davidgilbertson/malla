@@ -7,10 +7,17 @@ import {snap} from '../../../utils.js';
 import {
   CLICK_LENGTH_MS,
   COLORS,
+  DIMENSIONS,
   GRID_SIZE,
 } from '../../../constants.js';
 
 const styles = {
+  page: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    paddingTop: DIMENSIONS.LAYOUT.HEADER_HEIGHT,
+  },
   main: {
     flex: '0 1 100%',
     position: 'relative', // to contain absolute descendants
@@ -116,18 +123,20 @@ class Screen extends Component {
 
   render() {
     return (
-      <div
-        ref={el => this.screenEl = el}
-        style={styles.main}
-        onMouseDown={this.onDragStart}
-        onTouchStart={this.onDragStart}
-      >
-        <BoxListContainer />
-
+      <div style={styles.page}>
         <div
-          ref={el => this.placeholderEl = el}
-          style={this.placeholderStyle}
-        ></div>
+          ref={el => this.screenEl = el}
+          style={styles.main}
+          onMouseDown={this.onDragStart}
+          onTouchStart={this.onDragStart}
+        >
+          <BoxListContainer />
+  
+          <div
+            ref={el => this.placeholderEl = el}
+            style={this.placeholderStyle}
+          ></div>
+        </div>
       </div>
     );
   }

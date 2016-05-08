@@ -1,33 +1,27 @@
 import React from 'react';
 import Radium, {Style, StyleRoot} from 'radium';
+import {Provider} from 'react-redux';
 
+import store from '../../data/store';
 import {
   FONT_FAMILIES,
 } from '../../constants.js';
-
-import HomePage from '../HomePage/HomePage.jsx';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
-import ScreenContainer from '../ScreenContainer/ScreenContainer.jsx';
 import ModalContainer from '../ModalContainer/ModalContainer.jsx';
 
 const styles = {
-  app: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-  },
   css: {
     html: {
-      'box-sizing': 'border-box',
+      boxSizing: 'border-box',
     },
     '*': {
-      'box-sizing': 'inherit',
+      boxSizing: 'inherit',
     },
     '*:before': {
-      'box-sizing': 'inherit',
+      boxSizing: 'inherit',
     },
     '*:after': {
-      'box-sizing': 'inherit',
+      boxSizing: 'inherit',
     },
     body: {
       padding: 0,
@@ -50,6 +44,10 @@ const styles = {
       margin: 0,
       lineHeight: 1.6,
     },
+    a: {
+      color: 'inherit',
+      textDecoration: 'none',
+    },
     button: {
       background: 'none',
       border: 0,
@@ -64,20 +62,18 @@ const styles = {
   }
 };
 
-const App = () => (
-  <StyleRoot>
-    <div style={styles.app}>
+const App = (props) => (
+  <Provider store={store}>
+    <StyleRoot>
       <Style rules={styles.css} />
+      
+      <HeaderContainer {...props} />
 
-      <HeaderContainer />
-
-      <ScreenContainer />
-
-      {/*<HomePage />*/}
+      {props.children}
 
       <ModalContainer />
-    </div>
-  </StyleRoot>
+    </StyleRoot>
+  </Provider>
 );
 
 export default Radium(App);

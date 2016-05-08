@@ -56,6 +56,7 @@ export const BREAKPOINTS = {
 export const DIMENSIONS = {
   LAYOUT: {
     HEADER_HEIGHT: 48,
+    HEADER_HEIGHT_HOME: 64,
     TOOLBAR_WIDTH: 120,
   },
   TEXT: {

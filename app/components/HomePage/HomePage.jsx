@@ -4,6 +4,7 @@ import Radium, {Style} from 'radium';
 import {
   BREAKPOINTS,
   COLORS,
+  DIMENSIONS,
 } from '../../constants.js';
 
 import {
@@ -20,52 +21,12 @@ const styles = {
   main: {
     display: 'flex',
     flexFlow: 'column',
-    color: COLORS.WHITE,
+    alignItems: 'center',
     minHeight: '100vh',
     backgroundImage: 'url(/images/grid-dot_10x10.gif)',
     overflow: 'auto',
-  },
-  header: {
-    display: 'flex',
-    flexFlow: 'row',
-    alignItems: 'center',
-    flex: '0 0 auto',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    margin: '15px 15px 15px 0',
-    fontWeight: 400,
-    [BREAKPOINTS.TABLET_PORTRAIT]: {
-      padding: '10px 20px',
-      minWidth: '120px',
-    },
-  },
-  headerSignInButton: {
-    textDecoration: 'underline',
-    [BREAKPOINTS.PHONE_ONLY]: {
-      textTransform: 'none',
-    },
-    [BREAKPOINTS.TABLET_PORTRAIT]: {
-      textDecoration: 'none',
-      border: `1px solid ${COLORS.WHITE}`,
-    },
-  },
-  headerSignUpButton: {
-    [BREAKPOINTS.PHONE_ONLY]: {
-      display: 'none',
-    },
-    [BREAKPOINTS.TABLET_PORTRAIT]: {
-      background: COLORS.WHITE,
-      color: COLORS.PRIMARY_DARK,
-      ...css.shadow('light'),
-    },
-  },
-  body: {
-    flex: '1',
-    display: 'flex',
-    flexFlow: 'column',
-    alignItems: 'center',
-    padding: '0 2vw',
+    paddingTop: DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME,
+    color: COLORS.WHITE,
   },
 
   bannerWrapper: {
@@ -191,76 +152,64 @@ const HomePage = () => (
   <div style={styles.main}>
     <Style rules={styles.css} />
 
-    <div style={styles.header}>
-      <button style={[styles.button, styles.headerSignInButton]}>
-        Sign in
-      </button>
+    <div style={styles.bannerWrapper}>
+      <h1 style={styles.titleWrapper}>
+        Malla
+      </h1>
 
-      <button style={[styles.button, styles.headerSignUpButton]}>
-        Sign up
-      </button>
+      <div style={styles.titleSpacer}></div>
     </div>
 
-    <div style={styles.body}>
-      <div style={styles.bannerWrapper}>
-        <h1 style={styles.titleWrapper}>
-          Malla
-        </h1>
+    <div style={styles.contentWrapper}>
+      <div style={styles.wordsWrapper}>
+        <div style={styles.subTitle}>
+          The visual CMS
+        </div>
 
-        <div style={styles.titleSpacer}></div>
+        <div style={styles.boxesWrapper}>
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>
+              Super&nbsp;fast
+            </h2>
+
+            <p style={styles.boxDescription}>
+              Enter text in seconds, not minutes. Click, drag, type, repeat.
+            </p>
+          </div>
+
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>
+              Collaborative
+            </h2>
+
+            <p style={styles.boxDescription}>
+              As you type, the layout instantly updates for all connected users.
+            </p>
+          </div>
+
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>
+              Simple&nbsp;API
+            </h2>
+
+            <p style={styles.boxDescription}>
+              Just put .json at the end of the URL. Seriously.
+            </p>
+          </div>
+        </div>
+
+        <div style={styles.signUpWrapper}>
+          <button style={styles.bigSignUpButton}>
+            Sign up for free
+          </button>
+        </div>
       </div>
 
-      <div style={styles.contentWrapper}>
-        <div style={styles.wordsWrapper}>
-          <div style={styles.subTitle}>
-            The visual CMS
-          </div>
-
-          <div style={styles.boxesWrapper}>
-            <div style={styles.box}>
-              <h2 style={styles.boxTitle}>
-                Super&nbsp;fast
-              </h2>
-
-              <p style={styles.boxDescription}>
-                Enter text in seconds, not minutes. Click, drag, type, repeat.
-              </p>
-            </div>
-
-            <div style={styles.box}>
-              <h2 style={styles.boxTitle}>
-                Collaborative
-              </h2>
-
-              <p style={styles.boxDescription}>
-                As you type, the layout instantly updates for all connected users.
-              </p>
-            </div>
-
-            <div style={styles.box}>
-              <h2 style={styles.boxTitle}>
-                Simple&nbsp;API
-              </h2>
-
-              <p style={styles.boxDescription}>
-                Just put .json at the end of the URL. Seriously.
-              </p>
-            </div>
-          </div>
-
-          <div style={styles.signUpWrapper}>
-            <button style={styles.bigSignUpButton}>
-              Sign up for free
-            </button>
-          </div>
-        </div>
-
-        <div style={styles.pictureWrapper}>
-          <img
-            style={styles.picture}
-            src="images/animatedDemo__713x534.png"
-          />
-        </div>
+      <div style={styles.pictureWrapper}>
+        <img
+          style={styles.picture}
+          src="images/animatedDemo__713x534.png"
+        />
       </div>
     </div>
   </div>
