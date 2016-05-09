@@ -390,7 +390,6 @@ class Box extends Component {
         <div
           style={styles.displayText}
           onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
-          onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
         >
           {box.text}
         </div>
