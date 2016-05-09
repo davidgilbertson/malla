@@ -1,42 +1,42 @@
 [
   {
-    "label": "title",
     "height": 50,
+    "label": "title",
     "left": 20,
     "text": "Hi there, I am your site title",
     "top": 20,
-    "width": 620
+    "width": 770
   },
   {
-    "label": "desc",
     "height": 70,
+    "label": "desc",
     "left": 20,
-    "text": "I am another text box. You can click us once to move or resize me, click again to edit my text.",
+    "text": "I am another text box. You can click me once to move or resize me, click again to edit my text.",
     "top": 90,
-    "width": 620
+    "width": 770
   },
   {
-    "label": "sidebar",
     "height": 270,
-    "left": 660,
+    "label": "sidebar",
+    "left": 810,
     "text": "Some sidebar text. Note that when these words are accessed via the API, it doesn't matter how they are arranged on the page.\nBut it will help others to know how text you define here maps to your web page or app.",
     "top": 20,
-    "width": 230
+    "width": 290
   },
   {
-    "label": "styleNotice",
     "height": 110,
+    "label": "styleNotice",
     "left": 20,
     "text": "I might well be some text that refers to a disclaimer*.\nNote that this page is all about the words. The style of the text has no affect on the final home for the words.",
     "top": 180,
-    "width": 620
+    "width": 770
   },
   {
+    "height": 80,
     "label": "disclaimer",
-    "height": 90,
     "left": 20,
     "text": "* Before relying on the material in any important matter, users should carefully evaluate its accuracy, currency, completeness and relevance for their purposes, and should obtain any appropriate professional advice relevant to their particular circumstances.",
-    "top": 450,
-    "width": 870
+    "top": 510,
+    "width": 1080
   }
 ]
