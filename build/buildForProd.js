@@ -26,6 +26,11 @@ const config = {
           compact: true,
         },
       },
+      {
+        test: /\.json$/,
+        loader: 'json',
+        exclude: /node_modules/,
+      },
     ],
   },
   bail: true,
