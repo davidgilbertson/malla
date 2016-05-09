@@ -1,10 +1,14 @@
 import React from 'react';
 import Radium, {Style} from 'radium';
+import {connect} from 'react-redux';
+
+import {showModal} from '../../data/actionCreators.js';
 
 import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
+  MODALS,
 } from '../../constants.js';
 
 import {
@@ -148,7 +152,7 @@ const styles = {
   }
 };
 
-const HomePage = () => (
+let HomePage = ({showModal}) => (
   <div style={styles.main}>
     <Style rules={styles.css} />
 
@@ -199,7 +203,12 @@ const HomePage = () => (
         </div>
 
         <div style={styles.signUpWrapper}>
-          <button style={styles.bigSignUpButton}>
+          <button
+            style={styles.bigSignUpButton}
+            onClick={() => {
+              showModal(MODALS.SOCIAL_SIGN_IN);
+            }}
+          >
             Sign up for free
           </button>
         </div>
@@ -215,4 +224,14 @@ const HomePage = () => (
   </div>
 );
 
-export default Radium(HomePage);
+HomePage = Radium(HomePage);
+
+HomePage = connect(null, dispatch => {
+  return {
+    showModal: modal => {
+      dispatch(showModal(modal));
+    },
+  };
+})(HomePage);
+
+export default HomePage;

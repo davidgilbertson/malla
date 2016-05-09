@@ -1,6 +1,7 @@
-import * as cloudData from './cloudData.js';
-import mockBoxes from './mockBoxes.json';
+import {browserHistory} from 'react-router';
 
+import * as cloudData from './cloudStoreBindings.js';
+import mockBoxes from './mockBoxes.json';
 import {
   ACTIONS,
 } from '../constants.js';
@@ -52,6 +53,13 @@ export function setActiveBox(id, mode) {
   };
 }
 
+export function setInteraction(interaction) {
+  return {
+    type: ACTIONS.SET_INTERACTION,
+    interaction,
+  };
+}
+
 export function showModal(modal) {
   return {
     type: ACTIONS.SHOW_MODAL,
@@ -69,6 +77,7 @@ export function signOut() {
   const db = cloudData.getDb();
   // This will trigger an onAuth() elsewhere that will update the store
   db.unauth();
+  browserHistory.push('/');
 }
 
 export function addMockProjectForUser(userId) {

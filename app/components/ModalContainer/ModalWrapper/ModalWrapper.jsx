@@ -3,11 +3,14 @@ const {PropTypes} = React;
 
 import {MODALS} from '../../../constants.js';
 import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
+import SignInModal from './SignInModal/SignInModal.jsx';
 
 const ModalWrapper = (props) => {
   switch (props.modal) {
     case MODALS.EXPORT_DATA :
       return <ExportDataModal {...props}/>;
+    case MODALS.SOCIAL_SIGN_IN :
+      return <SignInModal {...props}/>;
     default :
       return null;
   }

@@ -6,6 +6,7 @@ import Header from './Header/Header.jsx';
 const mapStateToProps = state => {
   return {
     user: state.user,
+    projects: state.projects,
   };
 };
 
@@ -13,9 +14,6 @@ const mapDispatchToProps = dispatch => {
   return {
     showModal: modal => {
       dispatch(actionCreators.showModal(modal));
-    },
-    signIn: provider => {
-      actionCreators.signIn(provider);
     },
     signOut: () => {
       actionCreators.signOut();

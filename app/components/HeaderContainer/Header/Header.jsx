@@ -1,5 +1,5 @@
 import React from 'react';
-const {PropTypes} = React;
+const {Component, PropTypes} = React;
 import Radium from 'radium';
 import {Link, browserHistory} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
@@ -76,7 +76,8 @@ const baseStyles = {
   },
 };
 
-const Header = ({user, showModal, signIn, signOut, location}) => {
+
+const Header = ({user, showModal, signOut, location, projects}) => {
   const styles = cloneDeep(baseStyles);
 
   const actionItems = {
@@ -84,7 +85,9 @@ const Header = ({user, showModal, signIn, signOut, location}) => {
       <button
         key="signInButton"
         style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
-        onClick={signIn.bind(null, 'google')} // TODO (davidg): would redirect to project
+        onClick={() => {
+          showModal(MODALS.SOCIAL_SIGN_IN);
+        }}
       >
         Sign in
       </button>
@@ -93,7 +96,9 @@ const Header = ({user, showModal, signIn, signOut, location}) => {
       <button
         key="signUpButton"
         style={[styles.homePageHeaderButton, styles.headerPrimaryButton]}
-        onClick={signIn.bind(null, 'google')} // TODO (davidg): would redirect to project
+        onClick={() => {
+          showModal(MODALS.SOCIAL_SIGN_IN);
+        }}
       >
         Sign up
       </button>
@@ -110,7 +115,9 @@ const Header = ({user, showModal, signIn, signOut, location}) => {
         key="myProjects"
         style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
         onClick={() => {
-          browserHistory.push('project');
+          const firstProjectId = Object.keys(projects)[0];
+
+          browserHistory.push(`/project/my-project/${firstProjectId}`);
         }}
       >My projects</button>
     ),
@@ -173,7 +180,6 @@ Header.propTypes = {
   user: PropTypes.object.isRequired,
   // actions
   showModal: PropTypes.func.isRequired,
-  signIn: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 

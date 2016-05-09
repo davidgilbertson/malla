@@ -57,7 +57,6 @@ const baseStyles = {
   close: {
     padding: 20,
     fontSize: 16,
-    textDecoration: 'underline',
   },
   body: {
     flex: 1,

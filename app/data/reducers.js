@@ -37,11 +37,22 @@ const modal = (state = MODALS.NONE, action) => {
   }
 };
 
+const projects = (state = {}, action) => {
+  switch (action.type) {
+
+    case ACTIONS.ADD_PROJECT :
+      return {...state, ...action.project};
+
+    case ACTIONS.SIGN_OUT :
+      return {};
+
+    default:
+      return state;
+  }
+};
+
 const boxes = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.SET_BOXES :
-      return action.boxes;
-
     case ACTIONS.ADD_OR_UPDATE_BOX :
       return {...state, ...action.box};
 
@@ -69,7 +80,7 @@ const boxes = (state = {}, action) => {
 
 const user = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.SIGN_IN_OR_UPDATE_USER :
+    case ACTIONS.SIGN_IN_USER :
       return {
         ...state,
         ...action.user,
@@ -87,9 +98,21 @@ const user = (state = {}, action) => {
   }
 };
 
+const interaction = (state = null, action) => {
+  switch (action.type) {
+    case ACTIONS.SET_INTERACTION:
+      return action.interaction;
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   activeBox,
+  interaction,
   modal,
   boxes,
+  projects,
   user,
 });

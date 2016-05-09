@@ -12,6 +12,12 @@ const mapDispatchToProps = dispatch => {
     hideModal: modal => {
       dispatch(actions.hideModal(modal));
     },
+    signIn: provider => {
+      actions.signIn(provider);
+    },
+    setInteraction: interaction => {
+      dispatch(actions.setInteraction(interaction));
+    },
   };
 };
 
