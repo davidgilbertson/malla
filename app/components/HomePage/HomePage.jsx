@@ -177,7 +177,7 @@ let HomePage = ({showModal}) => (
             </h2>
 
             <p style={styles.boxDescription}>
-              Enter text in seconds, not minutes. Click, drag, type, repeat.
+              Update your site's copy in seconds. Just click, drag, type.
             </p>
           </div>
 
