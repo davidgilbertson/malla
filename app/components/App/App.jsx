@@ -1,8 +1,6 @@
 import React from 'react';
 import Radium, {Style, StyleRoot} from 'radium';
-import {Provider} from 'react-redux';
 
-import store from '../../data/store';
 import {
   FONT_FAMILIES,
 } from '../../constants.js';
@@ -69,17 +67,15 @@ const styles = {
 };
 
 const App = (props) => (
-  <Provider store={store}>
-    <StyleRoot>
-      <Style rules={styles.css} />
-      
-      <HeaderContainer {...props} />
+  <StyleRoot>
+    <Style rules={styles.css} />
+    
+    <HeaderContainer {...props} />
 
-      {props.children}
+    {props.children}
 
-      <ModalContainer />
-    </StyleRoot>
-  </Provider>
+    <ModalContainer />
+  </StyleRoot>
 );
 
 export default Radium(App);

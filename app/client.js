@@ -1,16 +1,6 @@
 import React from 'react';
-const ReactDom = require('react-dom');
-import {Router, browserHistory} from 'react-router';
-import {StyleRoot} from 'radium';
+const {render} = require('react-dom');
 
-import RouterWrapper from './routes.js';
+import Root from './components/Root/Root.jsx';
 
-// Note this is similar to what is rendered in server.js but:
-// - no userAgent passed to <StyleRoot />
-// - browserHistory is passed to <Router />
-ReactDom.render(
-  <StyleRoot>
-    <Router routes={RouterWrapper} history={browserHistory} />
-  </StyleRoot>,
-  document.getElementById('app')
-);
+render(<Root />, document.getElementById('app'));

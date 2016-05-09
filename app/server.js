@@ -2,11 +2,12 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 import express from 'express';
 import compression from 'compression';
-import {match, RouterContext} from 'react-router';
+import {match} from 'react-router';
+import {StyleRoot} from 'radium';
 
 import routes from './routes.js';
 import store from './data/store.js';
-import {StyleRoot} from 'radium';
+import Root from './components/Root/Root.jsx';
 
 const app = express();
 app.use(compression());
@@ -40,13 +41,8 @@ function getHtml(req, props) {
     googleAnalyticsScript = gaScript;
   }
   
-  // Note this is similar to what is rendered in client.js but:
-  // - userAgent is passed to <StyleRoot />
-  // - browserHistory is not passed and <RouterContext /> is used instead of <Router />
   const appHtml = renderToString(
-    <StyleRoot radiumConfig={{userAgent: req.headers['user-agent']}}>
-      <RouterContext {...props} />
-    </StyleRoot>
+    <Root {...props} radiumConfig={{userAgent: req.headers['user-agent']}} />
   );
 
   const html =
