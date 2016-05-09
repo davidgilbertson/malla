@@ -37,7 +37,7 @@ function getHtml(req, props) {
   if (process.env.APP_ENV === 'DEV') {
     scriptSrc = 'http://localhost:8081/webpack-bundle.js';
   } else {
-    scriptSrc = `js/${fileNames.mainJs}`;
+    scriptSrc = `/js/${fileNames.mainJs}`;
     googleAnalyticsScript = gaScript;
   }
   
