@@ -22,17 +22,13 @@ const styles = {
     height: 61,
   },
   facebookButton: {
-    // backgroundColor: '#3B5998',
-    backgroundColor: COLORS.GRAY_LIGHT,
-    cursor: 'default',
+    backgroundColor: '#3B5998',
   },
   googleButton: {
     backgroundColor: '#DB4437',
   },
   twitterButton: {
-    // backgroundColor: '#55ACEE',
-    backgroundColor: COLORS.GRAY_LIGHT,
-    cursor: 'default',
+    backgroundColor: '#55ACEE',
   },
 };
 
@@ -58,7 +54,6 @@ class SignInModal extends Component {
         <button
           style={[styles.button, styles.facebookButton]}
           onClick={this.signIn.bind(this, 'facebook')}
-          disabled={true}
         >Facebook</button>
 
         <button
@@ -69,7 +64,6 @@ class SignInModal extends Component {
         <button
           style={[styles.button, styles.twitterButton]}
           onClick={this.signIn.bind(this, 'twitter')}
-          disabled={true}
         >Twitter</button>
       </Modal>
     );

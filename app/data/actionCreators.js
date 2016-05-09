@@ -107,21 +107,29 @@ export function addMockProjectForUser(userId) {
   });
 }
 
-export function createUser(authData) {
+export function createUser(user) {
   const db = cloudData.getDb();
 
   // add the user
-  db.child(`users/${authData.uid}`).set({
-    name: authData.google.displayName,
-    provider: 'google',
-    google: authData.google,
-  });
+  db.child(`users/${user.uid}`).set(user.data);
 
-  addMockProjectForUser(authData.uid);
+  addMockProjectForUser(user.uid);
+}
+
+function parseAuthDataToUserData(authData, provider) {
+  return {
+    uid: authData.uid,
+    data: {
+      name: authData[provider].displayName,
+      profileImageURL: authData[provider].profileImageURL,
+      provider: provider,
+      [provider]: authData[provider],
+    },
+  };
 }
 
 export function signIn(provider = 'google') {
-  if (provider !== 'google') {
+  if (!['google', 'facebook', 'twitter'].includes(provider)) {
     console.warn(`The provider '${provider}' is not supported`);
     return;
   }
@@ -133,8 +141,9 @@ export function signIn(provider = 'google') {
     .then(authData => {
       db.child(`users/${authData.uid}`).once('value', dataSnapshot => {
         if (!dataSnapshot.val()) {
-          createUser(authData);
+          createUser(parseAuthDataToUserData(authData, provider));
         }
+        // TODO (davidg): else update the record if profile pic or something changed?
       });
     }).catch(err => {
       console.warn('Error signing in.', err);
