@@ -129,16 +129,50 @@ export function getMruProject(userId) {
     });
 }
 
-export function addBox({box, projectId}) {
-  const newBoxRef = db.child('data/boxes').push(box);
-  const newBoxId = newBoxRef.key();
-
+function updateProject({projectId, newProps}) {
   db
     .child('data/projects')
     .child(projectId)
+    .update(newProps);
+}
+
+export function addBox({box, projectId}) {
+  // an odd mix of sync and async, pay attention...
+
+  // get a ref to the project that the box belongs in
+  const projectRef = db
+    .child('data/projects')
+    .child(projectId);
+
+  // get a ref to the new box to return the ID immediately (the actual box gets created async below)
+  const newBoxRef = db.child('data/boxes').push();
+  const newBoxId = newBoxRef.key();
+
+  // add a reference to the new box in the project record
+  projectRef
     .child('boxes')
     .child(newBoxId)
     .set(true);
+
+  // look up the project to get the last boxLabelId so we can give this new box a sequential label
+  projectRef
+    .once('value')
+    .then(projectSnapshot => {
+      let lastBoxLabelId = (projectSnapshot.val().lastBoxLabelId || 0) + 1;
+
+      // update the boxLabelId counter in the project
+      projectRef.update({lastBoxLabelId: lastBoxLabelId});
+
+      // add the next box with the label based on lastBoxLabelId
+      db
+        .child('data/boxes')
+        .child(newBoxId)
+        .set({
+          ...box,
+          label: `label${lastBoxLabelId}`
+        });
+    });
+
 
   return newBoxId;
 }
@@ -193,6 +227,7 @@ export function addProject({userId, project, boxes}) {
     .child(newProjectRef.key())
     .set({
       ...project,
+      lastBoxLabelId: 1,
       slug: slug(project.name),
       owner: userId,
     });
