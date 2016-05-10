@@ -10,7 +10,8 @@ const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
       add: box => {
-        const newBoxId = actionCreators.add(box);
+        const newBoxId = actionCreators.addBox(box);
+
         dispatch(actionCreators.setActiveBox(newBoxId, BOX_MODES.TYPING));
       },
       setActiveBox: (id, mode) => {

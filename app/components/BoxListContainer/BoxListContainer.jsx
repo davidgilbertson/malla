@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import * as boxActions from '../../data/actionCreators.js';
+import * as actionCreators from '../../data/actionCreators.js';
 import BoxList from './BoxList/BoxList.jsx';
 
 const mapStateToProps = state => {
@@ -14,13 +14,13 @@ const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
       update: (id, newProps) => {
-        boxActions.update(id, newProps);
+        actionCreators.updateBox(id, newProps);
       },
       remove: id => {
-        boxActions.remove(id);
+        actionCreators.removeBox(id);
       },
       setActiveBox: (id, mode) => {
-        dispatch(boxActions.setActiveBox(id, mode));
+        dispatch(actionCreators.setActiveBox(id, mode));
       },
     }
   };
