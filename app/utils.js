@@ -7,6 +7,8 @@ export function snap(num) {
   return Math.round(num / GRID_SIZE) * GRID_SIZE;
 }
 
+export const isClient = typeof window !== 'undefined';
+
 export function getDeltaXY(drag) {
   return {
     x: snap(drag.lastX - drag.startX),

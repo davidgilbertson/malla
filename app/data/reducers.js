@@ -40,7 +40,7 @@ const modal = (state = MODALS.NONE, action) => {
 const projects = (state = {}, action) => {
   switch (action.type) {
 
-    case ACTIONS.ADD_PROJECT :
+    case ACTIONS.UPSERT_PROJECT :
       return {...state, ...action.project};
 
     case ACTIONS.SIGN_OUT :
@@ -53,7 +53,7 @@ const projects = (state = {}, action) => {
 
 const boxes = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.ADD_OR_UPDATE_BOX :
+    case ACTIONS.UPSERT_BOX :
       return {...state, ...action.box};
 
     case ACTIONS.UPDATE_BOX :
@@ -70,6 +70,7 @@ const boxes = (state = {}, action) => {
       delete newState[action.id];
       return newState;
 
+    case ACTIONS.CLEAR_BOXES :
     case ACTIONS.SIGN_OUT :
       return {};
 

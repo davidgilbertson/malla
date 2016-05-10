@@ -25,6 +25,7 @@
     "expect": true,
     "sinon": true,
     "fetch": true,
-    "performance": true
+    "performance": true,
+    "Firebase": true
   }
 }

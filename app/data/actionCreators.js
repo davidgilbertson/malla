@@ -1,6 +1,7 @@
 import {browserHistory} from 'react-router';
 
-import * as cloudData from './cloudStoreBindings.js';
+import reduxStore from './store.js';
+import * as cloudStore from './cloudStoreBindings.js';
 import mockBoxes from './mockBoxes.json';
 import {
   ACTIONS,
@@ -9,15 +10,15 @@ import {
 const onClient = typeof window !== 'undefined';
 
 export function updateBox(boxId, newProps) {
-  cloudData.updateBox({boxId, newProps});
+  cloudStore.updateBox({boxId, newProps});
 }
 
 export function addBox(dims) {
   // TODO (davidg): the component should pass the id for the project to add the box to
   // future proof to allow adding boxes to other projects
-  const currentProject = cloudData.getCurrentProject();
+  const currentProject = cloudStore.getCurrentProject();
 
-  const newBoxId = cloudData.addBox({
+  const newBoxId = cloudStore.addBox({
     projectId: currentProject,
     box: {
       ...dims,
@@ -30,9 +31,9 @@ export function addBox(dims) {
 
 export function removeBox(boxId) {
   // TODO (davidg): when I have currentProjectId in the store, pass it into this method
-  const projectId = cloudData.getCurrentProject();
+  const projectId = cloudStore.getCurrentProject();
 
-  cloudData.removeBox({boxId, projectId});
+  cloudStore.removeBox({boxId, projectId});
 }
 
 export function setActiveBox(id, mode) {
@@ -43,6 +44,19 @@ export function setActiveBox(id, mode) {
     id,
     mode,
   };
+}
+
+export function selectProject(projectId) {
+  // this should only be called by a change in route
+  reduxStore.dispatch({
+    type: ACTIONS.CLEAR_BOXES
+  });
+
+  cloudStore
+    .setCurrentProject(projectId)
+    .catch(() => {
+      browserHistory.push('/');
+    });
 }
 
 export function setInteraction(interaction) {
@@ -66,50 +80,57 @@ export function hideModal() {
 }
 
 export function signOut() {
-  cloudData.signOut();
+  cloudStore.signOut();
 
   browserHistory.push('/');
 }
 
-export function addMockProjectForUser(userId) {
-  const mockProject = {
-    name: 'My project',
-    description: 'A project to get you started',
-  };
+export function createUser(authData, provider) {
+  const userId = authData.uid;
+  const user = parseAuthDataToUserData(authData, provider);
 
-  cloudData.addProject({
+  cloudStore.addUser({userId, user});
+
+  cloudStore.addProject({
     userId,
-    project: mockProject,
+    project: {
+      name: 'My project',
+      description: 'A project to get you started',
+    },
     boxes: mockBoxes,
   });
 }
 
-export function createUser({userId, user}) {
-  cloudData.addUser({userId, user});
-
-  addMockProjectForUser(userId);
-}
-
 function parseAuthDataToUserData(authData, provider) {
   return {
-    userId: authData.uid,
-    user: {
-      name: authData[provider].displayName,
-      profileImageURL: authData[provider].profileImageURL,
-      provider: provider,
-      [provider]: authData[provider],
-    },
+    name: authData[provider].displayName,
+    profileImageURL: authData[provider].profileImageURL,
+    provider: provider,
+    [provider]: authData[provider],
   };
 }
 
+function navigateAfterSignIn(userId) {
+  cloudStore
+    .getMruProject(userId)
+    .then(project => {
+      const url = `/project/${project.slug}/${project.id}`;
+      browserHistory.push(url);
+    });
+
+}
+
 export function signIn(provider) {
-  cloudData.signIn(provider)
-    .then(cloudData.checkIfUserExists)
+  cloudStore.signIn(provider)
+    .then(cloudStore.checkIfUserExists)
     .then(({authData, userExists}) => {
       if (!userExists) {
-        createUser(parseAuthDataToUserData(authData, provider));
+        createUser(authData, provider);
+      } else {
+        // TODO (davidg): else update the record if profile pic or something changed?
       }
-      // TODO (davidg): else update the record if profile pic or something changed?
+
+      navigateAfterSignIn(authData.uid);
     })
     .catch(err => {
       console.warn('Error signing in.', err);

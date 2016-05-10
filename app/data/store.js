@@ -8,7 +8,7 @@ const onClient = typeof window !== 'undefined';
 const store = createStore(reducers);
 
 if (onClient) {
-  cloudStoreBindings.bindToCloudStore(store);
+  cloudStoreBindings.init(store);
 }
 
 export default store;
