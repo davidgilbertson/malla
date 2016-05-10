@@ -50,9 +50,9 @@ const baseStyles = {
     right: 0,
     padding: 5,
     textAlign: 'right',
-    textDecoration: 'underline',
     color: COLORS.ACCENT,
     fontWeight: 700,
+    fontFamily: FONT_FAMILIES.SANS_SERIF,
   },
   handle: {
     position: 'absolute',
