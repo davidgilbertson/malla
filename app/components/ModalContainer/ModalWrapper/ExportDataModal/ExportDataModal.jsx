@@ -8,10 +8,16 @@ import {COLORS} from '../../../../constants.js';
 const styles = {
   textArea: {
     width: '100%',
+    marginTop: 20,
     lineHeight: 1.6,
     fontSize: 14,
     fontFamily: 'Courier New, courier, monospace',
     color: COLORS.GRAY_DARK,
+  },
+  apiUrl: {
+    textDecoration: 'underlin',
+    color: COLORS.ACCENT,
+    fontWeight: 400,
   },
 };
 
@@ -31,14 +37,23 @@ class ExportDataModal extends Component {
       exportData[box.label || id] = box.text;
     });
 
+    const apiUrl = `${location.origin}${location.pathname}.json`;
+    const apiLink = (
+      <a
+        style={styles.apiUrl}
+        href={apiUrl}
+        target="_blank"
+      >{apiUrl}</a>
+     );
+
     return (
       <Modal
         {...this.props}
-        title="Preview of the API response"
+        title="API access"
         showOK={true}
         width={1200}
       >
-        <p>To access this data, go to {location.origin}.json</p>
+        <p>To access this data via API, go to {apiLink}</p>
 
         <textarea
           ref={el => this.textAreaEl = el}

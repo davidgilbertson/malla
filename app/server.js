@@ -1,9 +1,15 @@
+if (!process.env.FIREBASE_SECRET) {
+  throw new Error('No FIREBASE_SECRET environment variable found.');
+}
+
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import express from 'express';
 import compression from 'compression';
 import {match} from 'react-router';
 import {StyleRoot} from 'radium';
+
+import firebaseMiddleware from './server/firebaseMiddleware.js';
 
 import routes from './routes.js';
 import store from './data/store.js';
@@ -68,6 +74,8 @@ function getHtml(req, props) {
   return html;
 }
 
+app.get('/project/:projectSlug/:projectId.*json', firebaseMiddleware);
+
 app.get('*', (req, res) => {
   match({routes: routes, location: req.url}, (err, redirect, props) => {
     if (err) {
@@ -84,5 +92,5 @@ app.get('*', (req, res) => {
 
 app.listen(port, '0.0.0.0', (err) => {
   err && console.error(err);
-  console.log(`App listening on port ${port}`);
+  console.log(`> App listening on port ${port}`);
 });
