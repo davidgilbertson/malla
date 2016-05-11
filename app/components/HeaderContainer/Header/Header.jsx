@@ -128,7 +128,7 @@ const Header = ({user, showModal, signOut, location, projects}) => {
         onClick={() => {
           showModal(MODALS.EXPORT_DATA)
         }}
-      >Preview the API results</button>
+      >For devs</button>
     ),
   };
 
