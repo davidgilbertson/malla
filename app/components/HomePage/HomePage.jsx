@@ -9,6 +9,7 @@ import {
   COLORS,
   DIMENSIONS,
   MODALS,
+  WORDS,
 } from '../../constants.js';
 
 import {
@@ -158,7 +159,7 @@ let HomePage = ({showModal}) => (
 
     <div style={styles.bannerWrapper}>
       <h1 style={styles.titleWrapper}>
-        Malla
+        {WORDS.MALLA}
       </h1>
 
       <div style={styles.titleSpacer}></div>
@@ -167,7 +168,7 @@ let HomePage = ({showModal}) => (
     <div style={styles.contentWrapper}>
       <div style={styles.wordsWrapper}>
         <div style={styles.subTitle}>
-          The visual CMS
+          {WORDS.SLOGAN}
         </div>
 
         <div style={styles.boxesWrapper}>

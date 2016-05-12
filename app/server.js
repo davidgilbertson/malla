@@ -13,7 +13,10 @@ import {match} from 'react-router';
 import {StyleRoot} from 'radium';
 
 import firebaseMiddleware from './server/firebaseMiddleware.js';
-
+import {
+  VENDORS,
+  WORDS,
+} from './constants.js';
 import routes from './routes.js';
 import store from './data/store.js';
 import Root from './components/Root/Root.jsx';
@@ -45,7 +48,7 @@ function getHtml(req, props) {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>Malla | The visual CMS</title>
+          <title>${WORDS.MALLA} | ${WORDS.SLOGAN}</title>
           <meta name="description" content="Malla is a crazy-fast, visual CMS">
           <link rel="shortcut icon" href="/favicon.ico">
           <link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">

@@ -1,3 +1,8 @@
+export const WORDS = {
+  SLOGAN: 'A home for your text',
+  MALLA: 'Malla',
+};
+
 export const VENDORS = {
   GOOGLE_ANALYTICS_TRACKING_ID: 'UA-77392102-1',
 };
