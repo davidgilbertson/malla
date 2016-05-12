@@ -10,42 +10,41 @@ db.authWithCustomToken(process.env.FIREBASE_SECRET, (err) => {
   }
 });
 
-
 export default function(req, res) {
-  const projectId = req.params.projectId;
+    const projectId = req.params.projectId;
 
-  const boxes = {};
-  let totalBoxCount = 0;
-  let fetchedBoxCount = 0;
+    const boxPromises = [];
 
-  const projectBoxesRef = db
-    .child('data/projects')
-    .child(projectId)
-    .child('boxes'); // a list of box keys
+    const projectBoxesRef = db
+      .child('data/projects')
+      .child(projectId)
+      .child('boxes'); // a list of box keys
 
-  function getBox(boxSnapshot) {
-    totalBoxCount++;
+    function getBox(boxSnapshot) {
+      boxPromises.push(db
+        .child('data/boxes') // a list of box objects
+        .child(boxSnapshot.key())
+        .once('value')
+        .then(boxSnapshot => boxSnapshot.val()) // a promise that resolves with the box
+      );
+    }
 
-    db
-      .child('data/boxes') // a list of box objects
-      .child(boxSnapshot.key())
-      .once('value')
-      .then(boxSnapshot => {
-        const box = boxSnapshot.val();
-        boxes[box.label] = box.text;
+    projectBoxesRef.on('child_added', getBox);
 
-        fetchedBoxCount++;
+    // 'value' fires after all initial 'child_added' things are done
+    projectBoxesRef.once('value', () => {
+      projectBoxesRef.off('child_added', getBox);
 
-        if (fetchedBoxCount === totalBoxCount) {
-          res.json(boxes);
-        }
-      });
-  }
+      // when all promises are resolved, parse the results and respond to the client
+      Promise
+        .all(boxPromises)
+        .then(boxes => {
+          const responseJson = boxes.reduce((result, box) => {
+            result[box.label] = box.text;
+            return result;
+          }, {});
 
-  projectBoxesRef.on('child_added', getBox);
-
-  // 'value' fires after all initial 'child_added' things are done
-  projectBoxesRef.once('value', () => {
-    projectBoxesRef.off('child_added', getBox);
-  });
+          res.json(responseJson);
+        });
+    });
 }
