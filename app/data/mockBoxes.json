@@ -35,7 +35,7 @@
     "height": 80,
     "label": "disclaimer",
     "left": 20,
-    "text": "* Before relying on the material in any important matter, users should carefully evaluate its accuracy, currency, completeness and relevance for their purposes, and should obtain any appropriate professional advice relevant to their particular circumstances.",
+    "text": "* This is a beta release of Malla. It is not covered by any SLA or deprecation policy and may be subject to backward-incompatible changes.",
     "top": 510,
     "width": 1080
   }
