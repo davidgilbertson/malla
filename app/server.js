@@ -1,6 +1,9 @@
 if (!process.env.FIREBASE_SECRET) {
   throw new Error('No FIREBASE_SECRET environment variable found.');
 }
+if (!process.env.FIREBASE_URL) {
+  throw new Error('No FIREBASE_URL environment variable found.');
+}
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
@@ -60,6 +63,7 @@ function getHtml(req, props) {
           <title>Malla | The visual CMS</title>
           <meta name="description" content="Malla is a crazy-fast, visual CMS">
           <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
+          <script>window.MALLA_CONSTANTS=${JSON.stringify(MALLA_CONSTANTS)};</script>
           <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300|Open+Sans:400,300' rel='stylesheet' type='text/css'>
       </head>
       <body>

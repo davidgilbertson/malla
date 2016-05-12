@@ -26,6 +26,7 @@
     "sinon": true,
     "fetch": true,
     "performance": true,
-    "Firebase": true
+    "Firebase": true,
+    "MALLA_CONSTANTS": true
   }
 }

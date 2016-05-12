@@ -1,6 +1,6 @@
 import Firebase from 'firebase';
 
-var db = new Firebase('https://blazing-fire-4854.firebaseio.com');
+var db = new Firebase(process.env.FIREBASE_URL);
 
 db.authWithCustomToken(process.env.FIREBASE_SECRET, (err) => {
   if (err) {

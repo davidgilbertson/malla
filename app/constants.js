@@ -22,8 +22,6 @@ export const BOX_MODES = {
   TYPING: 'TYPING',
 };
 
-export const FIREBASE_URL = 'https://blazing-fire-4854.firebaseio.com';
-
 export const MODALS = {
   NONE: 'NONE',
   EXPORT_DATA: 'EXPORT_DATA',

@@ -2,8 +2,6 @@ import slug from 'speakingurl';
 
 import {
   ACTIONS,
-  FIREBASE_URL,
-  INTERACTIONS,
 } from '../constants.js';
 
 let db;
@@ -288,7 +286,7 @@ export function init(store) {
   // This module can only be used on the client
   // There is probably a better way to do this. Thinkin' about it...
   if (typeof Firebase !== 'undefined') {
-    db = new Firebase(FIREBASE_URL);
+    db = new Firebase(MALLA_CONSTANTS.FIREBASE_URL);
   } else {
     console.warn('Firebase is not loaded');
     return;
