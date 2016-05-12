@@ -62,6 +62,20 @@ function getHtml(req, props) {
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <title>Malla | The visual CMS</title>
           <meta name="description" content="Malla is a crazy-fast, visual CMS">
+          <link rel="shortcut icon" href="/favicon.ico">
+          <link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
+          <link rel="apple-touch-icon" href="/favicon-57.png">
+          <link rel="apple-touch-icon" sizes="114x114" href="/favicon-114.png">
+          <link rel="apple-touch-icon" sizes="72x72" href="/favicon-72.png">
+          <link rel="apple-touch-icon" sizes="144x144" href="/favicon-144.png">
+          <link rel="apple-touch-icon" sizes="60x60" href="/favicon-60.png">
+          <link rel="apple-touch-icon" sizes="120x120" href="/favicon-120.png">
+          <link rel="apple-touch-icon" sizes="76x76" href="/favicon-76.png">
+          <link rel="apple-touch-icon" sizes="152x152" href="/favicon-152.png">
+          <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+          <meta name="msapplication-TileColor" content="#FFFFFF">
+          <meta name="msapplication-TileImage" content="/favicon-144.png">
+          <meta name="msapplication-config" content="/browserconfig.xml">
           <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
           <script>window.MALLA_CONSTANTS=${JSON.stringify(MALLA_CONSTANTS)};</script>
           <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300|Open+Sans:400,300' rel='stylesheet' type='text/css'>
