@@ -152,25 +152,39 @@ export function addBox({box, projectId}) {
     .child(newBoxId)
     .set(true);
 
-  // look up the project to get the last boxLabelId so we can give this new box a sequential label
-  projectRef
-    .once('value')
-    .then(projectSnapshot => {
-      let lastBoxLabelId = (projectSnapshot.val().lastBoxLabelId || 0) + 1;
+  // this is nested within since you'd never call it without adding the box to the project as well
+  const addBoxObject = (newBox) => {
+    db
+      .child('data/boxes')
+      .child(newBoxId)
+      .set(newBox);
+    db
+      .child('data/boxes')
+      .child(newBoxId)
+      .child('projects')
+      .child(projectId)
+      .set(true);
+  };
 
-      // update the boxLabelId counter in the project
-      projectRef.update({lastBoxLabelId: lastBoxLabelId});
+  if (box.label) {
+    addBoxObject(box);
+  } else {
+    // look up the project to get the last boxLabelId so we can give this new box a sequential label
+    projectRef
+      .once('value')
+      .then(projectSnapshot => {
+        let lastBoxLabelId = (projectSnapshot.val().lastBoxLabelId || 0) + 1;
 
-      // add the next box with the label based on lastBoxLabelId
-      db
-        .child('data/boxes')
-        .child(newBoxId)
-        .set({
+        // update the boxLabelId counter in the project
+        projectRef.update({lastBoxLabelId: lastBoxLabelId});
+
+        // add the next box with the label based on lastBoxLabelId
+        addBoxObject({
           ...box,
-          label: `label${lastBoxLabelId}`
+          label: `label${lastBoxLabelId}`,
         });
-    });
-
+      });
+  }
 
   return newBoxId;
 }
@@ -229,20 +243,6 @@ export function addProject({userId, project, boxes}) {
       slug: slug(project.name),
       owner: userId,
     });
-
-  if (boxes) {
-    // add some boxes and reference them from the project
-    boxes.forEach((box, i) => {
-      const boxRef = db.child('data/boxes').push(boxes[i]);
-      
-      db
-        .child('data/projects')
-        .child(newProjectRef.key())
-        .child('boxes')
-        .child(boxRef.key())
-        .set(true);
-    });
-  }
   
   return newProjectRef.key();
 }

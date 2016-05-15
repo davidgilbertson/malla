@@ -110,13 +110,19 @@ export function createUser(authData, provider) {
 
   cloudStore.addUser({userId, user});
 
-  cloudStore.addProject({
+  const projectId = cloudStore.addProject({
     userId,
     project: {
       name: 'My project',
       description: 'A project to get you started',
     },
-    boxes: mockBoxes,
+  });
+
+  mockBoxes.forEach(box => {
+    cloudStore.addBox({
+      box,
+      projectId,
+    });
   });
 
   return user;
