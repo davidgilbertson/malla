@@ -27,6 +27,11 @@ export function addBox(dims) {
     },
   });
 
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.ADDED_BOX,
+  });
+  
   return newBoxId;
 }
 
@@ -35,6 +40,11 @@ export function removeBox(boxId) {
   const projectId = cloudStore.getCurrentProject();
 
   cloudStore.removeBox({boxId, projectId});
+
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.REMOVED_BOX,
+  });
 }
 
 export function setActiveBox(id, mode) {
