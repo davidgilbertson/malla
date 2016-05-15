@@ -2,6 +2,7 @@ import React from 'react';
 import Radium, {Style} from 'radium';
 import {connect} from 'react-redux';
 
+import Button from '../Button/Button.jsx';
 import {showModal} from '../../data/actionCreators.js';
 
 import {
@@ -15,6 +16,8 @@ import {
 import {
   css,
 } from '../../utils.js';
+
+import {EVENTS} from '../../tracker.js';
 
 const styles = {
   css: {
@@ -204,14 +207,17 @@ let HomePage = ({showModal}) => (
         </div>
 
         <div style={styles.signUpWrapper}>
-          <button
+          <Button
             style={styles.bigSignUpButton}
+            category={EVENTS.CATEGORIES.UI_INTERACTION}
+            action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+            label="Home page"
             onClick={() => {
               showModal(MODALS.SOCIAL_SIGN_IN);
             }}
           >
             Sign up for free
-          </button>
+          </Button>
         </div>
       </div>
 

@@ -272,6 +272,7 @@ export function checkIfUserExists(authData) {
       return Promise.resolve({
         authData,
         userExists: dataSnapshot.exists(),
+        existingUser: dataSnapshot.exists() && dataSnapshot.val(),
       });
     });
 }

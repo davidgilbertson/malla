@@ -1,9 +1,10 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 import Radium from 'radium';
 import {Link, browserHistory} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
 
+import Button from '../../Button/Button.jsx';
 import {
   BREAKPOINTS,
   COLORS,
@@ -15,6 +16,8 @@ import {
 import {
   css,
 } from '../../../utils.js';
+
+import {EVENTS} from '../../../tracker.js';
 
 const HEIGHT = DIMENSIONS.LAYOUT.HEADER_HEIGHT;
 const GUTTER = 6;
@@ -82,53 +85,68 @@ const Header = ({user, showModal, signOut, location, projects}) => {
 
   const actionItems = {
     signInButton: (
-      <button
+      <Button
         key="signInButton"
         style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_IN}
+        label="Header button"
         onClick={() => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
         Sign in
-      </button>
+      </Button>
     ),
     signUpButton: (
-      <button
+      <Button
         key="signUpButton"
         style={[styles.homePageHeaderButton, styles.headerPrimaryButton]}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+        label="Header button"
         onClick={() => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
         Sign up
-      </button>
+      </Button>
     ),
     signOutButton: (
-      <button
+      <Button
         key="signOutButton"
         style={styles.signInOrOutButton}
         onClick={signOut}
-      >Sign out</button>
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_OUT}
+        label="Header button"
+      >Sign out</Button>
     ),
     myProjects: (
-      <button
+      <Button
         key="myProjects"
         style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
+        label="Header button"
         onClick={() => {
           const firstProjectId = Object.keys(projects)[0];
 
           browserHistory.push(`/project/my-project/${firstProjectId}`);
         }}
-      >My projects</button>
+      >My projects</Button>
     ),
     exportData: (
-      <button
+      <Button
         key="exportData"
         style={styles.headerButton}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.EXPORT_DATA}
+        label="Header button"
         onClick={() => {
-          showModal(MODALS.EXPORT_DATA)
+          showModal(MODALS.EXPORT_DATA);
         }}
-      >For devs</button>
+      >For devs</Button>
     ),
   };
 

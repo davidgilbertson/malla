@@ -2,36 +2,44 @@ import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
 
-import {
-  COLORS,
-} from '../../constants.js';
+import {sendEvent} from '../../tracker.js';
 
-const styles = {
-  button: {
-    background: COLORS.PRIMARY,
-    color: COLORS.WHITE,
-    padding: 12,
-    minWidth: 100,
-  },
+const Button = (props) => {
+  const onButtonClick = () => {
+    if (props.category && props.action) {
+      sendEvent({
+        category: props.category,
+        action: props.action,
+        label: props.label,
+        value: props.value,
+      });
+    }
+
+    props.onClick();
+  };
+  
+  return (
+    <button
+      style={props.style}
+      onClick={onButtonClick}
+    >
+      {props.children}
+    </button>
+  );
 };
-
-const Button = ({additionalStyles, children, onClick}) => (
-  <button
-    style={[styles.button, additionalStyles]}
-    onClick={onClick}
-  >
-    {children}
-  </button>
-);
 
 Button.propTypes = {
   onClick: PropTypes.func.isRequired,
-  additionalStyles: PropTypes.object,
+  style: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.element,
     PropTypes.string,
   ]).isRequired,
+  category: PropTypes.string,
+  action: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.number,
 };
 
 export default Radium(Button);

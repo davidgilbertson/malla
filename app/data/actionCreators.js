@@ -2,6 +2,7 @@ import {browserHistory} from 'react-router';
 
 import reduxStore from './store.js';
 import * as cloudStore from './cloudStoreBindings.js';
+import * as tracker from '../tracker.js';
 import mockBoxes from './mockBoxes.json';
 import {
   ACTIONS,
@@ -81,6 +82,13 @@ export function hideModal() {
 
 export function signOut() {
   cloudStore.signOut();
+  
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.SIGNED_OUT,
+  });
+
+  tracker.setUserDetails(null);
 
   browserHistory.push('/');
 }
@@ -99,6 +107,8 @@ export function createUser(authData, provider) {
     },
     boxes: mockBoxes,
   });
+
+  return user;
 }
 
 function parseAuthDataToUserData(authData, provider) {
@@ -123,12 +133,25 @@ function navigateAfterSignIn(userId) {
 export function signIn(provider) {
   cloudStore.signIn(provider)
     .then(cloudStore.checkIfUserExists)
-    .then(({authData, userExists}) => {
-      if (!userExists) {
-        createUser(authData, provider);
+    .then(({authData, userExists, existingUser}) => {
+      let action;
+      let user;
+
+      if (userExists) {
+        action = tracker.EVENTS.ACTIONS.SIGNED_IN;
+        user = existingUser;
       } else {
+        action = tracker.EVENTS.ACTIONS.SIGNED_UP;
+        user = createUser(authData, provider);
         // TODO (davidg): else update the record if profile pic or something changed?
       }
+
+      tracker.setUserDetails(user);
+
+      tracker.sendEvent({
+        category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+        action: action,
+      });
 
       navigateAfterSignIn(authData.uid);
     })

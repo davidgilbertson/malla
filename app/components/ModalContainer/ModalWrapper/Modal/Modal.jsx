@@ -67,6 +67,12 @@ const baseStyles = {
     padding: 20,
     textAlign: 'center',
   },
+  okButton: {
+    background: COLORS.PRIMARY,
+    color: COLORS.WHITE,
+    padding: 12,
+    minWidth: 100,
+  },
 };
 
 class Modal extends Component {
@@ -92,7 +98,10 @@ class Modal extends Component {
     const actions = this.props.showOK
       ? (
         <div style={styles.actions}>
-          <Button onClick={this.props.hideModal}>
+          <Button
+            style={styles.okButton}
+            onClick={this.props.hideModal}
+          >
             OK
           </Button>
         </div>
@@ -111,12 +120,12 @@ class Modal extends Component {
               {this.props.title}
             </h1>
 
-            <button
+            <Button
               style={styles.close}
               onClick={this.props.hideModal}
             >
               Close
-            </button>
+            </Button>
           </div>
 
           <div style={styles.body}>

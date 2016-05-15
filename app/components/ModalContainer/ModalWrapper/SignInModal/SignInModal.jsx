@@ -3,10 +3,13 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 
 import Modal from '../Modal/Modal.jsx';
+import Button from '../../../Button/Button.jsx';
 import {
   COLORS,
   INTERACTIONS,
 } from '../../../../constants.js';
+
+import {EVENTS} from '../../../../tracker.js';
 
 const styles = {
   title: {
@@ -51,20 +54,35 @@ class SignInModal extends Component {
       >
         <p style={styles.title}>Choose your flavor</p>
 
-        <button
+        <Button
           style={[styles.button, styles.facebookButton]}
           onClick={this.signIn.bind(this, 'facebook')}
-        >Facebook</button>
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_FACEBOOK}
+          label="Social sign in modal"
+        >
+          Facebook
+        </Button>
 
-        <button
+        <Button
           style={[styles.button, styles.googleButton]}
           onClick={this.signIn.bind(this, 'google')}
-        >Google</button>
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_GOOGLE}
+          label="Social sign in modal"
+        >
+          Google
+        </Button>
 
-        <button
+        <Button
           style={[styles.button, styles.twitterButton]}
           onClick={this.signIn.bind(this, 'twitter')}
-        >Twitter</button>
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_TWITTER}
+          label="Social sign in modal"
+        >
+          Twitter
+        </Button>
       </Modal>
     );
   }
