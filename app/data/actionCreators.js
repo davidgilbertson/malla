@@ -84,7 +84,7 @@ export function signOut() {
   cloudStore.signOut();
   
   tracker.sendEvent({
-    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    category: tracker.EVENTS.CATEGORIES.SYSTEM,
     action: tracker.EVENTS.ACTIONS.SIGNED_OUT,
   });
 
@@ -149,7 +149,7 @@ export function signIn(provider) {
       tracker.setUserDetails(user);
 
       tracker.sendEvent({
-        category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+        category: tracker.EVENTS.CATEGORIES.SYSTEM,
         action: action,
       });
 
