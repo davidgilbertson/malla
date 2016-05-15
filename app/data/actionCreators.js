@@ -3,7 +3,8 @@ import {browserHistory} from 'react-router';
 import reduxStore from './store.js';
 import * as cloudStore from './cloudStoreBindings.js';
 import * as tracker from '../tracker.js';
-import mockBoxes from './mockBoxes.json';
+const mockBoxes = require('./mockBoxes.json');
+
 import {
   ACTIONS,
 } from '../constants.js';
