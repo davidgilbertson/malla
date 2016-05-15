@@ -18,8 +18,6 @@ export const EVENTS = {
     // UI interaction
     OPENED_MODAL: 'Opened modal',
     PLAYED_VIDEO: 'Played video',
-    ATTEMPT_SIGN_IN: 'Attempt sign in', // clicking the button to bring up oAuth screen
-    ATTEMPT_SIGN_UP: 'Attempt sign in', // clicking the button to bring up oAuth screen
     SHOWED_HELP: 'Showed help',
     GAVE_FEEDBACK: 'Gave feedback',
     CLOSED_INTRO: 'Closed intro',
