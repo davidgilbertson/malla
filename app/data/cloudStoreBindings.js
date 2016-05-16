@@ -80,6 +80,8 @@ function onBoxKeyRemoved(boxSnapshot) {
 }
 
 function onBoxChanged(boxSnapshot) {
+  if (!boxSnapshot.val()) return; // when a box is first pushed as a ref it is null
+
   reduxStore.dispatch({
     type: ACTIONS.UPSERT_BOX,
     box: {
