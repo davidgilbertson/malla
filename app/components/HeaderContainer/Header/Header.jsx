@@ -188,15 +188,15 @@ const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
   } else {
     actionItemElements.push(actionItems.exportData);
 
+    if (!user.showHelp && signedIn) {
+      actionItemElements.push(actionItems.showHelp);
+    }
+
     homeLink = (
       <h1 style={styles.title}>
         <Link to="/">Malla</Link>
       </h1>
     );
-  }
-
-  if (!user.showHelp) {
-    actionItemElements.push(actionItems.showHelp);
   }
 
   if (signedIn) {
