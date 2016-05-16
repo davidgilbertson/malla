@@ -81,7 +81,7 @@ const boxes = (state = {}, action) => {
 
 const user = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.SIGN_IN_USER :
+    case ACTIONS.SIGN_IN_USER : // this gets used for updating users as well. Probably shouldn't
       return {
         ...state,
         ...action.user,

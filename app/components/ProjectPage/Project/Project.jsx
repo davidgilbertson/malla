@@ -3,11 +3,14 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
+import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
+
 import {snap} from '../../../utils.js';
 import {
   CLICK_LENGTH_MS,
   COLORS,
   DIMENSIONS,
+  MODALS,
   GRID_SIZE,
 } from '../../../constants.js';
 
@@ -136,13 +139,20 @@ class Project extends Component {
             style={this.placeholderStyle}
           ></div>
         </div>
+
+        <HelpPanel />
       </div>
     );
   }
 }
 
 Project.propTypes = {
+  // state
+  user: PropTypes.object.isRequired,
+
+  // actions
   boxActions: PropTypes.object.isRequired,
+  showModal: PropTypes.func.isRequired,
 };
 
 export default Radium(Project);

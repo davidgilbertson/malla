@@ -18,6 +18,7 @@ export const EVENTS = {
     // UI interaction
     OPENED_MODAL: 'Opened modal',
     PLAYED_VIDEO: 'Played video',
+    HID_HELP: 'Hid help',
     SHOWED_HELP: 'Showed help',
     GAVE_FEEDBACK: 'Gave feedback',
     CLOSED_INTRO: 'Closed intro',

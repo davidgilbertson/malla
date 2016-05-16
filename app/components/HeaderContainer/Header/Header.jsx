@@ -45,6 +45,7 @@ const baseStyles = {
     color: COLORS.WHITE,
     background: COLORS.PRIMARY,
     padding: '0 8px',
+    marginRight: 10,
   },
   signInOrOutButton: {
     color: COLORS.WHITE,
@@ -56,6 +57,10 @@ const baseStyles = {
       padding: '10px 20px',
       minWidth: '120px',
     },
+  },
+  headerMinorButton: {
+    textDecoration: 'underline',
+    textTransform: 'none',
   },
   headerSecondaryButton: {
     textDecoration: 'underline',
@@ -80,7 +85,7 @@ const baseStyles = {
 };
 
 
-const Header = ({user, showModal, signOut, location, projects}) => {
+const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
   const styles = cloneDeep(baseStyles);
 
   const actionItems = {
@@ -112,6 +117,32 @@ const Header = ({user, showModal, signOut, location, projects}) => {
         Sign up
       </Button>
     ),
+    exportData: (
+      <Button
+        key="exportData"
+        style={styles.headerButton}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.EXPORT_DATA}
+        label="Header button"
+        onClick={() => {
+          showModal(MODALS.EXPORT_DATA);
+        }}
+      >For developers</Button>
+    ),
+    showHelp: (
+      <Button
+        key="showHelp"
+        style={styles.headerButton}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.SHOWED_HELP}
+        label="Header button"
+        onClick={() => {
+          updateUser(user.id, {
+            showHelp: true,
+          });
+        }}
+      >Help</Button>
+    ),
     signOutButton: (
       <Button
         key="signOutButton"
@@ -135,18 +166,6 @@ const Header = ({user, showModal, signOut, location, projects}) => {
           browserHistory.push(`/project/my-project/${firstProjectId}`);
         }}
       >My projects</Button>
-    ),
-    exportData: (
-      <Button
-        key="exportData"
-        style={styles.headerButton}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.EXPORT_DATA}
-        label="Header button"
-        onClick={() => {
-          showModal(MODALS.EXPORT_DATA);
-        }}
-      >For devs</Button>
     ),
   };
 
@@ -174,6 +193,10 @@ const Header = ({user, showModal, signOut, location, projects}) => {
         <Link to="/">Malla</Link>
       </h1>
     );
+  }
+
+  if (!user.showHelp) {
+    actionItemElements.push(actionItems.showHelp);
   }
 
   if (signedIn) {

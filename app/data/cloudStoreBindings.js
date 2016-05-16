@@ -12,8 +12,11 @@ let isSignedIn = false;
 function onUserChange(userDataSnapshot) {
   if (userDataSnapshot.val()) {
     reduxStore.dispatch({
-      type: ACTIONS.SIGN_IN_USER,
-      user: userDataSnapshot.val(),
+      type: ACTIONS.SIGN_IN_USER, // TODO (davidg): .UPDATE_USER ?
+      user: {
+        id: userDataSnapshot.key(),
+        ...userDataSnapshot.val(),
+      },
     });
   }
 }
@@ -214,7 +217,7 @@ export function removeBox({boxId, projectId}) {
     });
 }
 
-export function addProject({userId, project, boxes}) {
+export function addProject({userId, project}) {
   // get a reference to what will be the new project (note the empty push())
   const newProjectRef = db.child('data/projects').push();
 
@@ -261,6 +264,13 @@ export function addUser({userId, user}) {
     .child('users')
     .child(userId)
     .set(user);
+}
+
+export function updateUser({userId, newProps}) {
+  db
+    .child('users')
+    .child(userId)
+    .update(newProps);
 }
 
 export function checkIfUserExists(authData) {

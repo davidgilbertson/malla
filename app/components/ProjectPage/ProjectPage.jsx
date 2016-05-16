@@ -6,6 +6,12 @@ import {
   BOX_MODES,
 } from '../../constants.js';
 
+const mapStateToProps = state  => {
+  return {
+    user: state.user,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     boxActions: {
@@ -21,7 +27,10 @@ const mapDispatchToProps = dispatch => {
     hideModal: () => {
       dispatch(actionCreators.hideModal());
     },
+    showModal: () => {
+      dispatch(actionCreators.showModal());
+    },
   };
 };
 
-export default connect(null, mapDispatchToProps)(Project);
+export default connect(mapStateToProps, mapDispatchToProps)(Project);

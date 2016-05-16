@@ -91,6 +91,10 @@ export function hideModal() {
   };
 }
 
+export function updateUser(userId, newProps) {
+  cloudStore.updateUser({userId, newProps});
+}
+
 export function signOut() {
   cloudStore.signOut();
   
@@ -107,6 +111,7 @@ export function signOut() {
 export function createUser(authData, provider) {
   const userId = authData.uid;
   const user = parseAuthDataToUserData(authData, provider);
+  user.showHelp = true;
 
   cloudStore.addUser({userId, user});
 

@@ -2,41 +2,9 @@
   {
     "height": 50,
     "label": "title",
-    "left": 20,
-    "text": "Hi there, I am your site title",
-    "top": 20,
-    "width": 770
-  },
-  {
-    "height": 70,
-    "label": "desc",
-    "left": 20,
-    "text": "I am another text box. You can click me once to move or resize me, click again to edit my text.",
-    "top": 90,
-    "width": 770
-  },
-  {
-    "height": 270,
-    "label": "sidebar",
-    "left": 810,
-    "text": "Some sidebar text. Note that when these words are accessed via the API, it doesn't matter how they are arranged on the page.\nBut it will help others to know how text you define here maps to your web page or app.",
-    "top": 20,
-    "width": 290
-  },
-  {
-    "height": 110,
-    "label": "styleNotice",
-    "left": 20,
-    "text": "I might well be some text that refers to a disclaimer*.\nNote that this page is all about the words. The style of the text has no affect on the final home for the words.",
-    "top": 180,
-    "width": 770
-  },
-  {
-    "height": 80,
-    "label": "disclaimer",
-    "left": 20,
-    "text": "* This is a beta release of Malla. It is not covered by any SLA or deprecation policy and may be subject to backward-incompatible changes.",
-    "top": 510,
-    "width": 1080
+    "left": 40,
+    "text": "Your first text box. Click once to move or resize, click again to edit the text.",
+    "top": 40,
+    "width": 570
   }
 ]
