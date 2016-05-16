@@ -20,11 +20,21 @@ export function addBox(dims) {
   // future proof to allow adding boxes to other projects
   const currentProject = cloudStore.getCurrentProject();
 
+  const newBox = {
+    ...dims,
+    text: '',
+  };
+
   const newBoxId = cloudStore.addBox({
     projectId: currentProject,
+    box: newBox,
+  });
+
+  // so the box is added instantly, add it to the local store. They will reconcile eventually.
+  reduxStore.dispatch({
+    type: ACTIONS.UPSERT_BOX,
     box: {
-      ...dims,
-      text: '',
+      [newBoxId]: newBox,
     },
   });
 

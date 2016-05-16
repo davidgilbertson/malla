@@ -26,7 +26,11 @@ function onAuthenticationChange(authData) {
     isSignedIn = true;
 
     db.child(`users/${authData.uid}`).on('value', onUserChange);
-    db.child(`users/${authData.uid}/projects`).on('child_added', onProjectKeyAdded);
+    db
+      .child('users')
+      .child(authData.uid)
+      .child('projects')
+      .on('child_added', onProjectKeyAdded);
     // TODO (davidg): on project key removed
   }
 
@@ -56,7 +60,11 @@ export function getCurrentProject(userId) {
 function onProjectKeyAdded(projectSnapshot) {
   currentProjectId = projectSnapshot.key();
 
-  db.child(`data/projects/${currentProjectId}`).on('value', onProjectChanged);
+  // TODO (davidg): there is something wrong here. This listener is removed on the first use of the site (after sign up)
+  // if fires a few times on load but then disappears.
+  db.child('data/projects')
+    .child(projectSnapshot.key())
+    .on('value', onProjectChanged);
 }
 
 function onProjectChanged(projectSnapshot) {
@@ -101,12 +109,12 @@ export function setCurrentProject(projectId) {
     .once('value')
     .then(() => {
       // this never fires if projectId doesn't exist or permission denied
-      if (currentProjectId) {
+      if (currentProjectId && currentProjectId !== projectId) {
         // stop listening for box changes on a previous project
         db.child(`data/projects/${currentProjectId}/boxes`).off('child_added', onBoxKeyAdded);
         db.child(`data/projects/${currentProjectId}/boxes`).off('child_removed', onBoxKeyRemoved);
       }
-      
+
       currentProjectId = projectId;
 
       db.child(`data/projects/${projectId}/boxes`).on('child_added', onBoxKeyAdded);
@@ -132,13 +140,6 @@ export function getMruProject(userId) {
     });
 }
 
-function updateProject({projectId, newProps}) {
-  db
-    .child('data/projects')
-    .child(projectId)
-    .update(newProps);
-}
-
 export function addBox({box, projectId}) {
   // an odd mix of sync and async, pay attention...
 
@@ -157,7 +158,7 @@ export function addBox({box, projectId}) {
     .child(newBoxId)
     .set(true);
 
-  // this is nested within since you'd never call it without adding the box to the project as well
+  // this is nested within addBox since you'd never call it without adding the box to the project as well
   const addBoxObject = (newBox) => {
     db
       .child('data/boxes')
@@ -248,7 +249,7 @@ export function addProject({userId, project}) {
       slug: slug(project.name),
       owner: userId,
     });
-  
+
   return newProjectRef.key();
 }
 
