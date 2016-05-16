@@ -1,0 +1,69 @@
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  background: url('surf-beach_1920x1280.jpg') no-repeat 100% 0%;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  color: #222;
+  background-size: 140%;
+}
+
+h1, h2, p {
+  margin: 0;
+  font-weight: 300;
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  margin: 0 auto;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 67px;
+  margin-top: 60px;
+}
+
+.intro {
+  text-align: center;
+  max-width: 540px;
+  margin: 50px auto 0;
+  text-shadow: 0 0 10px white;
+  font-size: 19px;
+}
+
+.panels {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  margin: 80px auto 0;
+  max-width: 1000px;
+}
+
+.panel {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  width: 230px;
+  margin: 0 20px;
+}
+
+.panel-title {
+  font-size: 22px;
+  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.panel-description {
+  margin-top: 2px;
+  padding: 20px 10px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  height: 110px;
+  font-weight: 400;
+}
