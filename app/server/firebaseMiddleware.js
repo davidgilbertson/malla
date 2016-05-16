@@ -25,6 +25,7 @@ export default function(req, res) {
         json[box.label] = box.text;
       });
 
+      res.header('Access-Control-Allow-Origin', '*');
       res.json(json);
     });
 }
