@@ -42,6 +42,9 @@ const styles = {
       margin: 0,
       lineHeight: 1.6,
     },
+    li: {
+      lineHeight: 1.6,
+    },
     a: {
       color: 'inherit',
       textDecoration: 'none',
