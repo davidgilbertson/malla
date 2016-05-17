@@ -27,7 +27,7 @@ const styles = {
     },
   },
   main: {
-    minHeight: '100%',
+    minHeight: '100vh',
     backgroundImage: 'url(/images/grid-dot_10x10.gif)',
     overflow: 'auto',
     padding: `${DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME}px 20px 80px`,
