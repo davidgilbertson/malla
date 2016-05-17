@@ -27,89 +27,51 @@ const styles = {
     },
   },
   main: {
-    display: 'flex',
-    flexFlow: 'column',
-    alignItems: 'center',
-    minHeight: '100vh',
+    minHeight: '100%',
     backgroundImage: 'url(/images/grid-dot_10x10.gif)',
     overflow: 'auto',
-    paddingTop: DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME,
+    padding: `${DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME}px 20px 80px`,
     color: COLORS.WHITE,
   },
-
-  bannerWrapper: {
-    display: 'flex',
-    flexFlow: 'column',
-    justifyContent: 'space-around',
-    alignSelf: 'stretch',
-    height: '20vh',
-    flexShrink: 0,
-    [BREAKPOINTS.LAPTOP]: {
-      flexFlow: 'row',
-      alignItems: 'flex-end',
-    },
-  },
-
-  titleWrapper: {
+  title: {
     textAlign: 'center',
-    flex: 618,
-    fontSize: '20vh',
-  },
-  titleSpacer: {
-    flex: 382,
-  },
-
-  contentWrapper: {
-    flexShrink: 0,
-    display: 'flex',
-    flexFlow: 'column',
-    width: '100%',
-    marginTop: '4vh',
-    [BREAKPOINTS.LAPTOP]: {
-      flexFlow: 'row',
-      alignItems: 'center',
+    fontSize: 100,
+    marginTop: 40,
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      marginTop: 50,
+      fontSize: 170,
+    },
+    [BREAKPOINTS.DESKTOP]: {
+      marginTop: 80,
     },
   },
-  wordsWrapper: {
-    flex: 1,
-    display: 'flex',
-    flexFlow: 'column',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    padding: '0 2vw',
-    [BREAKPOINTS.LAPTOP]: {
-      flex: 618,
-    },
-  },
-
   subTitle: {
     color: COLORS.WHITE,
-    fontSize: 30,
-    flex: 0,
-    lineHeight: 1,
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 30,
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      fontSize: 25,
+    },
   },
   boxesWrapper: {
-    display: 'flex',
-    flexFlow: 'column',
-    alignItems: 'center',
-    flex: 1,
-    alignSelf: 'stretch',
-    padding: '6vh 0',
-    [BREAKPOINTS.TABLET_LANDSCAPE]: {
-      flexFlow: 'row',
-      justifyContent: 'space-between',
+    margin: '10px auto 0',
+    maxWidth: 900,
+    [BREAKPOINTS.DESKTOP]: {
+      margin: '40px auto 0',
     },
   },
   box: {
     border: `1px solid ${COLORS.WHITE}`,
     padding: 10,
-    margin: '2vh 0',
-    flex: '1 1 33.33%',
-    alignSelf: 'stretch',
+    margin: '40px auto 0',
     textAlign: 'center',
+    width: '100%',
+    maxWidth: 500,
     [BREAKPOINTS.TABLET_LANDSCAPE]: {
-      margin: '0 1vw',
+      display: 'inline-block',
+      width: '30%',
+      margin: '40px 1.6% 0',
     },
   },
   boxTitle: {
@@ -118,19 +80,38 @@ const styles = {
   boxDescription: {
     marginTop: 10,
   },
-  signUpWrapper: {
+  video: {
+    display: 'block',
+    width: 320,
+    height: 180,
+    margin: '40px auto 0',
     textAlign: 'center',
-    flex: 0,
-    [BREAKPOINTS.PHONE_ONLY]: {
-      alignSelf: 'stretch',
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      width: 426,
+      height: 240,
+    },
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      width: 640,
+      height: 360,
+      margin: '60px auto 0',
+    },
+    [BREAKPOINTS.DESKTOP]: {
+      margin: '80px auto 0',
     },
   },
+  signUpWrapper: {
+    textAlign: 'center',
+    marginTop: 80,
+  },
   bigSignUpButton: {
+    display: 'block',
     background: COLORS.ACCENT,
     fontSize: 25,
     fontWeight: 400,
     padding: 15,
     ...css.shadow('light'),
+    width: 400,
+    margin: '40px auto 0',
     [BREAKPOINTS.PHONE_ONLY]: {
       width: '100%',
     },
@@ -138,96 +119,53 @@ const styles = {
       fontSize: 30,
       padding: '20px 40px',
     },
-  },
-
-  pictureWrapper: {
-    flex: 1,
-    padding: '5vh 2vw',
-    textAlign: 'center',
-    [BREAKPOINTS.LAPTOP]: {
-      padding: '0 2vw',
-      flex: 382,
+    [BREAKPOINTS.DESKTOP]: {
+      margin: '80px auto 0',
     },
   },
-  picture: { // TODO (davidg): reset for img (IE border)
-    width: 713,
-    maxWidth: '100%',
-    height: 'auto',
-  }
 };
 
 let HomePage = ({showModal}) => (
   <div style={styles.main}>
     <Style rules={styles.css} />
 
-    <div style={styles.bannerWrapper}>
-      <h1 style={styles.titleWrapper}>
-        {WORDS.MALLA}
-      </h1>
+    <h1 style={styles.title}>{WORDS.MALLA}</h1>
 
-      <div style={styles.titleSpacer}></div>
-    </div>
+    <div style={styles.subTitle}>{WORDS.SLOGAN}</div>
 
-    <div style={styles.contentWrapper}>
-      <div style={styles.wordsWrapper}>
-        <div style={styles.subTitle}>
-          {WORDS.SLOGAN}
-        </div>
+    <div style={styles.boxesWrapper}>
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>Super fast</h2>
 
-        <div style={styles.boxesWrapper}>
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>
-              Super&nbsp;fast
-            </h2>
-
-            <p style={styles.boxDescription}>
-              Update your site's copy in seconds. Just click, drag, type.
-            </p>
-          </div>
-
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>
-              Collaborative
-            </h2>
-
-            <p style={styles.boxDescription}>
-              As you type, the layout instantly updates for all connected users.
-            </p>
-          </div>
-
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>
-              Simple&nbsp;API
-            </h2>
-
-            <p style={styles.boxDescription}>
-              Just put .json at the end of the URL. Seriously.
-            </p>
-          </div>
-        </div>
-
-        <div style={styles.signUpWrapper}>
-          <Button
-            style={styles.bigSignUpButton}
-            category={EVENTS.CATEGORIES.UI_INTERACTION}
-            action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
-            label="Home page"
-            onClick={() => {
-              showModal(MODALS.SOCIAL_SIGN_IN);
-            }}
-          >
-            Sign up for free
-          </Button>
-        </div>
+        <p style={styles.boxDescription}>Update your site's copy in seconds. Just click, drag, type.</p>
       </div>
 
-      <div style={styles.pictureWrapper}>
-        <img
-          style={styles.picture}
-          src="images/animatedDemo__713x534.png"
-        />
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>Collaborative</h2>
+
+        <p style={styles.boxDescription}>As you type, the layout instantly updates for all connected users.</p>
+      </div>
+
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>Simple API</h2>
+
+        <p style={styles.boxDescription}>Just put .json at the end of the URL. Seriously.</p>
       </div>
     </div>
+
+    <iframe style={styles.video} src="https://www.youtube.com/embed/gSdnYofmtr8?rel=0" frameBorder="0" allowFullScreen></iframe>
+
+    <Button
+      style={styles.bigSignUpButton}
+      category={EVENTS.CATEGORIES.UI_INTERACTION}
+      action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+      label="Home page"
+      onClick={() => {
+        showModal(MODALS.SOCIAL_SIGN_IN);
+      }}
+    >
+      Sign up for free
+    </Button>
   </div>
 );
 

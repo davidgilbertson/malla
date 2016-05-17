@@ -53,8 +53,8 @@ const baseStyles = {
   homePageHeaderButton: {
     margin: '15px 15px 15px 0',
     fontWeight: 400,
+    padding: '10px 20px',
     [BREAKPOINTS.TABLET_PORTRAIT]: {
-      padding: '10px 20px',
       minWidth: '120px',
     },
   },
@@ -73,14 +73,9 @@ const baseStyles = {
     },
   },
   headerPrimaryButton: {
-    [BREAKPOINTS.PHONE_ONLY]: {
-      display: 'none',
-    },
-    [BREAKPOINTS.TABLET_PORTRAIT]: {
-      background: COLORS.WHITE,
-      color: COLORS.PRIMARY_DARK,
-      ...css.shadow('light'),
-    },
+    background: COLORS.ACCENT,
+    color: COLORS.WHITE,
+    ...css.shadow('light'),
   },
 };
 
@@ -114,7 +109,7 @@ const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
-        Sign up
+        Sign up for free
       </Button>
     ),
     exportData: (
