@@ -14,27 +14,31 @@ function onUserChange(userDataSnapshot) {
     reduxStore.dispatch({
       type: ACTIONS.SIGN_IN_USER, // TODO (davidg): .UPDATE_USER ?
       user: {
-        id: userDataSnapshot.key(),
+        id: userDataSnapshot.key,
         ...userDataSnapshot.val(),
       },
     });
   }
 }
 
-function onAuthenticationChange(authData) {
-  if (authData && !isSignedIn) { // user has just signed in
+function onAuthenticationChange(user) {
+  if (user && !isSignedIn) { // user has just signed in
     isSignedIn = true;
 
-    db.child(`users/${authData.uid}`).on('value', onUserChange);
     db
       .child('users')
-      .child(authData.uid)
+      .child(user.uid)
+      .on('value', onUserChange);
+
+    db
+      .child('users')
+      .child(user.uid)
       .child('projects')
       .on('child_added', onProjectKeyAdded);
     // TODO (davidg): on project key removed
   }
 
-  if (isSignedIn && !authData) { // user is signing out
+  if (isSignedIn && !user) { // user is signing out
     isSignedIn = false;
 
     reduxStore.dispatch({
@@ -58,12 +62,12 @@ export function getCurrentProject(userId) {
 }
 
 function onProjectKeyAdded(projectSnapshot) {
-  currentProjectId = projectSnapshot.key();
+  currentProjectId = projectSnapshot.key;
 
   // TODO (davidg): there is something wrong here. This listener is removed on the first use of the site (after sign up)
   // if fires a few times on load but then disappears.
   db.child('data/projects')
-    .child(projectSnapshot.key())
+    .child(projectSnapshot.key)
     .on('value', onProjectChanged);
 }
 
@@ -71,19 +75,22 @@ function onProjectChanged(projectSnapshot) {
   reduxStore.dispatch({
     type: ACTIONS.UPSERT_PROJECT,
     project: {
-      [projectSnapshot.key()]: projectSnapshot.val(),
+      [projectSnapshot.key]: projectSnapshot.val(),
     },
   });
 }
 
 function onBoxKeyAdded(boxSnapshot) {
-  db.child(`data/boxes/${boxSnapshot.key()}`).on('value', onBoxChanged);
+  db
+    .child('data/boxes')
+    .child(boxSnapshot.key)
+    .on('value', onBoxChanged);
 }
 
 function onBoxKeyRemoved(boxSnapshot) {
   reduxStore.dispatch({
     type: ACTIONS.DELETE_BOX,
-    id: boxSnapshot.key(),
+    id: boxSnapshot.key,
   });
 }
 
@@ -93,7 +100,7 @@ function onBoxChanged(boxSnapshot) {
   reduxStore.dispatch({
     type: ACTIONS.UPSERT_BOX,
     box: {
-      [boxSnapshot.key()]: boxSnapshot.val(),
+      [boxSnapshot.key]: boxSnapshot.val(),
     },
   });
 }
@@ -134,7 +141,7 @@ export function getMruProject(userId) {
         .child(snapshot.val())
         .once('value')
         .then(snapshot => Promise.resolve({
-          id: snapshot.key(),
+          id: snapshot.key,
           ...snapshot.val(),
         }));
     });
@@ -150,7 +157,7 @@ export function addBox({box, projectId}) {
 
   // get a ref to the new box to return the ID immediately (the actual box gets created async below)
   const newBoxRef = db.child('data/boxes').push();
-  const newBoxId = newBoxRef.key();
+  const newBoxId = newBoxRef.key;
 
   // add a reference to the new box in the project record
   projectRef
@@ -229,7 +236,7 @@ export function addProject({userId, project}) {
     .child('users')
     .child(userId)
     .child('projects')
-    .child(newProjectRef.key())
+    .child(newProjectRef.key)
     .set(true);
 
   // set that as the most recently used project
@@ -237,12 +244,12 @@ export function addProject({userId, project}) {
     .child('users')
     .child(userId)
     .child('mruProject')
-    .set(newProjectRef.key());
+    .set(newProjectRef.key);
 
   // add the actual project (since it now exists in the user's list of projects)
   db
     .child('data/projects')
-    .child(newProjectRef.key())
+    .child(newProjectRef.key)
     .set({
       ...project,
       lastBoxLabelId: 1,
@@ -250,16 +257,28 @@ export function addProject({userId, project}) {
       owner: userId,
     });
 
-  return newProjectRef.key();
+  return newProjectRef.key;
 }
 
-export function signIn(provider) {
-  if (!['google', 'facebook', 'twitter'].includes(provider)) {
-    console.warn(`The provider '${provider}' is not supported`);
-    return;
+export function signIn(providerString) {
+  let provider;
+
+  switch (providerString) {
+    case 'facebook':
+      provider = new firebase.auth.FacebookAuthProvider();
+      break;
+    case 'google':
+      provider = new firebase.auth.GoogleAuthProvider();
+      break;
+    case 'twitter':
+      provider = new firebase.auth.TwitterAuthProvider();
+      break;
+    default:
+      console.warn(`The providerString '${providerString}' is not supported`);
+      return Promise.reject(`The providerString '${providerString}' is not supported`);
   }
 
-  return db.authWithOAuthPopup(provider);
+  return firebase.auth().signInWithPopup(provider); // TODO (davidg): on error sign in with redirect
 }
 
 export function addUser({userId, user}) {
@@ -279,7 +298,7 @@ export function updateUser({userId, newProps}) {
 export function checkIfUserExists(authData) {
   return db
     .child('users')
-    .child(authData.uid)
+    .child(authData.user.uid)
     .once('value')
     .then(dataSnapshot => {
       return Promise.resolve({
@@ -291,7 +310,7 @@ export function checkIfUserExists(authData) {
 }
 
 export function signOut() {
-  db.unauth();
+  firebase.auth().signOut();
 }
 
 export function init(store) {
@@ -299,8 +318,25 @@ export function init(store) {
 
   // This module can only be used on the client
   // There is probably a better way to do this. Thinkin' about it...
-  if (typeof Firebase !== 'undefined') {
-    db = new Firebase(MALLA_CONSTANTS.FIREBASE_URL);
+  if (typeof firebase !== 'undefined') {
+
+    const config = {
+      apiKey: MALLA_CONSTANTS.FIREBASE_API_KEY,
+      authDomain: MALLA_CONSTANTS.FIREBASE_AUTH_DOMAIN,
+      databaseURL: MALLA_CONSTANTS.FIREBASE_URL,
+      storageBucket: MALLA_CONSTANTS.FIREBASE_STORAGE_BUCKET,
+    };
+
+    // const prodConfig = {
+    //   apiKey: 'AIzaSyBKIm6-8l4pPbci-1to-cQIYoXKpNDqMfU',
+    //   authDomain: 'malla.firebaseapp.com',
+    //   databaseURL: 'https://malla.firebaseio.com',
+    //   storageBucket: 'project-6173279372668901714.appspot.com',
+    // };
+
+    firebase.initializeApp(config);
+
+    db = firebase.database().ref();
   } else {
     console.warn('Firebase is not loaded');
     return;
@@ -310,5 +346,5 @@ export function init(store) {
   // When that (eventually) happens, the reduxStore will be populated
 
   // as soon as the reduxStore is bound, start listening for user events
-  db.onAuth(onAuthenticationChange);
+  firebase.auth().onAuthStateChanged(onAuthenticationChange);
 }

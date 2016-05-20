@@ -1,15 +1,18 @@
-import Firebase from 'firebase';
+import firebase from 'firebase';
 import forOwn from 'lodash/forOwn';
 
-var db = new Firebase(process.env.FIREBASE_URL);
+const config = {
+  serviceAccount: {
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  },
+  databaseURL: process.env.FIREBASE_URL,
+};
 
-db.authWithCustomToken(process.env.FIREBASE_SECRET, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('> Authenticated with firebase');
-  }
-});
+firebase.initializeApp(config);
+
+const db = firebase.database().ref();
 
 export default function(req, res) {
   const projectId = req.params.projectId;

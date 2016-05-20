@@ -1,9 +1,18 @@
-if (!process.env.FIREBASE_SECRET) {
-  throw new Error('No FIREBASE_SECRET environment variable found.');
-}
-if (!process.env.FIREBASE_URL) {
-  throw new Error('No FIREBASE_URL environment variable found.');
-}
+const requiredEnvironmentVariables = [
+  'FIREBASE_API_KEY',
+  'FIREBASE_AUTH_DOMAIN',
+  'FIREBASE_URL',
+  'FIREBASE_STORAGE_BUCKET',
+  'FIREBASE_PROJECT_ID',
+  'FIREBASE_CLIENT_EMAIL',
+  'FIREBASE_PRIVATE_KEY',
+];
+
+requiredEnvironmentVariables.forEach(VAR => {
+  if (!process.env[VAR]) {
+    throw new Error(`No ${VAR} environment variable found.`);
+  }
+});
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
@@ -78,7 +87,7 @@ function getHtml(req, props) {
       <body>
           <div id="app">${appHtml}</div>
       
-          <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
           <script async src="${scriptSrc}"></script>
       </body>
       </html>`;

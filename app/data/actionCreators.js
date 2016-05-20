@@ -118,9 +118,9 @@ export function signOut() {
   browserHistory.push('/');
 }
 
-export function createUser(authData, provider) {
+export function createUser(authData) {
   const userId = authData.uid;
-  const user = parseAuthDataToUserData(authData, provider);
+  const user = parseAuthDataToUserData(authData);
   user.showHelp = true;
 
   cloudStore.addUser({userId, user});
@@ -143,12 +143,14 @@ export function createUser(authData, provider) {
   return user;
 }
 
-function parseAuthDataToUserData(authData, provider) {
+// TODO (davidg): this is a cloud detail, move to cloudStoreBindings
+function parseAuthDataToUserData(authData) {
+  const providerData = authData.providerData[0] || {};
+
   return {
-    name: authData[provider].displayName,
-    profileImageURL: authData[provider].profileImageURL,
-    provider: provider,
-    [provider]: authData[provider],
+    name: providerData.displayName || '',
+    profileImageURL: providerData.profileImageURL || providerData.photoURL || '',
+    provider: providerData.providerId | '',
   };
 }
 
@@ -174,7 +176,7 @@ export function signIn(provider) {
         user = existingUser;
       } else {
         action = tracker.EVENTS.ACTIONS.SIGNED_UP;
-        user = createUser(authData, provider);
+        user = createUser(authData.user);
         // TODO (davidg): else update the record if profile pic or something changed?
       }
 
@@ -185,7 +187,7 @@ export function signIn(provider) {
         action: action,
       });
 
-      navigateAfterSignIn(authData.uid);
+      navigateAfterSignIn(authData.user.uid);
     })
     .catch(err => {
       console.warn('Error signing in.', err);
