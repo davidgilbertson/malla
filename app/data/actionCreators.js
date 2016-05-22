@@ -1,7 +1,7 @@
 import {browserHistory} from 'react-router';
 
 import reduxStore from './store.js';
-import * as cloudStore from './cloudStoreBindings.js';
+import * as firebaseActions from './firebaseActions.js';
 import * as tracker from '../tracker.js';
 const mockBoxes = require('./mockBoxes.json');
 
@@ -12,30 +12,22 @@ import {
 const onClient = typeof window !== 'undefined';
 
 export function updateBox(boxId, newProps) {
-  cloudStore.updateBox({boxId, newProps});
+  firebaseActions.updateBox({boxId, newProps});
 }
 
 export function addBox(dims) {
-  // TODO (davidg): the component should pass the id for the project to add the box to
-  // future proof to allow adding boxes to other projects
-  const currentProject = cloudStore.getCurrentProject();
-
   const newBox = {
     ...dims,
     text: '',
   };
 
-  const newBoxId = cloudStore.addBox({
-    projectId: currentProject,
-    box: newBox,
-  });
+  const newBoxId = firebaseActions.addBox(newBox);
 
   // so the box is added instantly, add it to the local store. They will reconcile eventually.
   reduxStore.dispatch({
     type: ACTIONS.UPSERT_BOX,
-    box: {
-      [newBoxId]: newBox,
-    },
+    key: newBoxId,
+    val: newBox,
   });
 
   tracker.sendEvent({
@@ -48,9 +40,9 @@ export function addBox(dims) {
 
 export function removeBox(boxId) {
   // TODO (davidg): when I have currentProjectId in the store, pass it into this method
-  const projectId = cloudStore.getCurrentProject();
+  const projectId = firebaseActions.getCurrentProject();
 
-  cloudStore.removeBox({boxId, projectId});
+  firebaseActions.removeBox({boxId, projectId});
 
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
@@ -68,17 +60,13 @@ export function setActiveBox(id, mode) {
   };
 }
 
-export function selectProject(projectId) {
+export function selectScreen(currentScreenKey) {
   // this should only be called by a change in route
   reduxStore.dispatch({
     type: ACTIONS.CLEAR_BOXES
   });
 
-  cloudStore
-    .setCurrentProject(projectId)
-    .catch(() => {
-      browserHistory.push('/');
-    });
+  firebaseActions.updateUser({currentScreenKey});
 }
 
 export function setInteraction(interaction) {
@@ -101,12 +89,12 @@ export function hideModal() {
   };
 }
 
-export function updateUser(userId, newProps) {
-  cloudStore.updateUser({userId, newProps});
+export function updateUser(newProps) {
+  firebaseActions.updateUser(newProps);
 }
 
 export function signOut() {
-  cloudStore.signOut();
+  firebaseActions.signOut();
   
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.SYSTEM,
@@ -119,31 +107,37 @@ export function signOut() {
 }
 
 export function createUser(authData) {
-  const userId = authData.uid;
+  const {uid} = authData;
   const user = parseAuthDataToUserData(authData);
   user.showHelp = true;
 
-  cloudStore.addUser({userId, user});
+  const newObjects = firebaseActions.addUser({uid, user});
+  const {newUser, newProject, newScreen, newBox} = newObjects;
+  console.log('  --  >  actionCreators.js:120 > createUser > newObjects:', newObjects);
 
-  const projectId = cloudStore.addProject({
-    userId,
-    project: {
-      name: 'My project',
-      description: 'A project to get you started',
-    },
+  reduxStore.dispatch({
+    type: ACTIONS.SIGN_IN_USER,
+    ...newUser
   });
 
-  mockBoxes.forEach(box => {
-    cloudStore.addBox({
-      box,
-      projectId,
-    });
+  reduxStore.dispatch({
+    type: ACTIONS.UPSERT_PROJECT,
+    ...newProject
   });
 
-  return user;
+  reduxStore.dispatch({
+    type: ACTIONS.UPSERT_SCREEN,
+    ...newScreen
+  });
+
+  reduxStore.dispatch({
+    type: ACTIONS.UPSERT_BOX,
+    ...newBox
+  });
+
+  return newUser.val;
 }
 
-// TODO (davidg): this is a cloud detail, move to cloudStoreBindings
 function parseAuthDataToUserData(authData) {
   const providerData = authData.providerData[0] || {};
 
@@ -154,19 +148,23 @@ function parseAuthDataToUserData(authData) {
   };
 }
 
-function navigateAfterSignIn(userId) {
-  cloudStore
-    .getMruProject(userId)
-    .then(project => {
-      const url = `/project/${project.slug}/${project.id}`;
-      browserHistory.push(url);
-    });
+function navigateToCurrentScreen() {
+  const state = reduxStore.getState();
+  console.log('  --  >  actionCreators.js:160 > navigateToCurrentScreen > state:', state);
+  const {currentProjectKey, currentScreenKey} = state.user;
+  const currentProject = state.projects[currentProjectKey];
+  const currentScreen = state.screens[currentScreenKey];
 
+  const url = `/s/${currentScreenKey}/${currentProject.slug}/${currentScreen.slug}`;
+
+  console.log('  --  >  actionCreators.js:166 > navigateToCurrentScreen > url:', url);
+
+  browserHistory.push(url);
 }
 
 export function signIn(provider) {
-  cloudStore.signIn(provider)
-    .then(cloudStore.checkIfUserExists)
+  firebaseActions.signIn(provider)
+    .then(firebaseActions.checkIfUserExists)
     .then(({authData, userExists, existingUser}) => {
       let action;
       let user;
@@ -187,7 +185,7 @@ export function signIn(provider) {
         action: action,
       });
 
-      navigateAfterSignIn(authData.user.uid);
+      navigateToCurrentScreen();
     })
     .catch(err => {
       console.warn('Error signing in.', err);

@@ -88,9 +88,7 @@ class HelpPanel extends Component {
   }
 
   closeHelp() {
-    const {user, updateUser} = this.props;
-
-    updateUser(user.id, {
+    this.props.updateUser({
       showHelp: false,
     });
   }
@@ -169,8 +167,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = () => {
   return {
-    updateUser: (userId, newProps) => {
-      actionCreators.updateUser(userId, newProps);
+    updateUser: (newProps) => {
+      actionCreators.updateUser(newProps);
     },
   };
 };

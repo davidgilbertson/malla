@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
-import {selectProject} from './data/actionCreators.js';
+import {selectScreen} from './data/actionCreators.js';
 import App from './components/App/App.jsx';
 import HomePage from './components/HomePage/HomePage.jsx';
 import ProjectPage from './components/ProjectPage/ProjectPage.jsx';
@@ -18,11 +18,12 @@ export default (
     />
 
     <Route
-      path="/project/:projectSlug/:projectId"
+      path="/s/:screenKey/:projectSlug/:screenSlug"
       component={ProjectPage}
       onEnter={nextState => {
-        tracker.setPage('project');
-        if (isClient) selectProject(nextState.params.projectId);
+        console.log('  --  >  routes.js:24 >  > nextState.params:', nextState.params);
+        tracker.setPage('screen');
+        if (isClient) selectScreen(nextState.params.screenKey);
       }}
     />
   </Route>

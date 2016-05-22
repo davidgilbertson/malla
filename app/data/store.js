@@ -1,6 +1,7 @@
 import {createStore} from 'redux';
 
-import * as cloudStoreBindings from './cloudStoreBindings.js';
+import * as firebaseActions from './firebaseActions.js';
+import firebaseWatcher from './firebaseWatcher.js';
 import reducers from './reducers.js';
 
 const onClient = typeof window !== 'undefined';
@@ -8,7 +9,8 @@ const onClient = typeof window !== 'undefined';
 const store = createStore(reducers);
 
 if (onClient) {
-  cloudStoreBindings.init(store);
+  firebaseActions.init(store);
+  firebaseWatcher.bindToStore(store);
 }
 
 export default store;

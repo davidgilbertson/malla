@@ -132,7 +132,7 @@ const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
         action={EVENTS.ACTIONS.SHOWED_HELP}
         label="Header button"
         onClick={() => {
-          updateUser(user.id, {
+          updateUser({
             showHelp: true,
           });
         }}

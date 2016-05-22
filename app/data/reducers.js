@@ -41,7 +41,27 @@ const projects = (state = {}, action) => {
   switch (action.type) {
 
     case ACTIONS.UPSERT_PROJECT :
-      return {...state, ...action.project};
+      return {
+        ...state,
+        [action.key]: action.val,
+      };
+
+    case ACTIONS.SIGN_OUT :
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+const screens = (state = {}, action) => {
+  switch (action.type) {
+
+    case ACTIONS.UPSERT_SCREEN :
+      return {
+        ...state,
+        [action.key]: action.val,
+      };
 
     case ACTIONS.SIGN_OUT :
       return {};
@@ -54,7 +74,11 @@ const projects = (state = {}, action) => {
 const boxes = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.UPSERT_BOX :
-      return {...state, ...action.box};
+      console.log('  --  >  reducers.js:71 > UPSERT_BOX > action:', action);
+      return {
+        ...state,
+        [action.key]: action.val,
+      };
 
     case ACTIONS.UPDATE_BOX :
       return mapValues(state, (box, id) => {
@@ -65,7 +89,7 @@ const boxes = (state = {}, action) => {
         return {...box};
       });
 
-    case ACTIONS.DELETE_BOX :
+    case ACTIONS.REMOVE_BOX :
       const newState = cloneDeep(state);
       delete newState[action.id];
       return newState;
@@ -81,10 +105,12 @@ const boxes = (state = {}, action) => {
 
 const user = (state = {}, action) => {
   switch (action.type) {
-    case ACTIONS.SIGN_IN_USER : // this gets used for updating users as well. Probably shouldn't
+    case ACTIONS.SIGN_IN_USER : // this gets used for updating the user as well. Probably shouldn't
+      console.log('  --  >  reducers.js:109 > SIGN_IN_USER > action:', action);
       return {
         ...state,
-        ...action.user,
+        ...action.val,
+        uid: action.key,
         signInStatus: SIGN_IN_STATUSES.SIGNED_IN
       };
 
@@ -114,6 +140,7 @@ export default combineReducers({
   interaction,
   modal,
   boxes,
+  screens,
   projects,
   user,
 });

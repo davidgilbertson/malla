@@ -15,8 +15,8 @@ const mapDispatchToProps = dispatch => {
     showModal: modal => {
       dispatch(actionCreators.showModal(modal));
     },
-    updateUser: (userId, newProps) => {
-      actionCreators.updateUser(userId, newProps);
+    updateUser: (newProps) => {
+      actionCreators.updateUser(newProps);
     },
     signOut: () => {
       actionCreators.signOut();
