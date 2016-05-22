@@ -9,6 +9,7 @@ let currentProjectId;
 let reduxStore;
 let isSignedIn = false;
 
+/*  --  USERS  --  */
 function onUserChange(userDataSnapshot) {
   if (userDataSnapshot.val()) {
     reduxStore.dispatch({
@@ -35,7 +36,6 @@ function onAuthenticationChange(user) {
       .child(user.uid)
       .child('projects')
       .on('child_added', onProjectKeyAdded);
-    // TODO (davidg): on project key removed
   }
 
   if (isSignedIn && !user) { // user is signing out
@@ -47,18 +47,64 @@ function onAuthenticationChange(user) {
   }
 }
 
+export function signIn(providerString) {
+  let provider;
+
+  switch (providerString) {
+    case 'facebook':
+      provider = new firebase.auth.FacebookAuthProvider();
+      break;
+    case 'google':
+      provider = new firebase.auth.GoogleAuthProvider();
+      break;
+    case 'twitter':
+      provider = new firebase.auth.TwitterAuthProvider();
+      break;
+    default:
+      console.warn(`The providerString '${providerString}' is not supported`);
+      return Promise.reject(`The providerString '${providerString}' is not supported`);
+  }
+
+  return firebase.auth().signInWithPopup(provider); // TODO (davidg): on error sign in with redirect
+}
+
+export function addUser({userId, user}) {
+  db
+    .child('users')
+    .child(userId)
+    .set(user);
+}
+
+export function updateUser({userId, newProps}) {
+  db
+    .child('users')
+    .child(userId)
+    .update(newProps);
+}
+
+export function checkIfUserExists(authData) {
+  return db
+    .child('users')
+    .child(authData.user.uid)
+    .once('value')
+    .then(dataSnapshot => {
+      return Promise.resolve({
+        authData,
+        userExists: dataSnapshot.exists(),
+        existingUser: dataSnapshot.exists() && dataSnapshot.val(),
+      });
+    });
+}
+
+export function signOut() {
+  firebase.auth().signOut();
+}
+
+
+/*  --  PROJECTS  --  */
 // TODO (davidg): store this in the reduxStore.
 export function getCurrentProject(userId) {
   return currentProjectId;
-  // set that as the most recently used project
-  // return db
-  //   .child('users')
-  //   .child(userId)
-  //   .child('mruProject')
-  //   .once('value')
-  //   .then(dataSnapshot => {
-  //     return Promise.resolve(dataSnapshot.val()); // the projectId
-  //   });
 }
 
 function onProjectKeyAdded(projectSnapshot) {
@@ -80,36 +126,11 @@ function onProjectChanged(projectSnapshot) {
   });
 }
 
-function onBoxKeyAdded(boxSnapshot) {
-  db
-    .child('data/boxes')
-    .child(boxSnapshot.key)
-    .on('value', onBoxChanged);
-}
-
-function onBoxKeyRemoved(boxSnapshot) {
-  reduxStore.dispatch({
-    type: ACTIONS.DELETE_BOX,
-    id: boxSnapshot.key,
-  });
-}
-
-function onBoxChanged(boxSnapshot) {
-  if (!boxSnapshot.val()) return; // when a box is first pushed as a ref it is null
-
-  reduxStore.dispatch({
-    type: ACTIONS.UPSERT_BOX,
-    box: {
-      [boxSnapshot.key]: boxSnapshot.val(),
-    },
-  });
-}
-
 export function setCurrentProject(projectId) {
   // this should only be called as a result of a route change
-  
+
   // by looking for the projectId and returning the promise,
-  // we can catch a project-not-found error in the calling function and behave appropriately  
+  // we can catch a project-not-found error in the calling function and behave appropriately
   return db
     .child('data/projects')
     .child(projectId)
@@ -145,6 +166,66 @@ export function getMruProject(userId) {
           ...snapshot.val(),
         }));
     });
+}
+
+export function addProject({userId, project}) {
+  // get a reference to what will be the new project (note the empty push())
+  const newProjectRef = db.child('data/projects').push();
+
+  // add a reference to that project in the user's list of projects
+  db
+    .child('users')
+    .child(userId)
+    .child('projects')
+    .child(newProjectRef.key)
+    .set(true);
+
+  // set that as the most recently used project
+  db
+    .child('users')
+    .child(userId)
+    .child('mruProject')
+    .set(newProjectRef.key);
+
+  // add the actual project (since it now exists in the user's list of projects)
+  db
+    .child('data/projects')
+    .child(newProjectRef.key)
+    .set({
+      ...project,
+      lastBoxLabelId: 1,
+      slug: slug(project.name),
+      owner: userId,
+    });
+
+  return newProjectRef.key;
+}
+
+
+/*  --  BOXES  --  */
+function onBoxKeyAdded(boxSnapshot) {
+  db
+    .child('data/boxes')
+    .child(boxSnapshot.key)
+    .on('value', onBoxChanged);
+}
+
+function onBoxKeyRemoved(boxSnapshot) {
+  reduxStore.dispatch({
+    type: ACTIONS.DELETE_BOX,
+    id: boxSnapshot.key,
+  });
+}
+
+function onBoxChanged(boxSnapshot) {
+  if (!boxSnapshot.val()) return; // when a box is first pushed as a ref it is null
+
+  reduxStore.dispatch({
+    type: ACTIONS.UPSERT_BOX,
+    box: {
+      [boxSnapshot.key]: boxSnapshot.val(),
+    },
+  });
 }
 
 export function addBox({box, projectId}) {
@@ -227,92 +308,6 @@ export function removeBox({boxId, projectId}) {
     });
 }
 
-export function addProject({userId, project}) {
-  // get a reference to what will be the new project (note the empty push())
-  const newProjectRef = db.child('data/projects').push();
-
-  // add a reference to that project in the user's list of projects
-  db
-    .child('users')
-    .child(userId)
-    .child('projects')
-    .child(newProjectRef.key)
-    .set(true);
-
-  // set that as the most recently used project
-  db
-    .child('users')
-    .child(userId)
-    .child('mruProject')
-    .set(newProjectRef.key);
-
-  // add the actual project (since it now exists in the user's list of projects)
-  db
-    .child('data/projects')
-    .child(newProjectRef.key)
-    .set({
-      ...project,
-      lastBoxLabelId: 1,
-      slug: slug(project.name),
-      owner: userId,
-    });
-
-  return newProjectRef.key;
-}
-
-export function signIn(providerString) {
-  let provider;
-
-  switch (providerString) {
-    case 'facebook':
-      provider = new firebase.auth.FacebookAuthProvider();
-      break;
-    case 'google':
-      provider = new firebase.auth.GoogleAuthProvider();
-      break;
-    case 'twitter':
-      provider = new firebase.auth.TwitterAuthProvider();
-      break;
-    default:
-      console.warn(`The providerString '${providerString}' is not supported`);
-      return Promise.reject(`The providerString '${providerString}' is not supported`);
-  }
-
-  return firebase.auth().signInWithPopup(provider); // TODO (davidg): on error sign in with redirect
-}
-
-export function addUser({userId, user}) {
-  db
-    .child('users')
-    .child(userId)
-    .set(user);
-}
-
-export function updateUser({userId, newProps}) {
-  db
-    .child('users')
-    .child(userId)
-    .update(newProps);
-}
-
-export function checkIfUserExists(authData) {
-  return db
-    .child('users')
-    .child(authData.user.uid)
-    .once('value')
-    .then(dataSnapshot => {
-      return Promise.resolve({
-        authData,
-        userExists: dataSnapshot.exists(),
-        existingUser: dataSnapshot.exists() && dataSnapshot.val(),
-      });
-    });
-}
-
-export function signOut() {
-  firebase.auth().signOut();
-}
-
 export function init(store) {
   reduxStore = store;
 
@@ -327,13 +322,6 @@ export function init(store) {
       storageBucket: MALLA_CONSTANTS.FIREBASE_STORAGE_BUCKET,
     };
 
-    // const prodConfig = {
-    //   apiKey: 'AIzaSyBKIm6-8l4pPbci-1to-cQIYoXKpNDqMfU',
-    //   authDomain: 'malla.firebaseapp.com',
-    //   databaseURL: 'https://malla.firebaseio.com',
-    //   storageBucket: 'project-6173279372668901714.appspot.com',
-    // };
-
     firebase.initializeApp(config);
 
     db = firebase.database().ref();
@@ -341,10 +329,6 @@ export function init(store) {
     console.warn('Firebase is not loaded');
     return;
   }
-  // This only binds to the reduxStore when a user is authenticated.
-  // At the very least it listens for an auth event.
-  // When that (eventually) happens, the reduxStore will be populated
 
-  // as soon as the reduxStore is bound, start listening for user events
   firebase.auth().onAuthStateChanged(onAuthenticationChange);
 }
