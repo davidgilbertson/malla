@@ -1,45 +1,12 @@
-import slug from 'speakingurl';
 import {getApp} from './firebaseApp.js';
-
-import {
-  ACTIONS,
-} from '../constants.js';
 
 let db;
 let firebaseApp;
 let currentProjectId;
 let reduxStore;
-let isSignedIn = false;
+
 
 /*  --  USERS  --  */
-function onUserChange(userDataSnapshot) {
-  if (userDataSnapshot.val()) {
-    reduxStore.dispatch({
-      type: ACTIONS.SIGN_IN_USER, // TODO (davidg): .UPDATE_USER ?
-      key: userDataSnapshot.key,
-      val: userDataSnapshot.val(),
-    });
-  }
-}
-
-function onAuthenticationChange(user) {
-  if (user && !isSignedIn) { // user has just signed in
-    isSignedIn = true;
-
-    db
-      .child('users')
-      .child(user.uid)
-      .on('value', onUserChange);
-  }
-
-  if (isSignedIn && !user) { // user is signing out
-    isSignedIn = false;
-
-    reduxStore.dispatch({
-      type: ACTIONS.SIGN_OUT,
-    });
-  }
-}
 
 export function signIn(providerString) {
   let provider;
@@ -174,98 +141,6 @@ export function signOut() {
   firebaseApp.auth().signOut();
 }
 
-// function onProjectKeyAdded(projectSnapshot) {
-//   currentProjectId = projectSnapshot.key;
-//
-//   // TODO (davidg): there is something wrong here. This listener is removed on the first use of the site (after sign up)
-//   // if fires a few times on load but then disappears.
-//   db.child('data/projects')
-//     .child(projectSnapshot.key)
-//     .on('value', onProjectChanged);
-// }
-
-// function onProjectChanged(projectSnapshot) {
-//   reduxStore.dispatch({
-//     type: ACTIONS.UPSERT_PROJECT,
-//     key: projectSnapshot.key,
-//     val: projectSnapshot.val(),
-//   });
-// }
-
-// export function getMruProject(userId) {
-//   return db
-//     .child('users')
-//     .child(userId)
-//     .child('currentProjectKey')
-//     .once('value')
-//     .then(snapshot => {
-//       return db
-//         .child('data/projects')
-//         .child(snapshot.val())
-//         .once('value')
-//         .then(snapshot => Promise.resolve({
-//           id: snapshot.key,
-//           ...snapshot.val(),
-//         }));
-//     });
-// }
-
-// export function addProject(project = {}) {
-//   const state = reduxStore.getState();
-//   const {userId} = state.user.uid;
-//  
-//   const newProjectKey = db.child('data/projects').push().key;
-//   const newScreenKey = db.child('data/screens').push().key;
-//   const newBoxKey = db.child('data/boxes').push().key;
-//
-//   const newProject = {
-//     ...project,
-//     lastBoxLabelId: 1,
-//     slug: slug(project.name),
-//     owner: userId,
-//     screenKeys: {
-//       [newScreenKey]: true,
-//     },
-//     boxKeys: {
-//       [newBoxKey]: true,
-//     },
-//   };
-//
-//   const newScreen = {
-//     name: 'Screen 1',
-//     description: '',
-//     projectKey: newProjectKey,
-//     boxKeys: {
-//       [newBoxKey]: true,
-//     },
-//   };
-//
-//   const newBox = {
-//     label: 'title',
-//     text: 'Your first text box. Click once to move or resize, click again to edit the text.',
-//     height: 50,
-//     left: 40,
-//     top: 40,
-//     width: 570,
-//     projectKey: newProjectKey,
-//     screenKeys: {
-//       [newScreenKey]: true,
-//     },
-//   };
-//
-//   const newData = {
-//     [`users/${userId}/projectKeys/${newProjectKey}`]: true,
-//     [`users/${userId}/currentProjectKey`]: newProjectKey,
-//     [`data/projects/${newProjectKey}`]: newProject,
-//     [`data/screens/${newScreenKey}`]: newScreen,
-//     [`data/boxes/${newBoxKey}`]: newBox,
-//   };
-//
-//   db.update(newData);
-//
-//   return newProjectKey;
-// }
-
 
 /*  --  BOXES  --  */
 
@@ -327,6 +202,4 @@ export function init(store) {
 
   firebaseApp = getApp();
   db = firebaseApp.database().ref();
-
-  firebaseApp.auth().onAuthStateChanged(onAuthenticationChange);
 }
