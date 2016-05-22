@@ -7,6 +7,7 @@ const mapStateToProps = state => {
   return {
     user: state.user,
     projects: state.projects,
+    screens: state.screens,
   };
 };
 

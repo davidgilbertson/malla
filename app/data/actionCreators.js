@@ -11,8 +11,8 @@ import {
 
 const onClient = typeof window !== 'undefined';
 
-export function updateBox(boxId, newProps) {
-  firebaseActions.updateBox({boxId, newProps});
+export function updateBox(key, val) {
+  firebaseActions.updateBox({key, val});
 }
 
 export function addBox(dims) {
@@ -21,21 +21,14 @@ export function addBox(dims) {
     text: '',
   };
 
-  const newBoxId = firebaseActions.addBox(newBox);
-
-  // so the box is added instantly, add it to the local store. They will reconcile eventually.
-  reduxStore.dispatch({
-    type: ACTIONS.UPSERT_BOX,
-    key: newBoxId,
-    val: newBox,
-  });
+  const newBoxKey = firebaseActions.addBox(newBox);
 
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.ADDED_BOX,
   });
   
-  return newBoxId;
+  return newBoxKey;
 }
 
 export function removeBox(boxId) {
@@ -113,7 +106,6 @@ export function createUser(authData) {
 
   const newObjects = firebaseActions.addUser({uid, user});
   const {newUser, newProject, newScreen, newBox} = newObjects;
-  console.log('  --  >  actionCreators.js:120 > createUser > newObjects:', newObjects);
 
   reduxStore.dispatch({
     type: ACTIONS.SIGN_IN_USER,
@@ -148,19 +140,16 @@ function parseAuthDataToUserData(authData) {
   };
 }
 
-function navigateToCurrentScreen() {
-  const state = reduxStore.getState();
-  console.log('  --  >  actionCreators.js:160 > navigateToCurrentScreen > state:', state);
-  const {currentProjectKey, currentScreenKey} = state.user;
-  const currentProject = state.projects[currentProjectKey];
-  const currentScreen = state.screens[currentScreenKey];
-
-  const url = `/s/${currentScreenKey}/${currentProject.slug}/${currentScreen.slug}`;
-
-  console.log('  --  >  actionCreators.js:166 > navigateToCurrentScreen > url:', url);
-
-  browserHistory.push(url);
-}
+// function navigateToCurrentScreen() {
+//   const state = reduxStore.getState();
+//   const {currentProjectKey, currentScreenKey} = state.user;
+//   const currentProject = state.projects[currentProjectKey];
+//   const currentScreen = state.screens[currentScreenKey];
+//
+//   const url = `/s/${currentScreenKey}/${currentProject.slug}/${currentScreen.slug}`;
+//
+//   browserHistory.push(url);
+// }
 
 export function signIn(provider) {
   firebaseActions.signIn(provider)
@@ -185,7 +174,7 @@ export function signIn(provider) {
         action: action,
       });
 
-      navigateToCurrentScreen();
+      // navigateToCurrentScreen();
     })
     .catch(err => {
       console.warn('Error signing in.', err);

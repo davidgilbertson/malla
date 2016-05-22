@@ -20,10 +20,8 @@ export default (
     <Route
       path="/s/:screenKey/:projectSlug/:screenSlug"
       component={ProjectPage}
-      onEnter={nextState => {
-        console.log('  --  >  routes.js:24 >  > nextState.params:', nextState.params);
+      onEnter={() => {
         tracker.setPage('screen');
-        if (isClient) selectScreen(nextState.params.screenKey);
       }}
     />
   </Route>

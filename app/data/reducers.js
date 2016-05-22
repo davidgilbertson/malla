@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import mapValues from 'lodash/mapValues';
 import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
 
 import {
   ACTIONS,
@@ -37,14 +38,19 @@ const modal = (state = MODALS.NONE, action) => {
   }
 };
 
+function upsert(state, action) {
+  let nextState = {};
+
+  merge(nextState, state, {[action.key]: action.val});
+
+  return nextState;
+}
+
 const projects = (state = {}, action) => {
   switch (action.type) {
 
     case ACTIONS.UPSERT_PROJECT :
-      return {
-        ...state,
-        [action.key]: action.val,
-      };
+      return upsert(state, action);
 
     case ACTIONS.SIGN_OUT :
       return {};
@@ -58,10 +64,7 @@ const screens = (state = {}, action) => {
   switch (action.type) {
 
     case ACTIONS.UPSERT_SCREEN :
-      return {
-        ...state,
-        [action.key]: action.val,
-      };
+      return upsert(state, action);
 
     case ACTIONS.SIGN_OUT :
       return {};
@@ -74,20 +77,7 @@ const screens = (state = {}, action) => {
 const boxes = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.UPSERT_BOX :
-      console.log('  --  >  reducers.js:71 > UPSERT_BOX > action:', action);
-      return {
-        ...state,
-        [action.key]: action.val,
-      };
-
-    case ACTIONS.UPDATE_BOX :
-      return mapValues(state, (box, id) => {
-        if (id === action.id) {
-          return {...box, ...action.newProps};
-        }
-
-        return {...box};
-      });
+      return upsert(state, action);
 
     case ACTIONS.REMOVE_BOX :
       const newState = cloneDeep(state);
@@ -106,7 +96,6 @@ const boxes = (state = {}, action) => {
 const user = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SIGN_IN_USER : // this gets used for updating the user as well. Probably shouldn't
-      console.log('  --  >  reducers.js:109 > SIGN_IN_USER > action:', action);
       return {
         ...state,
         ...action.val,

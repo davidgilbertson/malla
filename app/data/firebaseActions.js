@@ -174,54 +174,22 @@ export function signOut() {
   firebaseApp.auth().signOut();
 }
 
-function onProjectKeyAdded(projectSnapshot) {
-  currentProjectId = projectSnapshot.key;
-
-  // TODO (davidg): there is something wrong here. This listener is removed on the first use of the site (after sign up)
-  // if fires a few times on load but then disappears.
-  db.child('data/projects')
-    .child(projectSnapshot.key)
-    .on('value', onProjectChanged);
-}
-
-function onProjectChanged(projectSnapshot) {
-  reduxStore.dispatch({
-    type: ACTIONS.UPSERT_PROJECT,
-    key: projectSnapshot.key,
-    val: projectSnapshot.val(),
-  });
-}
-
-// export function setCurrentProject(projectId) {
-//   const state = reduxStore.getState();
-//   const {userId} = state.user.uid;
-//   // this should only be called as a result of a route change
+// function onProjectKeyAdded(projectSnapshot) {
+//   currentProjectId = projectSnapshot.key;
 //
-//   // by looking for the projectId and returning the promise,
-//   // we can catch a project-not-found error in the calling function and behave appropriately
-//   db
-//     .child('users')
-//     .child(userId)
-//     .child('currentProjectKey')
-//     .set(projectId);
-//
-//   // return db
-//   //   .child('data/projects')
-//   //   .child(projectId)
-//   //   .once('value')
-//   //   .then(() => {
-//   //     // this never fires if projectId doesn't exist or permission denied
-//   //     if (currentProjectId && currentProjectId !== projectId) {
-//   //       // stop listening for box changes on a previous project
-//   //       db.child(`data/projects/${currentProjectId}/boxes`).off('child_added', onBoxKeyAdded);
-//   //       db.child(`data/projects/${currentProjectId}/boxes`).off('child_removed', onBoxKeyRemoved);
-//   //     }
-//   //
-//   //     currentProjectId = projectId;
-//   //
-//   //     db.child(`data/projects/${projectId}/boxes`).on('child_added', onBoxKeyAdded);
-//   //     db.child(`data/projects/${projectId}/boxes`).on('child_removed', onBoxKeyRemoved);
-//   //   });
+//   // TODO (davidg): there is something wrong here. This listener is removed on the first use of the site (after sign up)
+//   // if fires a few times on load but then disappears.
+//   db.child('data/projects')
+//     .child(projectSnapshot.key)
+//     .on('value', onProjectChanged);
+// }
+
+// function onProjectChanged(projectSnapshot) {
+//   reduxStore.dispatch({
+//     type: ACTIONS.UPSERT_PROJECT,
+//     key: projectSnapshot.key,
+//     val: projectSnapshot.val(),
+//   });
 // }
 
 // export function getMruProject(userId) {
@@ -300,68 +268,17 @@ function onProjectChanged(projectSnapshot) {
 
 
 /*  --  BOXES  --  */
-// function onBoxKeyAdded(boxSnapshot) {
-//   db
-//     .child('data/boxes')
-//     .child(boxSnapshot.key)
-//     .on('value', onBoxChanged);
-// }
-//
-// function onBoxKeyRemoved(boxSnapshot) {
-//   reduxStore.dispatch({
-//     type: ACTIONS.REMOVE_BOX,
-//     id: boxSnapshot.key,
-//   });
-// }
-
-// function onBoxChanged(boxSnapshot) {
-//   if (!boxSnapshot.val()) return; // when a box is first pushed as a ref it is null
-//
-//   reduxStore.dispatch({
-//     type: ACTIONS.UPSERT_BOX,
-//     box: {
-//       [boxSnapshot.key]: boxSnapshot.val(),
-//     },
-//   });
-// }
 
 export function addBox(box) {
   const state = reduxStore.getState();
   const {currentProjectKey, currentScreenKey, uid} = state.user;
 
-  // get a ref to the project that the box belongs in
-  // const projectRef = db
-  //   .child('data/projects')
-  //   .child(projectId);
-
-  // get a ref to the new box to return the ID immediately (the actual box gets created async below)
   const newBoxKey = db.child('data/boxes').push().key;
-
-  // add a reference to the new box in the project record
-  // projectRef
-  //   .child('boxes')
-  //   .child(newBoxKey)
-  //   .set(true);
-
-  // this is nested within addBox since you'd never call it without adding the box to the project as well
-  // const addBoxObject = (newBox) => {
-  //   db
-  //     .child('data/boxes')
-  //     .child(newBoxKey)
-  //     .set(newBox);
-  //   db
-  //     .child('data/boxes')
-  //     .child(newBoxKey)
-  //     .child('projects')
-  //     .child(projectId)
-  //     .set(true);
-  // };
-
 
   box.projectKey = currentProjectKey;
 
   const newData = {
-    [`user/${uid}/boxKeys/${newBoxKey}`]: true,
+    [`users/${uid}/boxKeys/${newBoxKey}`]: true,
     [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
     [`data/screens/${currentScreenKey}/boxKeys/${newBoxKey}`]: true,
     [`data/boxes/${newBoxKey}`]: box,
@@ -377,45 +294,14 @@ export function addBox(box) {
 
   db.update(newData);
 
-  // db
-  //   .child('data/boxes')
-  //   .child(newBoxKey)
-  //   .set(newBox);
-  // db
-  //   .child('data/boxes')
-  //   .child(newBoxKey)
-  //   .child('projects')
-  //   .child(projectId)
-  //   .set(true);
-
-  // if (box.label) {
-  //   addBoxObject(box);
-  // } else {
-  //   // look up the project to get the last boxLabelId so we can give this new box a sequential label
-  //   projectRef
-  //     .once('value')
-  //     .then(projectSnapshot => {
-  //       let lastBoxLabelId = (projectSnapshot.val().lastBoxLabelId || 0) + 1;
-  //
-  //       // update the boxLabelId counter in the project
-  //       projectRef.update({lastBoxLabelId: lastBoxLabelId});
-  //
-  //       // add the next box with the label based on lastBoxLabelId
-  //       addBoxObject({
-  //         ...box,
-  //         label: `label${lastBoxLabelId}`,
-  //       });
-  //     });
-  // }
-
   return newBoxKey;
 }
 
-export function updateBox({boxId, newProps}) {
+export function updateBox({key, val}) {
   db
     .child('data/boxes')
-    .child(boxId)
-    .update(newProps);
+    .child(key)
+    .update(val);
 }
 
 export function removeBox({boxId, projectId}) {
@@ -439,26 +325,8 @@ export function removeBox({boxId, projectId}) {
 export function init(store) {
   reduxStore = store;
 
-  // This module can only be used on the client
-  // There is probably a better way to do this. Thinkin' about it...
-  // if (typeof firebaseApp !== 'undefined') {
-
-    // const config = {
-    //   apiKey: MALLA_CONSTANTS.FIREBASE_API_KEY,
-    //   authDomain: MALLA_CONSTANTS.FIREBASE_AUTH_DOMAIN,
-    //   databaseURL: MALLA_CONSTANTS.FIREBASE_URL,
-    //   storageBucket: MALLA_CONSTANTS.FIREBASE_STORAGE_BUCKET,
-    // };
-    //
-    // firebaseApp.initializeApp(config);
-    //
-    // db = firebaseApp.database().ref();
-    firebaseApp = getApp();
-    db = firebaseApp.database().ref();
-  // } else {
-  //   console.warn('Firebase is not loaded');
-  //   return;
-  // }
+  firebaseApp = getApp();
+  db = firebaseApp.database().ref();
 
   firebaseApp.auth().onAuthStateChanged(onAuthenticationChange);
 }

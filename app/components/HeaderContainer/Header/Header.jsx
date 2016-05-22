@@ -80,7 +80,7 @@ const baseStyles = {
 };
 
 
-const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
+const Header = ({user, updateUser, showModal, signOut, location, projects, screens}) => {
   const styles = cloneDeep(baseStyles);
 
   const actionItems = {
@@ -156,9 +156,13 @@ const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
         action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
         label="Header button"
         onClick={() => {
-          const firstProjectId = Object.keys(projects)[0];
+          const {currentProjectKey, currentScreenKey} = user;
+          const currentProject = projects[currentProjectKey];
+          const currentScreen = screens[currentScreenKey];
 
-          browserHistory.push(`/project/my-project/${firstProjectId}`);
+          const url = `/s/${currentScreenKey}/${currentProject.slug}/${currentScreen.slug}`;
+
+          browserHistory.push(url);
         }}
       >My projects</Button>
     ),
@@ -214,6 +218,8 @@ const Header = ({user, updateUser, showModal, signOut, location, projects}) => {
 Header.propTypes = {
   // state
   user: PropTypes.object.isRequired,
+  projects: PropTypes.object.isRequired,
+  screens: PropTypes.object.isRequired,
   // actions
   showModal: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,

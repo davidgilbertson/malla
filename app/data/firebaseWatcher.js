@@ -2,11 +2,7 @@ let db;
 import {ACTIONS} from '../constants.js';
 import {getApp} from './firebaseApp.js';
 
-// let dispatch;
-
-function dispatch(action) {
-  console.log(action);
-}
+let dispatch;
 
 const TYPES = {
   PROJECT: {
@@ -79,13 +75,7 @@ const firebaseWatcher = new FirebaseWatcher();
 
 export default {
   bindToStore: (store) => {
-    console.log('  --  >  firebaseWatcher.js:84 > bindToStore');
-    // firebase.initializeApp({
-    //   apiKey: MALLA_CONSTANTS.FIREBASE_API_KEY,
-    //   authDomain: MALLA_CONSTANTS.FIREBASE_AUTH_DOMAIN,
-    //   databaseURL: MALLA_CONSTANTS.FIREBASE_URL,
-    //   storageBucket: MALLA_CONSTANTS.FIREBASE_STORAGE_BUCKET,
-    // });
+    dispatch = store.dispatch;
 
     const firebaseApp = getApp();
 
@@ -102,7 +92,5 @@ export default {
         firebaseWatcher.watchList(userRef.child('boxKeys'), TYPES.BOX);
       }
     });
-
-    // TODO (davidg): dispatch = store.dispatch;
   }
 };
