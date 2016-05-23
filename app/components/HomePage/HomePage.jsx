@@ -10,6 +10,7 @@ import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
+  FONT_FAMILIES,
   MODALS,
   SIGN_IN_STATUSES,
   WORDS,
@@ -125,6 +126,26 @@ const styles = {
       margin: '80px auto 0',
     },
   },
+  faqWrapper: {
+    width: 320,
+    margin: '80px auto 0',
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      width: 426,
+    },
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      width: 640,
+    },
+  },
+  question: {
+    color: COLORS.WHITE,
+    fontSize: 32,
+    marginTop: 60,
+  },
+  answer: {
+    color: COLORS.WHITE,
+    marginTop: 10,
+    fontSize: 18,
+  },
 };
 
 class HomePage extends Component {
@@ -167,7 +188,7 @@ class HomePage extends Component {
           <div style={styles.box}>
             <h2 style={styles.boxTitle}>Simple API</h2>
 
-            <p style={styles.boxDescription}>Just put .json at the end of the URL. Seriously.</p>
+            <p style={styles.boxDescription}>A single URL.<br/>Seriously.</p>
           </div>
         </div>
 
@@ -184,6 +205,32 @@ class HomePage extends Component {
         >
           Sign up for free
         </Button>
+
+        <div style={styles.faqWrapper}>
+          <h2 style={styles.question}>Sounds marvelous, but what exactly is it?</h2>
+
+          <p style={styles.answer}>
+            Malla is a centralized place to store the text in your website or app, so that it isn't buried in code.
+            It gives the control back to those who write the copy and takes the burden off of developers.
+          </p>
+
+          <h2 style={styles.question}>So... it's a CMS?</h2>
+
+          <p style={styles.answer}>
+            Close, but not quite. Malla is designed to make it easy to store <em>any</em> text from
+            your website or mobile app: headings, intros, buttons, disclaimers... you get the idea.
+            <br/>
+            And since it doesn't focus on articles and pages and pictures like a CMS does, it's
+            much simpler, and much faster than a typical CMS.
+            Check out the video above to see how easy it is.
+          </p>
+
+          <h2 style={styles.question}>How do I get started?</h2>
+
+          <p style={styles.answer}>
+            An excellent question. Just sign up, it's free and you'll be up and running in seconds.
+          </p>
+        </div>
       </div>
     );
   }
