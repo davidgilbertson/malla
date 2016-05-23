@@ -86,4 +86,12 @@ export function sendEvent(options) {
     hitType: 'event',
     ...fieldsObject,
   });
+
+  if (options.action === EVENTS.ACTIONS.SIGNED_UP) {
+    if (typeof goog_report_conversion !== 'undefined') {
+      goog_report_conversion();
+    } else {
+      console.warn('Sign up successful but goog_report_conversion() was not available');
+    }
+  }
 }
