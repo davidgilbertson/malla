@@ -18,7 +18,7 @@ import {
   Z_INDEXES,
 } from '../../../../constants.js';
 
-const HANDLE_SIZE = 40;
+const HANDLE_SIZE = 30;
 const DRAG_TYPES = {
   MOVE: 'MOVE',
   TOP: 'TOP',
