@@ -2,9 +2,7 @@ import {getApp} from './firebaseApp.js';
 
 let db;
 let firebaseApp;
-let currentProjectId;
 let reduxStore;
-
 
 /*  --  USERS  --  */
 
@@ -13,8 +11,9 @@ function normalizeProviderData(authData) {
 
   return {
     name: providerData.displayName || '',
+    email: providerData.email || '',
     profileImageURL: providerData.profileImageURL || providerData.photoURL || '',
-    provider: providerData.providerId | '',
+    provider: providerData.providerId || '',
   };
 }
 
@@ -135,11 +134,11 @@ export function signIn(providerString) {
 }
 
 export function updateUser(newProps) {
-  const state = reduxStore.getState();
-  
+  const userKey = firebaseApp.auth().currentUser.uid;
+
   return db
     .child('users')
-    .child(state.user.uid)
+    .child(userKey)
     .update(newProps);
 }
 
