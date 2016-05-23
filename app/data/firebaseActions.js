@@ -8,36 +8,32 @@ let reduxStore;
 
 /*  --  USERS  --  */
 
-export function signIn(providerString) {
-  let provider;
+function normalizeProviderData(authData) {
+  const providerData = authData.providerData[0] || {};
 
-  switch (providerString) {
-    case 'facebook':
-      provider = new firebaseApp.auth.FacebookAuthProvider();
-      break;
-    case 'google':
-      provider = new firebaseApp.auth.GoogleAuthProvider();
-      break;
-    case 'twitter':
-      provider = new firebaseApp.auth.TwitterAuthProvider();
-      break;
-    default:
-      console.warn(`The provider '${providerString}' is not supported`);
-      return Promise.reject(`The provider '${providerString}' is not supported`);
-  }
-
-  return firebaseApp.auth().signInWithPopup(provider); // TODO (davidg): on error sign in with redirect
+  return {
+    name: providerData.displayName || '',
+    profileImageURL: providerData.profileImageURL || providerData.photoURL || '',
+    provider: providerData.providerId | '',
+  };
 }
 
-export function addUser({uid, user}) {
+function createUser(providerUser) {
+  const {uid} = providerUser;
+  const user = normalizeProviderData(providerUser);
+  
   const newProjectKey = db.child('data/projects').push().key;
   const newScreenKey = db.child('data/screens').push().key;
   const newBoxKey = db.child('data/boxes').push().key;
+  const now = new Date().toISOString();
 
   const newUser = {
     ...user,
+    showHelp: true,
     currentProjectKey: newProjectKey,
     currentScreenKey: newScreenKey,
+    dateCreated: now,
+    lastLogin: now,
     projectKeys: {
       [newProjectKey]: true,
     },
@@ -96,24 +92,43 @@ export function addUser({uid, user}) {
 
   db.update(newData);
   
-  return {
-    newUser: {
-      key: uid,
-      val: newUser,
-    },
-    newProject: {
-      key: newProjectKey,
-      val: newProject,
-    },
-    newScreen: {
-      key: newScreenKey,
-      val: newScreen,
-    },
-    newBox: {
-      key: newBoxKey,
-      val: newBox,
-    },
-  };
+  return newUser;
+}
+
+export function signIn(providerString) {
+  let provider;
+
+  switch (providerString) {
+    case 'facebook':
+      provider = new firebaseApp.auth.FacebookAuthProvider();
+      break;
+    case 'google':
+      provider = new firebaseApp.auth.GoogleAuthProvider();
+      break;
+    case 'twitter':
+      provider = new firebaseApp.auth.TwitterAuthProvider();
+      break;
+    default:
+      console.warn(`The provider '${providerString}' is not supported`);
+      return Promise.reject(`The provider '${providerString}' is not supported`);
+  }
+
+  return firebaseApp
+    .auth()
+    .signInWithPopup(provider)
+    .then(checkIfUserExists)
+    .then(({authData, isNewUser, existingUser}) => {
+      let user;
+
+      if (isNewUser) {
+        user = createUser(authData.user);
+      } else {
+        user = existingUser;
+        // TODO (davidg): else update the record if profile pic or something changed?
+      }
+
+      return Promise.resolve({user, isNewUser});
+    });
 }
 
 export function updateUser(newProps) {
@@ -125,7 +140,7 @@ export function updateUser(newProps) {
     .update(newProps);
 }
 
-export function checkIfUserExists(authData) {
+function checkIfUserExists(authData) {
   return db
     .child('users')
     .child(authData.user.uid)
@@ -133,7 +148,7 @@ export function checkIfUserExists(authData) {
     .then(dataSnapshot => {
       return Promise.resolve({
         authData,
-        userExists: dataSnapshot.exists(),
+        isNewUser: !dataSnapshot.exists(),
         existingUser: dataSnapshot.exists() && dataSnapshot.val(),
       });
     });
