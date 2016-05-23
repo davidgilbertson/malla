@@ -193,7 +193,7 @@ class HomePage extends Component {
           </div>
         </div>
 
-        <iframe style={styles.video} src="https://www.youtube.com/embed/gSdnYofmtr8?rel=0" frameBorder="0" allowFullScreen></iframe>
+        <iframe style={styles.video} src="https://www.youtube.com/embed/aHzVmEWxek8?rel=0" frameBorder="0" allowFullScreen></iframe>
 
         <Button
           style={styles.bigSignUpButton}
