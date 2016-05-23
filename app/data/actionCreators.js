@@ -78,7 +78,6 @@ export function hideModal() {
 }
 
 /*  --  USERS  --  */
-
 export function signIn(provider) {
   firebaseActions
     .signIn(provider)
