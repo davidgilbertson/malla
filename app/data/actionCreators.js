@@ -16,31 +16,24 @@ export function updateBox(key, val) {
 }
 
 export function addBox(dims) {
-  const newBox = {
-    ...dims,
-    text: '',
-  };
-
-  const newBoxKey = firebaseActions.addBox(newBox);
-
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.ADDED_BOX,
   });
   
-  return newBoxKey;
+  return firebaseActions.addBox({
+    ...dims,
+    text: '',
+  });
 }
 
-export function removeBox(boxId) {
-  // TODO (davidg): when I have currentProjectId in the store, pass it into this method
-  const projectId = firebaseActions.getCurrentProject();
-
-  firebaseActions.removeBox({boxId, projectId});
-
+export function removeBox(boxKey) {
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.REMOVED_BOX,
   });
+ 
+  firebaseActions.removeBox(boxKey);
 }
 
 export function setActiveBox(id, mode) {

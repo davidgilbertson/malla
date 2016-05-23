@@ -2,7 +2,7 @@
 import {connect} from 'react-redux';
 
 import * as actionCreators from '../../data/actionCreators.js';
-import Project from './Project/Project.jsx';
+import Screen from './Screen/Screen.jsx';
 import {
   BOX_MODES,
 } from '../../constants.js';
@@ -34,4 +34,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Project);
+export default connect(mapStateToProps, mapDispatchToProps)(Screen);

@@ -85,6 +85,8 @@ export function addUser({uid, user}) {
     },
   };
 
+  newUser.lastUrl = `/s/${newScreenKey}/${newProject.slug}/${newScreen.slug}`;
+
   const newData = {
     [`users/${uid}`]: newUser,
     [`data/projects/${newProjectKey}`]: newProject,
@@ -151,6 +153,9 @@ export function addBox(box) {
   const newBoxKey = db.child('data/boxes').push().key;
 
   box.projectKey = currentProjectKey;
+  box.screenKeys = {
+    [currentScreenKey]: true,
+  };
 
   const newData = {
     [`users/${uid}/boxKeys/${newBoxKey}`]: true,
@@ -179,22 +184,26 @@ export function updateBox({key, val}) {
     .update(val);
 }
 
-export function removeBox({boxId, projectId}) {
-  db
-    .child('data/boxes')
-    .child(boxId)
-    .remove(err => {
-      err && console.warn(`Error removing box from data/boxes/${boxId}:`, err);
+export function removeBox(boxKey) {
+  const userKey = firebaseApp.auth().currentUser.uid;
+
+  db.child('data/boxes').child(boxKey).once('value', boxSnapshot => {
+    const box = boxSnapshot.val();
+
+    if (!box) return console.warn(`No box with key '${boxKey}' exists`);
+
+    const updateData = {
+      [`data/boxes/${boxKey}`]: null,
+      [`data/projects/${box.projectKey}/boxKeys/${boxKey}`]: null,
+      [`users/${userKey}/boxKeys/${boxKey}`]: null,
+    };
+
+    Object.keys(box.screenKeys).forEach(screenKey => {
+      updateData[`data/screens/${screenKey}/boxKeys/${boxKey}`] = null;
     });
 
-  db
-    .child('data/projects')
-    .child(currentProjectId)
-    .child('boxes')
-    .child(boxId)
-    .remove(err => {
-      err && console.warn(`Error removing box from data/projects/${projectId}/boxes/${boxId}:`, err);
-    });
+    db.update(updateData);
+  });
 }
 
 export function init(store) {

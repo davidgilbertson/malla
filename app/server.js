@@ -95,7 +95,7 @@ function getHtml(req, props) {
   return html;
 }
 
-app.get('/project/:projectSlug/:projectId.*json', firebaseMiddleware);
+app.get('/api/:projectId.*json', firebaseMiddleware);
 
 app.get('*', (req, res) => {
   match({routes: routes, location: req.url}, (err, redirect, props) => {

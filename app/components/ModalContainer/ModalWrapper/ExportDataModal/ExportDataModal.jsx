@@ -33,11 +33,13 @@ class ExportDataModal extends Component {
   render() {
     const exportData = {};
     forOwn(this.props.boxes, (box, id) => {
-      // TODO (davidg): nest
-      exportData[box.label || id] = box.text;
+      if (box) exportData[box.label || id] = box.text;
     });
 
-    const apiUrl = `${location.origin}${location.pathname}.json`;
+    const {currentProjectKey} = this.props.user;
+
+    const apiUrl = `${location.origin}/api/${currentProjectKey}.json`;
+
     const apiLink = (
       <a
         style={styles.apiUrl}
@@ -69,6 +71,7 @@ class ExportDataModal extends Component {
 
 ExportDataModal.propTypes = {
   boxes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default ExportDataModal;

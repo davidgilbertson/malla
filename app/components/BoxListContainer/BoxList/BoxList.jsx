@@ -7,17 +7,20 @@ import Box from './Box/Box.jsx';
 
 const BoxList = ({activeBox, boxes, boxActions}) => {
   const boxComponents = [];
+  // TODO (davidg): filter for boxes in this project/screen only
   
   forOwn(boxes, (box, id) => {
-    boxComponents.push(
-      <Box
-        key={id}
-        id={id}
-        box={box}
-        boxActions={boxActions}
-        activeBox={activeBox}
-      />
-    );
+    if (box) {
+      boxComponents.push(
+        <Box
+          key={id}
+          id={id}
+          box={box}
+          boxActions={boxActions}
+          activeBox={activeBox}
+        />
+      );
+    }
   });
 
   return (

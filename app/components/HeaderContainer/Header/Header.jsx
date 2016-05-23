@@ -156,15 +156,9 @@ const Header = ({user, updateUser, showModal, signOut, location, projects, scree
         action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
         label="Header button"
         onClick={() => {
-          const {currentProjectKey, currentScreenKey} = user;
-          const currentProject = projects[currentProjectKey];
-          const currentScreen = screens[currentScreenKey];
-
-          const url = `/s/${currentScreenKey}/${currentProject.slug}/${currentScreen.slug}`;
-
-          browserHistory.push(url);
+          browserHistory.push(user.lastUrl);
         }}
-      >My projects</Button>
+      >My screen</Button>
     ),
   };
 

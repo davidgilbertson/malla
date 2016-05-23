@@ -1,7 +1,8 @@
 import React from 'react';
+const {Component, PropTypes} = React;
 import Radium, {Style} from 'radium';
 import {connect} from 'react-redux';
-
+import {browserHistory} from 'react-router';
 import Button from '../Button/Button.jsx';
 import {showModal} from '../../data/actionCreators.js';
 
@@ -10,6 +11,7 @@ import {
   COLORS,
   DIMENSIONS,
   MODALS,
+  SIGN_IN_STATUSES,
   WORDS,
 } from '../../constants.js';
 
@@ -125,58 +127,96 @@ const styles = {
   },
 };
 
-let HomePage = ({showModal}) => (
-  <div style={styles.main}>
-    <Style rules={styles.css} />
+class HomePage extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-    <h1 style={styles.title}>{WORDS.MALLA}</h1>
+  componentWillReceiveProps(nextProps) {
+    // If we are on the home page and a user signs in, then navigate them to the last URL they were at
+    const justSignedIn = this.props.user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN
+      && nextProps.user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
 
-    <div style={styles.subTitle}>{WORDS.SLOGAN}</div>
+    if (justSignedIn && nextProps.user.lastUrl) {
+      browserHistory.push(nextProps.user.lastUrl);
+    }
+  }
 
-    <div style={styles.boxesWrapper}>
-      <div style={styles.box}>
-        <h2 style={styles.boxTitle}>Super fast</h2>
+  render() {
+    return (
+      <div style={styles.main}>
+        <Style rules={styles.css} />
 
-        <p style={styles.boxDescription}>Update your site's copy in seconds. Just click, drag, type.</p>
+        <h1 style={styles.title}>{WORDS.MALLA}</h1>
+
+        <div style={styles.subTitle}>{WORDS.SLOGAN}</div>
+
+        <div style={styles.boxesWrapper}>
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>Super fast</h2>
+
+            <p style={styles.boxDescription}>Update your site's copy in seconds. Just click, drag, type.</p>
+          </div>
+
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>Collaborative</h2>
+
+            <p style={styles.boxDescription}>As you type, the layout instantly updates for all connected users.</p>
+          </div>
+
+          <div style={styles.box}>
+            <h2 style={styles.boxTitle}>Simple API</h2>
+
+            <p style={styles.boxDescription}>Just put .json at the end of the URL. Seriously.</p>
+          </div>
+        </div>
+
+        <iframe style={styles.video} src="https://www.youtube.com/embed/gSdnYofmtr8?rel=0" frameBorder="0" allowFullScreen></iframe>
+
+        <Button
+          style={styles.bigSignUpButton}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+          label="Home page"
+          onClick={() => {
+            this.props.showModal(MODALS.SOCIAL_SIGN_IN);
+          }}
+        >
+          Sign up for free
+        </Button>
       </div>
+    );
+  }
+}
 
-      <div style={styles.box}>
-        <h2 style={styles.boxTitle}>Collaborative</h2>
+HomePage.propTypes = {
+  // state
+  user: PropTypes.object.isRequired,
+  projects: PropTypes.object.isRequired,
+  screens: PropTypes.object.isRequired,
 
-        <p style={styles.boxDescription}>As you type, the layout instantly updates for all connected users.</p>
-      </div>
-
-      <div style={styles.box}>
-        <h2 style={styles.boxTitle}>Simple API</h2>
-
-        <p style={styles.boxDescription}>Just put .json at the end of the URL. Seriously.</p>
-      </div>
-    </div>
-
-    <iframe style={styles.video} src="https://www.youtube.com/embed/gSdnYofmtr8?rel=0" frameBorder="0" allowFullScreen></iframe>
-
-    <Button
-      style={styles.bigSignUpButton}
-      category={EVENTS.CATEGORIES.UI_INTERACTION}
-      action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
-      label="Home page"
-      onClick={() => {
-        showModal(MODALS.SOCIAL_SIGN_IN);
-      }}
-    >
-      Sign up for free
-    </Button>
-  </div>
-);
+  // actions
+  showModal: PropTypes.func.isRequired,
+};
 
 HomePage = Radium(HomePage);
 
-HomePage = connect(null, dispatch => {
+const bindStateToProps = state => {
+  return {
+    user: state.user,
+    projects: state.projects,
+    screens: state.screens,
+  };
+};
+
+const bindDispatchToProps = dispatch => {
   return {
     showModal: modal => {
       dispatch(showModal(modal));
     },
   };
-})(HomePage);
+};
+
+HomePage = connect(bindStateToProps, bindDispatchToProps)(HomePage);
 
 export default HomePage;

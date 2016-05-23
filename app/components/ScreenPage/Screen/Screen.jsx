@@ -32,7 +32,7 @@ const styles = {
   },
 };
 
-class Project extends Component {
+class Screen extends Component {
   constructor(props) {
     super(props);
 
@@ -146,7 +146,7 @@ class Project extends Component {
   }
 }
 
-Project.propTypes = {
+Screen.propTypes = {
   // state
   user: PropTypes.object.isRequired,
 
@@ -155,4 +155,4 @@ Project.propTypes = {
   showModal: PropTypes.func.isRequired,
 };
 
-export default Radium(Project);
+export default Radium(Screen);
