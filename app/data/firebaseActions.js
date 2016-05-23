@@ -33,7 +33,7 @@ function createUser(providerUser) {
     currentProjectKey: newProjectKey,
     currentScreenKey: newScreenKey,
     dateCreated: now,
-    lastLogin: now,
+    lastSignIn: now,
     projectKeys: {
       [newProjectKey]: true,
     },
@@ -123,6 +123,9 @@ export function signIn(providerString) {
       if (isNewUser) {
         user = createUser(authData.user);
       } else {
+        updateUser({
+          lastSignIn: new Date().toISOString(),
+        });
         user = existingUser;
         // TODO (davidg): else update the record if profile pic or something changed?
       }
