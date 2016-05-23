@@ -30,6 +30,17 @@ const styles = {
     cursor: 'crosshair',
     boxShadow: `inset 1px 1px ${COLORS.WHITE}`, // covers the first dots
   },
+  betaFooter: {
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: '7px 10px',
+    backgroundColor: COLORS.GRAY_DARK,
+    color: COLORS.WHITE,
+    fontSize: 14,
+    zIndex: 1,
+  },
 };
 
 class Screen extends Component {
@@ -141,6 +152,13 @@ class Screen extends Component {
         </div>
 
         <HelpPanel />
+
+        <footer
+          style={styles.betaFooter}
+        >
+          This is a beta release of Malla. It is not covered by any SLA or deprecation policy.
+          It is not recommended for use in production applications.
+        </footer>
       </div>
     );
   }
