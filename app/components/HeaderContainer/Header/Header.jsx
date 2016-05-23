@@ -77,6 +77,9 @@ const baseStyles = {
     color: COLORS.WHITE,
     ...css.shadow('light'),
   },
+  userName: {
+    marginRight: 20,
+  },
 };
 
 
@@ -160,6 +163,12 @@ const Header = ({user, updateUser, showModal, signOut, location, projects, scree
         }}
       >My screen</Button>
     ),
+    userName: (
+      <span
+        key="userName"
+        style={styles.userName}
+      >{user.name}</span>
+    )
   };
 
   const atHome = location && location.pathname === '/';
@@ -179,6 +188,7 @@ const Header = ({user, updateUser, showModal, signOut, location, projects, scree
       actionItemElements.push(actionItems.signUpButton);
     }
   } else {
+    actionItemElements.push(actionItems.userName);
     actionItemElements.push(actionItems.exportData);
 
     if (!user.showHelp && signedIn) {
