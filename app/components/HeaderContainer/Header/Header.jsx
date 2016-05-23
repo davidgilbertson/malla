@@ -98,7 +98,7 @@ const baseStyles = {
 };
 
 
-const Header = ({user, updateUser, showModal, signOut, location, projects, screens}) => {
+const Header = ({user, updateUser, showModal, signOut, location}) => {
   const styles = cloneDeep(baseStyles);
 
   const actionItems = {
@@ -240,8 +240,6 @@ const Header = ({user, updateUser, showModal, signOut, location, projects, scree
 Header.propTypes = {
   // state
   user: PropTypes.object.isRequired,
-  projects: PropTypes.object.isRequired,
-  screens: PropTypes.object.isRequired,
   // actions
   showModal: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
