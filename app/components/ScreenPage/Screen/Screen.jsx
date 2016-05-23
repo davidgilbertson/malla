@@ -25,7 +25,8 @@ const styles = {
     flex: '0 1 100%',
     position: 'relative', // to contain absolute descendants
     overflow: 'auto',
-    backgroundImage: 'url(/images/grid-dot_10x10.gif)',
+    backgroundImage: 'url(/images/grid-dot-gray_20x20.gif)',
+    backgroundSize: '10px 10px',
     backgroundPosition: '1px 1px',
     cursor: 'crosshair',
     boxShadow: `inset 1px 1px ${COLORS.WHITE}`, // covers the first dots

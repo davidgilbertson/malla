@@ -31,7 +31,8 @@ const styles = {
   },
   main: {
     minHeight: '100vh',
-    backgroundImage: 'url(/images/grid-dot_10x10.gif)',
+    backgroundImage: 'url(/images/grid-dot-blue_20x20.gif)',
+    backgroundSize: '10px 10px',
     overflow: 'auto',
     padding: `${DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME}px 20px 80px`,
     color: COLORS.WHITE,
