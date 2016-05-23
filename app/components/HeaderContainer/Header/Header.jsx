@@ -77,8 +77,23 @@ const baseStyles = {
     color: COLORS.WHITE,
     ...css.shadow('light'),
   },
+  showForPhoneOnly: {
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      display: 'none',
+    },
+  },
+  showForTabletPortraitUp: {
+    display: 'none',
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      display: 'initial',
+    },
+  },
   userName: {
     marginRight: 20,
+    display: 'none',
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      display: 'initial',
+    },
   },
 };
 
@@ -125,7 +140,10 @@ const Header = ({user, updateUser, showModal, signOut, location, projects, scree
         onClick={() => {
           showModal(MODALS.EXPORT_DATA);
         }}
-      >For developers</Button>
+      >
+        <span style={styles.showForPhoneOnly}>API</span>
+        <span style={styles.showForTabletPortraitUp}>For developers</span>
+      </Button>
     ),
     showHelp: (
       <Button
