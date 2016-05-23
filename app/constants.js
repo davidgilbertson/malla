@@ -100,5 +100,7 @@ export const FONT_FAMILIES = {
 
 export const Z_INDEXES = {
   MOVING_BOX: 1,
-  MODAL: 2,
+  BETA_FOOTER: 2,
+  HELP_PANEL: 3,
+  MODAL: 4,
 };

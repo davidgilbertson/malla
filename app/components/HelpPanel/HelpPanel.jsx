@@ -5,9 +5,11 @@ import Radium from 'radium';
 
 import Button from '../Button/Button.jsx';
 import {
+  BREAKPOINTS,
   COLORS,
   DIMENSIONS,
   SIGN_IN_STATUSES,
+  Z_INDEXES,
 } from '../../constants.js';
 import {
   css,
@@ -23,14 +25,20 @@ const styles = {
     flex: '0 0 auto',
     display: 'flex',
     flexFlow: 'column',
-    width: 400,
     top: PANEL_TOP,
-    right: 20,
+    right: 10,
+    left: 10,
     maxHeight: `calc(100vh - ${PANEL_TOP + 20}px)`,
     maxWidth: '98vw',
     backgroundColor: COLORS.WHITE,
     ...css.shadow(),
     fontSize: 14,
+    zIndex: Z_INDEXES.HELP_PANEL,
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      width: 400,
+      right: 20,
+      left: 'auto',
+    },
   },
   header: {
     height: 64,

@@ -10,8 +10,8 @@ import {
   CLICK_LENGTH_MS,
   COLORS,
   DIMENSIONS,
-  MODALS,
   GRID_SIZE,
+  Z_INDEXES,
 } from '../../../constants.js';
 
 const styles = {
@@ -39,7 +39,7 @@ const styles = {
     backgroundColor: COLORS.GRAY_DARK,
     color: COLORS.WHITE,
     fontSize: 14,
-    zIndex: 1,
+    zIndex: Z_INDEXES.BETA_FOOTER,
   },
 };
 
