@@ -1,5 +1,5 @@
 export const WORDS = {
-  SLOGAN: 'A home for your text',
+  SLOGAN: 'A super-simple way to manage the text for your website or app.',
   MALLA: 'Malla',
 };
 
