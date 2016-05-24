@@ -1,4 +1,7 @@
-const isClient = typeof window !== 'undefined';
+const shouldSendEvents = (
+  typeof window !== 'undefined'
+  && process.env.NODE_ENV === 'production'
+);
 
 export const EVENTS = {
   CATEGORIES: {
@@ -49,21 +52,21 @@ export const EVENTS = {
 };
 
 export function setPage(page) {
-  if (!isClient) return;
+  if (!shouldSendEvents) return;
 
   ga('set', 'page', page);
   ga('send', 'pageview');
 }
 
 export function setBrowserDetails() {
-  if (!isClient) return;
+  if (!shouldSendEvents) return;
 
   ga('set', 'viewportWidth', window.innerWidth);
   ga('set', 'viewportHeight', window.innerHeight);
 }
 
 export function setUserDetails(user) {
-  if (!isClient) return;
+  if (!shouldSendEvents) return;
 
   if (!user) {
     ga('set', 'username', '');
@@ -73,7 +76,7 @@ export function setUserDetails(user) {
 }
 
 export function sendEvent(options) {
-  if (!isClient) return;
+  if (!shouldSendEvents) return;
 
   const fieldsObject = {};
 

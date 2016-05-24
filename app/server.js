@@ -73,7 +73,7 @@ const googleAnalyticsSnippet = `
 function getHtml(req, props) {
   let scriptSrc;
 
-  if (process.env.APP_ENV === 'DEV') {
+  if (process.env.NODE_ENV === 'development') {
     scriptSrc = 'http://localhost:8081/webpack-bundle.js';
   } else {
     scriptSrc = `/js/${fileNames.mainJs}`;
