@@ -40,27 +40,29 @@ const fileNames = require('../build/stats/fileNames.json');
 
 const adWordsSrc = '//www.googleadservices.com/pagead/conversion_async.js';
 const adWordsSnippet = `
-  goog_snippet_vars = function () {
-    var w = window;
-    w.google_conversion_id = 1003738231;
-    w.google_conversion_label = "oJ5mCL7h7WYQ96jP3gM";
-    w.google_remarketing_only = false;
+/* <![CDATA[ */
+goog_snippet_vars = function() {
+  var w = window;
+  w.google_conversion_id = 1003738231;
+  w.google_conversion_label = "oJ5mCL7h7WYQ96jP3gM";
+  w.google_remarketing_only = false;
+}
+// DO NOT CHANGE THE CODE BELOW.
+goog_report_conversion = function(url) {
+  goog_snippet_vars();
+  window.google_conversion_format = "3";
+  var opt = new Object();
+  opt.onload_callback = function() {
+  if (typeof(url) != 'undefined') {
+    window.location = url;
   }
-  // DO NOT CHANGE THE CODE BELOW.
-  goog_report_conversion = function (url) {
-    goog_snippet_vars();
-    window.google_conversion_format = "3";
-    var opt = new Object();
-    opt.onload_callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    }
-    var conv_handler = window['google_trackConversion'];
-    if (typeof(conv_handler) == 'function') {
-      conv_handler(opt);
-    }
+}
+  var conv_handler = window['google_trackConversion'];
+  if (typeof(conv_handler) == 'function') {
+    conv_handler(opt);
   }
+}
+/* ]]> */
 `;
 
 const googleAnalyticsSnippet = `
