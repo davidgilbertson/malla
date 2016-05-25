@@ -23,12 +23,12 @@ import {StyleRoot} from 'radium';
 
 import firebaseMiddleware from './server/firebaseMiddleware.js';
 import {
-  VENDORS,
   WORDS,
 } from './constants.js';
 import routes from './routes.js';
 import store from './data/store.js';
 import Root from './components/Root/Root.jsx';
+import * as thirdPartyScripts from './server/thirdPartyScripts.js'
 
 const app = express();
 app.use(compression());
@@ -38,45 +38,13 @@ const port = process.env.PORT || 8080;
 
 const fileNames = require('../build/stats/fileNames.json');
 
-const adWordsSrc = '//www.googleadservices.com/pagead/conversion_async.js';
-const adWordsSnippet = `
-/* <![CDATA[ */
-goog_snippet_vars = function() {
-  var w = window;
-  w.google_conversion_id = 1003738231;
-  w.google_conversion_label = "oJ5mCL7h7WYQ96jP3gM";
-  w.google_remarketing_only = false;
-}
-// DO NOT CHANGE THE CODE BELOW.
-goog_report_conversion = function(url) {
-  goog_snippet_vars();
-  window.google_conversion_format = "3";
-  var opt = new Object();
-  opt.onload_callback = function() {
-  if (typeof(url) != 'undefined') {
-    window.location = url;
-  }
-}
-  var conv_handler = window['google_trackConversion'];
-  if (typeof(conv_handler) == 'function') {
-    conv_handler(opt);
-  }
-}
-/* ]]> */
-`;
-
-const googleAnalyticsSnippet = `
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-    ga('create', '${VENDORS.GOOGLE_ANALYTICS_TRACKING_ID}', 'auto');
-`;
-
 function getHtml(req, props) {
-  let scriptSrc;
+  let mallaScriptSrc;
 
   if (process.env.NODE_ENV === 'development') {
-    scriptSrc = 'http://localhost:8081/webpack-bundle.js';
+    mallaScriptSrc = 'http://localhost:8081/webpack-bundle.js';
   } else {
-    scriptSrc = `/js/${fileNames.mainJs}`;
+    mallaScriptSrc = `/js/${fileNames.mainJs}`;
   }
   
   const appHtml = renderToString(
@@ -105,20 +73,23 @@ function getHtml(req, props) {
           <meta name="msapplication-TileColor" content="#FFFFFF">
           <meta name="msapplication-TileImage" content="/favicon-144.png">
           <meta name="msapplication-config" content="/browserconfig.xml">
+          
           <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
           <script>window.MALLA_CONSTANTS=${JSON.stringify(MALLA_CONSTANTS)};</script>
-          <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300|Open+Sans:400,300' rel='stylesheet' type='text/css'>
+          
+          <link href="${thirdPartyScripts.googleFontsSrc}" rel="stylesheet" type="text/css">
 
-          <script>${googleAnalyticsSnippet}</script>
-          <script async src='https://www.google-analytics.com/analytics.js'></script>
+          <script>${thirdPartyScripts.googleAnalyticsSnippet}</script>
+          <script async src="${thirdPartyScripts.googleAnalyticsSrc}"></script>
       </head>
+      
       <body>
           <div id="app">${appHtml}</div>
       
-          <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-          <script>${adWordsSnippet}</script>
-          <script type="text/javascript" src="${adWordsSrc}"></script>
-          <script async src="${scriptSrc}"></script>
+          <script src="${thirdPartyScripts.firebaseSrc}"></script>
+          <script>${thirdPartyScripts.adWordsSnippet}</script>
+          <script type="text/javascript" src="${thirdPartyScripts.adWordsSrc}"></script>
+          <script async src="${mallaScriptSrc}"></script>
       </body>
       </html>`;
 
