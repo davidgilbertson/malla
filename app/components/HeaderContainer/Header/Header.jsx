@@ -5,7 +5,7 @@ import {Link, browserHistory} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
 
 import Button from '../../Button/Button.jsx';
-import Icon from '../../Icon/Icon.jsx';
+import SocialIcons from '../../SocialIcons/SocialIcons.jsx';
 
 import {
   BREAKPOINTS,
@@ -15,10 +15,7 @@ import {
   SIGN_IN_STATUSES,
 } from '../../../constants.js';
 
-import {
-  css,
-  share,
-} from '../../../utils';
+import {css} from '../../../utils';
 
 import {EVENTS} from '../../../tracker.js';
 
@@ -103,7 +100,6 @@ const baseStyles = {
     },
   },
 };
-
 
 const Header = ({user, updateUser, showModal, signOut, location}) => {
   const styles = cloneDeep(baseStyles);
@@ -194,63 +190,6 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         style={styles.userName}
       >{user.name}</span>
     ),
-    facebookShare: (
-      <Button
-        key="facebookShare"
-        style={styles.headerButton}
-        title="Share Malla on Facebook"
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SHARE_FACEBOOK}
-        label="Header button"
-        onClick={() => {
-          share.facebook();
-        }}
-      >
-        <Icon
-          color={COLORS.WHITE}
-          icon="facebook"
-          size={22}
-        />
-      </Button>
-    ),
-    twitterShare: (
-      <Button
-        key="twitterShare"
-        style={styles.headerButton}
-        title="Tweet about Malla"
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SHARE_TWITTER}
-        label="Header button"
-        onClick={() => {
-          share.twitter();
-        }}
-      >
-        <Icon
-          color={COLORS.WHITE}
-          icon="twitter"
-          size={22}
-        />
-      </Button>
-    ),
-    linkedInShare: (
-      <Button
-        key="linkedInShare"
-        style={styles.headerButton}
-        title="Share on LinkedIn"
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SHARE_LINKEDIN}
-        label="Header button"
-        onClick={() => {
-          share.linkedIn();
-        }}
-      >
-        <Icon
-          color={COLORS.WHITE}
-          icon="linkedin2"
-          size={22}
-        />
-      </Button>
-    ),
   };
 
   const atHome = location && location.pathname === '/';
@@ -265,6 +204,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
 
     if (signedIn) {
       actionItemElements.push(actionItems.myProjects);
+      actionItemElements.push(actionItems.signOutButton);
     } else {
       actionItemElements.push(actionItems.signInButton);
       actionItemElements.push(actionItems.signUpButton);
@@ -272,23 +212,20 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
   } else {
     actionItemElements.push(actionItems.userName);
     actionItemElements.push(actionItems.exportData);
-    actionItemElements.push(actionItems.facebookShare);
-    actionItemElements.push(actionItems.twitterShare);
-    actionItemElements.push(actionItems.linkedInShare);
 
     if (!user.showHelp && signedIn) {
       actionItemElements.push(actionItems.showHelp);
     }
+
+    actionItemElements.push(actionItems.signOutButton);
+
+    actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={HEIGHT - (GUTTER * 2)}/>);
 
     homeLink = (
       <h1 style={styles.title}>
         <Link to="/">Malla</Link>
       </h1>
     );
-  }
-
-  if (signedIn) {
-    actionItemElements.push(actionItems.signOutButton);
   }
 
   return (
