@@ -80,15 +80,17 @@ function getHtml(req, props) {
           <link href="${thirdPartyScripts.googleFontsSrc}" rel="stylesheet" type="text/css">
 
           <script>${thirdPartyScripts.googleAnalyticsSnippet}</script>
-          <script async src="${thirdPartyScripts.googleAnalyticsSrc}"></script>
       </head>
       
       <body>
           <div id="app">${appHtml}</div>
       
-          <script src="${thirdPartyScripts.firebaseSrc}"></script>
           <script>${thirdPartyScripts.adWordsSnippet}</script>
-          <script type="text/javascript" src="${thirdPartyScripts.adWordsSrc}"></script>
+          <script>${thirdPartyScripts.facebookSnippet}</script>
+          
+          <script async src="${thirdPartyScripts.googleAnalyticsSrc}"></script>
+          <script async src="${thirdPartyScripts.firebaseSrc}"></script>
+          <script async src="${thirdPartyScripts.adWordsSrc}"></script>
           <script async src="${mallaScriptSrc}"></script>
       </body>
       </html>`;
