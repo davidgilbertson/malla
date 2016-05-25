@@ -88,8 +88,8 @@ function getHtml(req, props) {
           <script>${thirdPartyScripts.adWordsSnippet}</script>
           <script>${thirdPartyScripts.facebookSnippet}</script>
           
+          <script src="${thirdPartyScripts.firebaseSrc}"></script>
           <script async src="${thirdPartyScripts.googleAnalyticsSrc}"></script>
-          <script async src="${thirdPartyScripts.firebaseSrc}"></script>
           <script async src="${thirdPartyScripts.adWordsSrc}"></script>
           <script async src="${mallaScriptSrc}"></script>
       </body>
