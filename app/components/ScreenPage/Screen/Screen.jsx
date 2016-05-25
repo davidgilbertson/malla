@@ -5,7 +5,7 @@ import Radium from 'radium';
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
 
-import {snap} from '../../../utils.js';
+import {snap} from '../../../utils';
 import {
   CLICK_LENGTH_MS,
   COLORS,

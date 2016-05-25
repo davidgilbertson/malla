@@ -18,7 +18,7 @@ import {
 
 import {
   css,
-} from '../../utils.js';
+} from '../../utils';
 
 import {EVENTS} from '../../tracker.js';
 

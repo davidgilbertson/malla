@@ -8,7 +8,7 @@ import {
   eventWasAClick,
   getDeltaXY,
   getEventDims,
-} from '../../../../utils.js';
+} from '../../../../utils';
 
 import {
   BOX_MODES,

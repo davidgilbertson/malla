@@ -13,7 +13,7 @@ import {
 } from '../../constants.js';
 import {
   css,
-} from '../../utils.js'
+} from '../../utils'
 import * as actionCreators from '../../data/actionCreators.js';
 
 import {EVENTS} from '../../tracker.js';
