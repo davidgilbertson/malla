@@ -26,7 +26,9 @@ export const EVENTS = {
     GAVE_FEEDBACK: 'Gave feedback',
     CLOSED_INTRO: 'Closed intro',
     CLICKED: {
-      SHARE: 'Share',
+      SHARE_FACEBOOK: 'Share on Facebook',
+      SHARE_TWITTER: 'Share on Twitter',
+      SHARE_LINKEDIN: 'Share on LinkedIn',
       MY_PROJECTS: 'Clicked "My projects"',
       EXPORT_DATA: 'Clicked "Export data"',
       SIGN_IN: 'Clicked "Sign in"',

@@ -3,7 +3,7 @@ import {VENDORS} from '../constants.js';
 export const facebookSnippet = `
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : 'your-app-id',
+    appId      : '1714981932088680',
     xfbml      : true,
     version    : 'v2.6'
   });

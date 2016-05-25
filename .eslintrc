@@ -27,6 +27,7 @@
     "fetch": true,
     "performance": true,
     "firebase": true,
-    "MALLA_CONSTANTS": true
+    "MALLA_CONSTANTS": true,
+    "FB": true
   }
 }
