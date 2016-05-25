@@ -21,8 +21,8 @@ const Button = (props) => {
   return (
     <button
       style={props.style}
+      title={props.title}
       onClick={onButtonClick}
-      {...props}
     >
       {props.children}
     </button>
@@ -40,6 +40,7 @@ Button.propTypes = {
   category: PropTypes.string,
   action: PropTypes.string,
   label: PropTypes.string,
+  title: PropTypes.string,
   value: PropTypes.number,
 };
 
