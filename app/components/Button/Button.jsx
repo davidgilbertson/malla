@@ -22,6 +22,7 @@ const Button = (props) => {
     <button
       style={props.style}
       onClick={onButtonClick}
+      {...props}
     >
       {props.children}
     </button>
