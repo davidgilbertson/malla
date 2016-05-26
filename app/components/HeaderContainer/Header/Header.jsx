@@ -5,6 +5,7 @@ import {Link, browserHistory} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
 
 import Button from '../../Button/Button.jsx';
+import Icon from '../../Icon/Icon.jsx';
 import SocialIcons from '../../SocialIcons/SocialIcons.jsx';
 
 import {
@@ -35,7 +36,7 @@ const baseStyles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     color: COLORS.WHITE,
-    padding: `0 ${GUTTER}px`,
+    paddingLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
   },
   title: {
     fontSize: 24,
@@ -45,14 +46,15 @@ const baseStyles = {
     alignItems: 'center',
   },
   headerButton: {
-    height: HEIGHT - (GUTTER * 2),
+    height: HEIGHT - (DIMENSIONS.LAYOUT.HEADER_SPACING * 2),
     color: COLORS.WHITE,
     background: COLORS.PRIMARY,
     padding: '0 8px',
-    marginRight: 10,
+    marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
   },
   signInOrOutButton: {
     color: COLORS.WHITE,
+    marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
   },
   homePageHeaderButton: {
     margin: '15px 15px 15px 0',
@@ -190,6 +192,25 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         style={styles.userName}
       >{user.name}</span>
     ),
+    feedback: (
+      <Button
+        key="feedback"
+        style={styles.headerButton}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.FEEDBACK}
+        label="Header button"
+        title="Tell us what you think"
+        onClick={() => {
+          showModal(MODALS.FEEDBACK);
+        }}
+      >
+        <Icon
+          color={COLORS.WHITE}
+          icon="bubble"
+          size={22}
+        />
+      </Button>
+    ),
   };
 
   const atHome = location && location.pathname === '/';
@@ -210,16 +231,18 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
       actionItemElements.push(actionItems.signUpButton);
     }
   } else {
-    actionItemElements.push(actionItems.userName);
-    actionItemElements.push(actionItems.exportData);
+    if (signedIn) {
+      actionItemElements.push(actionItems.userName);
+      actionItemElements.push(actionItems.exportData);
 
-    if (!user.showHelp && signedIn) {
-      actionItemElements.push(actionItems.showHelp);
+      if (!user.showHelp) {
+        actionItemElements.push(actionItems.showHelp);
+      }
+      actionItemElements.push(actionItems.signOutButton);
+      actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={HEIGHT - (DIMENSIONS.LAYOUT.HEADER_SPACING * 2)}/>);
+
+      actionItemElements.push(actionItems.feedback);
     }
-
-    actionItemElements.push(actionItems.signOutButton);
-
-    actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={HEIGHT - (GUTTER * 2)}/>);
 
     homeLink = (
       <h1 style={styles.title}>

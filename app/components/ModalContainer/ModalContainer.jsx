@@ -18,6 +18,9 @@ const mapDispatchToProps = dispatch => {
     setInteraction: interaction => {
       dispatch(actions.setInteraction(interaction));
     },
+    sendFeedback: feedback => {
+      actions.sendFeedback(feedback);
+    },
   };
 };
 

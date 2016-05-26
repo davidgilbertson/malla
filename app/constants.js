@@ -43,6 +43,7 @@ export const MODALS = {
   NONE: 'NONE',
   EXPORT_DATA: 'EXPORT_DATA',
   SOCIAL_SIGN_IN: 'SOCIAL_SIGN_IN',
+  FEEDBACK: 'FEEDBACK',
 };
 
 export const GRID_SIZE = 10;
@@ -70,6 +71,7 @@ export const BREAKPOINTS = {
 export const DIMENSIONS = {
   LAYOUT: {
     HEADER_HEIGHT: 48,
+    HEADER_SPACING: 6,
     HEADER_HEIGHT_HOME: 64,
     TOOLBAR_WIDTH: 120,
   },

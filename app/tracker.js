@@ -17,6 +17,7 @@ export const EVENTS = {
     SIGNED_IN: 'Signed in', // a database thing
     SIGNED_OUT: 'Signed out', // a database thing
     DATA_LOAD_TIME: 'Data load time',
+    SENT_FEEDBACK: 'Sent feedback',
     
     // UI interaction
     OPENED_MODAL: 'Opened modal',
@@ -31,6 +32,7 @@ export const EVENTS = {
       SHARE_LINKEDIN: 'Shared on LinkedIn',
       MY_PROJECTS: 'Clicked "My projects"',
       EXPORT_DATA: 'Clicked "Export data"',
+      FEEDBACK: 'Clicked "Feedback"',
       SIGN_IN: 'Clicked "Sign in"',
       SIGN_IN_WITH_FACEBOOK: 'Clicked "Sign in with Facebook"',
       SIGN_IN_WITH_GOOGLE: 'Clicked "Sign in with Google"',

@@ -16,7 +16,7 @@ const ref = firebase.database().ref();
 
 app.use(express.static('dashboard'));
 
-app.get('/data', (req, res) => {
+app.get('/users', (req, res) => {
   return ref.child('users').once('value', usersSnap => {
     const userList = usersSnap.val();
     const userKeys = Object.keys(userList);
@@ -31,6 +31,22 @@ app.get('/data', (req, res) => {
     });
 
     res.send(users);
+  });
+});
+
+app.get('/metadata/feedback', (req, res) => {
+  return ref.child('metadata/feedback').once('value', feedbackSnap => {
+    const commentList = feedbackSnap.val();
+
+    const comments = Object.keys(commentList).map(key => {
+      const comments = commentList[key];
+
+      comments.key = key;
+
+      return comments;
+    });
+
+    res.send(comments);
   });
 });
 

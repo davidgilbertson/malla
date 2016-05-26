@@ -10,22 +10,22 @@ const makeEl = (tagName = 'div', text, className) => {
   return el;
 };
 
-function makeUserDom(users) {
+const fetchJson = url => fetch(url).then(response => response.json());
+
+function makeFeedbackDom(feedback) {
   const tableEl = makeEl('table', null, 'user-table');
 
   const headerRowEl = makeEl('tr', null, 'user-table-header');
-  headerRowEl.appendChild(makeEl('th', 'Name'));
-  headerRowEl.appendChild(makeEl('th', 'Key'));
-  headerRowEl.appendChild(makeEl('th', 'Boxes'));
-  headerRowEl.appendChild(makeEl('th', 'Last sign in (local)'));
+  headerRowEl.appendChild(makeEl('th', 'Comment'));
+  headerRowEl.appendChild(makeEl('th', 'User'));
+  headerRowEl.appendChild(makeEl('th', 'Date'));
   tableEl.appendChild(headerRowEl);
 
-  users.forEach(user => {
-    const rowEl = makeEl('tr', null, 'user-row');
-    rowEl.appendChild(makeEl('td', user.name));
-    rowEl.appendChild(makeEl('td', user.key));
-    rowEl.appendChild(makeEl('td', user.boxCount));
-    rowEl.appendChild(makeEl('td', new Date(user.lastSignIn).toLocaleString()));
+  feedback.forEach(comment => {
+    const rowEl = makeEl('tr', null, 'comment-row');
+    rowEl.appendChild(makeEl('td', comment.comment));
+    rowEl.appendChild(makeEl('td', comment.user.name));
+    rowEl.appendChild(makeEl('td', new Date(comment.date).toLocaleString()));
 
     tableEl.appendChild(rowEl);
   });
@@ -33,23 +33,50 @@ function makeUserDom(users) {
   return Promise.resolve(tableEl);
 }
 
-function getUsers() {
-  return fetch('/data')
-  .then(response => response.json())
-  .then(data => {
-    return Promise.resolve(data);
+function makeUserDom(users) {
+  const tableEl = makeEl('table', null, 'user-table');
+
+  const headerRowEl = makeEl('tr', null, 'user-table-header');
+  headerRowEl.appendChild(makeEl('th', 'Name'));
+  headerRowEl.appendChild(makeEl('th', 'Boxes'));
+  headerRowEl.appendChild(makeEl('th', 'Last sign in (local)'));
+  headerRowEl.appendChild(makeEl('th', 'Key'));
+  tableEl.appendChild(headerRowEl);
+
+  users.forEach(user => {
+    const rowEl = makeEl('tr', null, 'user-row');
+    rowEl.appendChild(makeEl('td', user.name));
+    rowEl.appendChild(makeEl('td', user.boxCount));
+    rowEl.appendChild(makeEl('td', new Date(user.lastSignIn).toLocaleString()));
+    rowEl.appendChild(makeEl('td', user.key));
+
+    tableEl.appendChild(rowEl);
   });
+
+  return Promise.resolve(tableEl);
 }
 
-function render() {
-  getUsers()
-  .then(makeUserDom)
-  .then(userDom => {
-    getEl('.user-wrapper').appendChild(userDom);
-  })
-  .catch(err => {
-    console.log('Error fetching data:', err);
-  });
+function renderFeedback() {
+  fetchJson('/metadata/feedback')
+    .then(makeFeedbackDom)
+    .then(dom => {
+      getEl('.feedback-wrapper').appendChild(dom);
+    })
+    .catch(err => {
+      console.log('Error fetching data:', err);
+    });
 }
 
-render();
+function renderUsers() {
+  fetchJson('/users')
+    .then(makeUserDom)
+    .then(dom => {
+      getEl('.user-wrapper').appendChild(dom);
+    })
+    .catch(err => {
+      console.log('Error fetching data:', err);
+    });
+}
+
+renderFeedback();
+renderUsers();

@@ -2,3 +2,21 @@ body {
   font-family: Helvetica, Arial, "Open Sans", sans-serif;
   color: #333;
 }
+
+table {
+  border-collapse: collapse;
+}
+
+table th {
+  padding: 10px 20px;
+  border-bottom: 2px solid lightgrey;
+}
+
+table tr:nth-of-type(2) {
+  padding-top: 50px;
+}
+
+table td {
+  padding: 5px 20px;
+  border-bottom: 1px solid lightgrey;
+}

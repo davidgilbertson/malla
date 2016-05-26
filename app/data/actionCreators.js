@@ -118,3 +118,12 @@ export function signOut() {
 
   browserHistory.push('/');
 }
+
+export function sendFeedback(feedback) {
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.SYSTEM,
+    action: tracker.EVENTS.ACTIONS.SENT_FEEDBACK,
+  });
+
+  firebaseActions.sendFeedback(feedback);
+}

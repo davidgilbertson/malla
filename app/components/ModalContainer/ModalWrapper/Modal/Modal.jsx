@@ -102,7 +102,7 @@ class Modal extends Component {
             style={styles.okButton}
             onClick={this.props.hideModal}
           >
-            OK
+            {this.props.okText || 'OK'}
           </Button>
         </div>
       ) : null;
@@ -151,6 +151,7 @@ Modal.propTypes = {
   hideModal: PropTypes.func.isRequired,
   width: PropTypes.number,
   showOK: PropTypes.bool,
+  okText: PropTypes.string,
 };
 
 export default Radium(Modal);

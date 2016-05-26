@@ -5,6 +5,7 @@ import Radium from 'radium';
 import {
   BREAKPOINTS,
   COLORS,
+  DIMENSIONS,
 } from '../../constants.js';
 import {EVENTS} from '../../tracker.js';
 import {share} from '../../utils';
@@ -18,7 +19,7 @@ let SocialIcons = props => {
       color: COLORS.WHITE,
       background: COLORS.PRIMARY,
       padding: '0 8px',
-      marginRight: 10,
+      marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
     },
     showForTabletLandscapeUp: {
       display: 'none',

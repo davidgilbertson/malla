@@ -223,6 +223,14 @@ export function removeBox(boxKey) {
   });
 }
 
+export function sendFeedback(feedback) {
+  db.child('metadata/feedback').push({
+    comment: feedback,
+    date: new Date().toISOString(),
+    user: reduxStore.getState().user,
+  });
+}
+
 export function init(store) {
   reduxStore = store;
 
