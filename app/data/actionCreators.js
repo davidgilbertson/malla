@@ -79,27 +79,7 @@ export function hideModal() {
 
 /*  --  USERS  --  */
 export function signIn(provider) {
-  firebaseActions
-    .signIn(provider)
-    .then(({user, isNewUser}) => {
-      let action;
-
-      if (isNewUser) {
-        action = tracker.EVENTS.ACTIONS.SIGNED_UP;
-      } else {
-        action = tracker.EVENTS.ACTIONS.SIGNED_IN;
-      }
-
-      tracker.setUserDetails(user);
-
-      tracker.sendEvent({
-        category: tracker.EVENTS.CATEGORIES.SYSTEM,
-        action: action,
-      });
-    })
-    .catch(err => {
-      console.warn('Error signing in.', err);
-    });
+  firebaseActions.signIn(provider);
 }
 
 export function updateUser(newProps) {

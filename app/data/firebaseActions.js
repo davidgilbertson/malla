@@ -1,4 +1,5 @@
 import {getApp} from './firebaseApp.js';
+import * as tracker from '../tracker.js';
 
 let db;
 let firebaseApp;
@@ -6,10 +7,11 @@ let reduxStore;
 
 /*  --  USERS  --  */
 
-function normalizeProviderData(authData) {
-  const providerData = authData.providerData[0] || {};
+function normalizeProviderData(rawUser) {
+  const providerData = rawUser.providerData[0] || {};
 
   return {
+    uid: rawUser.uid,
     name: providerData.displayName || '',
     email: providerData.email || '',
     profileImageURL: providerData.profileImageURL || providerData.photoURL || '',
@@ -115,21 +117,13 @@ export function signIn(providerString) {
   return firebaseApp
     .auth()
     .signInWithPopup(provider)
-    .then(checkIfUserExists)
-    .then(({authData, isNewUser, existingUser}) => {
-      let user;
+    // Note that the sign in isn't processed here. It's in firebaseWatcher.js
+    .catch(err => {
+      err && console.warn('Error signing in:', err);
 
-      if (isNewUser) {
-        user = createUser(authData.user);
-      } else {
-        updateUser({
-          lastSignIn: new Date().toISOString(),
-        });
-        user = existingUser;
-        // TODO (davidg): else update the record if profile pic or something changed?
-      }
-
-      return Promise.resolve({user, isNewUser});
+      firebaseApp
+        .auth()
+        .signInWithRedirect(provider);
     });
 }
 
@@ -142,14 +136,47 @@ export function updateUser(newProps) {
     .update(newProps);
 }
 
-function checkIfUserExists(authData) {
+function createOrUpdateUser({user, isNewUser, existingUser}) {
+  let resultUser;
+  let action;
+
+  if (isNewUser) {
+    action = tracker.EVENTS.ACTIONS.SIGNED_UP;
+
+    resultUser = createUser(user);
+  } else {
+    action = tracker.EVENTS.ACTIONS.SIGNED_IN;
+
+    updateUser({
+      lastSignIn: new Date().toISOString(),
+    });
+
+    resultUser = existingUser;
+    // TODO (davidg): else update the record if profile pic or something changed?
+  }
+
+  tracker.setUserDetails(resultUser);
+
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.SYSTEM,
+    action: action,
+  });
+
+  return Promise.resolve(resultUser);
+}
+
+export function handleSignIn(user) {
+  return checkIfUserExists(user).then(createOrUpdateUser);
+}
+
+function checkIfUserExists(user) {
   return db
     .child('users')
-    .child(authData.user.uid)
+    .child(user.uid)
     .once('value')
     .then(dataSnapshot => {
       return Promise.resolve({
-        authData,
+        user,
         isNewUser: !dataSnapshot.exists(),
         existingUser: dataSnapshot.exists() && dataSnapshot.val(),
       });

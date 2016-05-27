@@ -1,5 +1,7 @@
 import {ACTIONS} from '../constants.js';
 import {getApp} from './firebaseApp.js';
+import * as firebaseActions from './firebaseActions.js';
+
 let isSignedIn = false;
 let store;
 
@@ -82,28 +84,29 @@ function onUserChange(userDataSnapshot) {
   }
 }
 
+function startListening(user) {
+  const db = getApp().database().ref();
+  const userRef = db.child('users').child(user.uid);
+
+  TYPES.PROJECT.dbRef = db.child(TYPES.PROJECT.dbPath);
+  TYPES.SCREEN.dbRef = db.child(TYPES.SCREEN.dbPath);
+  TYPES.BOX.dbRef = db.child(TYPES.BOX.dbPath);
+
+  userRef.on('value', onUserChange);
+  firebaseWatcher.watchList(userRef.child('projectKeys'), TYPES.PROJECT);
+  firebaseWatcher.watchList(userRef.child('screenKeys'), TYPES.SCREEN);
+  firebaseWatcher.watchList(userRef.child('boxKeys'), TYPES.BOX);
+}
+
 export default {
   bindToStore: (reduxStore) => {
     store = reduxStore;
 
-    const firebaseApp = getApp();
-
-
-    firebaseApp.auth().onAuthStateChanged((user) => {
+    getApp().auth().onAuthStateChanged(user => {
       if (user && !isSignedIn) { // user has just signed in
         isSignedIn = true;
-
-        const db = firebaseApp.database().ref();
-        const userRef = db.child('users').child(user.uid);
-
-        TYPES.PROJECT.dbRef = db.child(TYPES.PROJECT.dbPath);
-        TYPES.SCREEN.dbRef = db.child(TYPES.SCREEN.dbPath);
-        TYPES.BOX.dbRef = db.child(TYPES.BOX.dbPath);
-
-        userRef.on('value', onUserChange);
-        firebaseWatcher.watchList(userRef.child('projectKeys'), TYPES.PROJECT);
-        firebaseWatcher.watchList(userRef.child('screenKeys'), TYPES.SCREEN);
-        firebaseWatcher.watchList(userRef.child('boxKeys'), TYPES.BOX);
+        
+        firebaseActions.handleSignIn(user).then(startListening);
       }
 
       if (isSignedIn && !user) { // user is signing out
