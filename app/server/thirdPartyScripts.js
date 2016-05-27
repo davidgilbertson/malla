@@ -51,5 +51,4 @@ export const googleAnalyticsSnippet = `
 `;
 
 export const googleAnalyticsSrc = 'https://www.google-analytics.com/analytics.js';
-export const firebaseSrc = 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js';
 export const googleFontsSrc = 'https://fonts.googleapis.com/css?family=Roboto+Slab:400,300|Open+Sans:400,300';
