@@ -162,7 +162,7 @@ function createOrUpdateUser({user, isNewUser, existingUser}) {
     action: action,
   });
 
-  return Promise.resolve(resultUser);
+  return Promise.resolve(user);
 }
 
 export function handleSignIn(user) {
