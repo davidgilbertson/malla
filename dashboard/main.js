@@ -13,6 +13,12 @@ const makeEl = (tagName = 'div', text, className) => {
 const fetchJson = url => fetch(url).then(response => response.json());
 
 function makeFeedbackDom(feedback) {
+  feedback.sort((a, b) => {
+    const aDate = +new Date(a.date);
+    const bDate = +new Date(b.date);
+    return bDate - aDate;
+  });
+
   const tableEl = makeEl('table', null, 'user-table');
 
   const headerRowEl = makeEl('tr', null, 'user-table-header');
@@ -34,6 +40,12 @@ function makeFeedbackDom(feedback) {
 }
 
 function makeUserDom(users) {
+  users.sort((a, b) => {
+    const aDate = +new Date(a.lastSignIn);
+    const bDate = +new Date(b.lastSignIn);
+    return bDate - aDate;
+  });
+
   const tableEl = makeEl('table', null, 'user-table');
 
   const headerRowEl = makeEl('tr', null, 'user-table-header');
