@@ -206,7 +206,7 @@ class HomePage extends Component {
             this.props.showModal(MODALS.SOCIAL_SIGN_IN);
           }}
         >
-          {MALLA_TEXT.title}
+          {MALLA_TEXT.signUp}
         </Button>
 
         <div style={styles.faqWrapper}>
