@@ -1,0 +1,149 @@
+/*small: 30*/
+/*med: 50*/
+/*large: 80*/
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.header {
+  background-color: darkblue;
+  color: white;
+  height: 160px;
+}
+
+.header__text {
+  height: 80px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.header__title {
+
+}
+
+.header__actions {
+  display: flex;
+  flex-flow: row;
+}
+
+.header__actions__social {
+  display: flex;
+  flex-flow: row;
+}
+
+.workspace {
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  right: 80px;
+  bottom: 30px;
+  background: white;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+  transition: top 300ms, left 300ms 300ms, right 300ms 300ms;
+}
+
+.workspace__header {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 10px;
+  border-bottom: 1px solid gray;
+  color: gray;
+  transition: 300ms;
+}
+
+.workspace__header__toolbox {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+.workspace__header__toolbox__tool {
+  height: 50px;
+  width: 100px;
+  padding: 15px 0;
+  text-align: center;
+  border: 1px solid gray;
+}
+
+.workspace__header__toolbox__tool:first-of-type {
+  background: orangered;
+  color: white;
+}
+
+.workspace__canvas {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('grid-dot-gray_20x20.gif');
+  background-size: 10px 10px;
+  overflow: auto;
+  transition: 300ms;
+}
+
+
+.workspace__canvas__box {
+  position: absolute;
+}
+
+.workspace__canvas__box--label {
+  top: 80px;
+  left: 80px;
+  width: 500px;
+  height: 80px;
+  color: darkblue;
+}
+
+.workspace__canvas__box--text {
+  top: 160px;
+  left: 80px;
+  width: 500px;
+  height: 80px;
+  color: black;
+  font-family: serif;
+  border: 1px dotted gray;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 7px;
+  height: 30px;
+  z-index: 1;
+  color: white;
+  background: black;
+}
+
+@media (max-width: 1000px) {
+  .workspace {
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: top 300ms 300ms, left 300ms, right 300ms;
+  }
+
+  .workspace__header {
+    height: 50px;
+    transition: 300ms 300ms;
+  }
+
+  .workspace__canvas {
+    top: 50px;
+    transition: 300ms 300ms;
+  }
+}
