@@ -133,7 +133,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
-        {MALLA_TEXT.title}
+        {MALLA_TEXT.signUp}
       </Button>
     ),
     exportData: (
