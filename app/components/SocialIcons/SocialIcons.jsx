@@ -6,6 +6,7 @@ import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
+  ICONS,
 } from '../../constants.js';
 import {EVENTS} from '../../tracker.js';
 import {share} from '../../utils';
@@ -49,21 +50,21 @@ let SocialIcons = props => {
   };
 
   const facebookButton = makeButton({
-    icon: 'facebook',
+    icon: ICONS.FACEBOOK,
     title: 'Share Malla on Facebook',
     action: EVENTS.ACTIONS.CLICKED.SHARE_FACEBOOK,
     onClick: share.facebook,
   });
 
   const twitterButton = makeButton({
-    icon: 'twitter',
+    icon: ICONS.TWITTER,
     title: 'Tweet about Malla',
     action: EVENTS.ACTIONS.CLICKED.SHARE_TWITTER,
     onClick: share.twitter,
   });
 
   const linkedInButton = makeButton({
-    icon: 'linkedin2',
+    icon: ICONS.LINKEDIN2,
     title: 'Share on LinkedIn',
     action: EVENTS.ACTIONS.CLICKED.SHARE_LINKEDIN,
     onClick: share.linkedIn,

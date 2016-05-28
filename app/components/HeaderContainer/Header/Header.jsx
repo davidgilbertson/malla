@@ -12,6 +12,7 @@ import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
+  ICONS,
   MODALS,
   SIGN_IN_STATUSES,
 } from '../../../constants.js';
@@ -206,7 +207,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
       >
         <Icon
           color={COLORS.WHITE}
-          icon="bubble"
+          icon={ICONS.BUBBLE}
           size={22}
         />
       </Button>
