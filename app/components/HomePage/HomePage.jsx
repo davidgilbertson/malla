@@ -83,6 +83,7 @@ const styles = {
   },
   boxDescription: {
     marginTop: 10,
+    whiteSpace: 'pre-wrap',
   },
   video: {
     display: 'block',
@@ -146,6 +147,7 @@ const styles = {
     color: COLORS.WHITE,
     marginTop: 10,
     fontSize: 18,
+    whiteSpace: 'pre-wrap',
   },
 };
 
@@ -169,27 +171,27 @@ class HomePage extends Component {
       <div style={styles.main}>
         <Style rules={styles.css} />
 
-        <h1 style={styles.title}>{WORDS.MALLA}</h1>
+        <h1 style={styles.title}>{MALLA_TEXT.title}</h1>
 
-        <div style={styles.subTitle}>{WORDS.SLOGAN}</div>
+        <div style={styles.subTitle}>{MALLA_TEXT.slogan}</div>
 
         <div style={styles.boxesWrapper}>
           <div style={styles.box}>
-            <h2 style={styles.boxTitle}>Super fast</h2>
+            <h2 style={styles.boxTitle}>{MALLA_TEXT.box1Title}</h2>
 
-            <p style={styles.boxDescription}>Update your site's copy in seconds. Just click, drag, type.</p>
+            <p style={styles.boxDescription}>{MALLA_TEXT.box1Desc}</p>
           </div>
 
           <div style={styles.box}>
-            <h2 style={styles.boxTitle}>Collaborative</h2>
+            <h2 style={styles.boxTitle}>{MALLA_TEXT.box2Title}</h2>
 
-            <p style={styles.boxDescription}>As you type, the layout instantly updates for all connected users.</p>
+            <p style={styles.boxDescription}>{MALLA_TEXT.box2Desc}</p>
           </div>
 
           <div style={styles.box}>
-            <h2 style={styles.boxTitle}>Simple API</h2>
+            <h2 style={styles.boxTitle}>{MALLA_TEXT.box3Title}</h2>
 
-            <p style={styles.boxDescription}>A single URL.<br/>Seriously.</p>
+            <p style={styles.boxDescription}>{MALLA_TEXT.box3Desc}</p>
           </div>
         </div>
 
@@ -204,33 +206,18 @@ class HomePage extends Component {
             this.props.showModal(MODALS.SOCIAL_SIGN_IN);
           }}
         >
-          Sign up for free
+          {MALLA_TEXT.title}
         </Button>
 
         <div style={styles.faqWrapper}>
-          <h2 style={styles.question}>Sounds marvelous, but what exactly is it?</h2>
+          <h2 style={styles.question}>{MALLA_TEXT.question1}</h2>
+          <p style={styles.answer}>{MALLA_TEXT.answer1}</p>
 
-          <p style={styles.answer}>
-            Malla is a centralized place to store the text in your website or app, so that it isn't buried in code.
-            It gives the control back to those who write the copy and takes the burden off of developers.
-          </p>
+          <h2 style={styles.question}>{MALLA_TEXT.question2}</h2>
+          <p style={styles.answer}>{MALLA_TEXT.answer2}</p>
 
-          <h2 style={styles.question}>So... it's a CMS?</h2>
-
-          <p style={styles.answer}>
-            Close, but not quite. Malla is designed to make it easy to store <em>any</em> text from
-            your website or mobile app: headings, intros, buttons, disclaimers... you get the idea.
-            <br/>
-            And since it doesn't focus on articles and pages and pictures like a CMS does, it's
-            much simpler, and much faster than a typical CMS.
-            Check out the video above to see how easy it is.
-          </p>
-
-          <h2 style={styles.question}>How do I get started?</h2>
-
-          <p style={styles.answer}>
-            An excellent question. Just sign up, it's free and you'll be up and running in seconds.
-          </p>
+          <h2 style={styles.question}>{MALLA_TEXT.question3}</h2>
+          <p style={styles.answer}>{MALLA_TEXT.answer3}</p>
         </div>
       </div>
     );

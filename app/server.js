@@ -29,16 +29,21 @@ import routes from './routes.js';
 import store from './data/store.js';
 import Root from './components/Root/Root.jsx';
 import * as thirdPartyScripts from './server/thirdPartyScripts.js'
+import * as mallaText from './data/loadMallaText.js';
 
 const app = express();
 app.use(compression());
 app.use(express.static('public', {maxAge: '1000d'}));
 
+mallaText.startListening();
 const port = process.env.PORT || 8080;
 
 const fileNames = require('../build/stats/fileNames.json');
 
-function getHtml(req, props) {
+
+function getHtml(req, props, MALLA_TEXT) {
+  global.MALLA_TEXT = MALLA_TEXT;
+  
   let mallaScriptSrc;
 
   if (process.env.NODE_ENV === 'development') {
@@ -57,8 +62,8 @@ function getHtml(req, props) {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>${WORDS.MALLA} | ${WORDS.SLOGAN}</title>
-          <meta name="description" content="${WORDS.MALLA} | ${WORDS.SLOGAN}">
+          <title>${MALLA_TEXT.title} | ${MALLA_TEXT.slogan}</title>
+          <meta name="description" content="${MALLA_TEXT.title} | ${MALLA_TEXT.slogan}">
           <link rel="shortcut icon" href="/favicon.ico">
           <link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
           <link rel="apple-touch-icon" href="/favicon-57.png">
@@ -74,6 +79,7 @@ function getHtml(req, props) {
           <meta name="msapplication-TileImage" content="/favicon-144.png">
           <meta name="msapplication-config" content="/browserconfig.xml">
           
+          <script>window.MALLA_TEXT=${JSON.stringify(MALLA_TEXT)};</script>
           <script>window.MALLA_STATE=${JSON.stringify(store.getState())};</script>
           <script>window.MALLA_CONSTANTS=${JSON.stringify(MALLA_CONSTANTS)};</script>
           
@@ -106,7 +112,11 @@ app.get('*', (req, res) => {
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search);
     } else if (props) {
-      res.send(getHtml(req, props));
+      mallaText
+        .getText()
+        .then(mallaText => {
+          res.send(getHtml(req, props, mallaText));
+        })
     } else {
       res.status(404).send('Not Found');
     }

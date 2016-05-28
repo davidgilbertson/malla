@@ -119,7 +119,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
-        Sign in
+        {MALLA_TEXT.signIn}
       </Button>
     ),
     signUpButton: (
@@ -133,7 +133,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
           showModal(MODALS.SOCIAL_SIGN_IN);
         }}
       >
-        Sign up for free
+        {MALLA_TEXT.title}
       </Button>
     ),
     exportData: (

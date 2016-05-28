@@ -28,6 +28,7 @@
     "performance": true,
     "firebase": true,
     "MALLA_CONSTANTS": true,
+    "MALLA_TEXT": true,
     "FB": true
   }
 }

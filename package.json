@@ -21,6 +21,7 @@
     "compression": "^1.6.1",
     "express": "^4.13.4",
     "firebase": "^3.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "json-loader": "^0.5.4",
     "lodash": "^4.11.1",
     "radium": "^0.17.1",
@@ -66,7 +67,7 @@
     "start": "node index.js",
     "monitor": "nodemon index.js",
     "build": "node build/buildForProd.js",
-    "dev": "nodemon startDevMode.js",
+    "dev": "nodemon startDevMode.js  --ignore *.json",
     "deploy": "npm run build && gcloud preview app deploy",
     "heroku-postbuild": "npm run build"
   },
