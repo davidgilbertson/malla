@@ -51,21 +51,21 @@ let SocialIcons = props => {
 
   const facebookButton = makeButton({
     icon: ICONS.FACEBOOK,
-    title: 'Share Malla on Facebook',
+    title: MALLA_TEXT.shareFacebookTooltip,
     action: EVENTS.ACTIONS.CLICKED.SHARE_FACEBOOK,
     onClick: share.facebook,
   });
 
   const twitterButton = makeButton({
     icon: ICONS.TWITTER,
-    title: 'Tweet about Malla',
+    title: MALLA_TEXT.shareTwitterTooltip,
     action: EVENTS.ACTIONS.CLICKED.SHARE_TWITTER,
     onClick: share.twitter,
   });
 
   const linkedInButton = makeButton({
     icon: ICONS.LINKEDIN2,
-    title: 'Share on LinkedIn',
+    title: MALLA_TEXT.shareLinkedInTooltip,
     action: EVENTS.ACTIONS.CLICKED.SHARE_LINKEDIN,
     onClick: share.linkedIn,
   });

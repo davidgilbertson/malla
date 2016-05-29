@@ -157,8 +157,7 @@ class Screen extends Component {
         <footer
           style={styles.betaFooter}
         >
-          This is a beta release of Malla. It is not covered by any SLA or deprecation policy.
-          It is not recommended for use in production applications.
+          {MALLA_TEXT.betaDisclaimer}
         </footer>
       </div>
     );

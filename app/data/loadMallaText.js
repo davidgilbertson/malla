@@ -8,26 +8,37 @@ const textFilePath = path.resolve(__dirname, 'mallaText.json');
 function parseResponse(raw) {
   return {
     title: raw.title,
-    slogan: raw.label18,
-    box1Title: raw.label20,
-    box1Desc: raw.label22,
-    box2Title: raw.label24,
-    box2Desc: raw.label26,
-    box3Title: raw.label28,
-    box3Desc: raw.label30,
+    siteName: raw.title,
+    slogan: raw.label2,
+    box1Title: raw.label4,
+    box1Desc: raw.label6,
+    box2Title: raw.label12,
+    box2Desc: raw.label10,
+    box3Title: raw.label8,
+    box3Desc: raw.label14,
+    signUpLong: raw.label16,
+    question1: raw.label18,
+    answer1: raw.label20,
+    question2: raw.label22,
+    answer2: raw.label24,
+    question3: raw.label26,
+    answer3: raw.label28,
+    signIn: raw.label30,
     signUp: raw.label32,
-    question1: raw.label34,
-    answer1: raw.label36,
-    question2: raw.label38,
-    answer2: raw.label40,
-    question3: raw.label42,
-    answer3: raw.label44,
-    signIn: raw.label46,
+    signOut: raw.label34,
+    apiButtonShort: raw.label48,
+    apiButtonLong: raw.label36,
+    help: raw.label38,
+    shareFacebookTooltip: raw.label40,
+    shareTwitterTooltip: raw.label42,
+    shareLinkedInTooltip: raw.label44,
+    feedbackTooltip: raw.label46,
+    betaDisclaimer: raw.label50,
   }
 }
 
 function fetchMallaText() {
-  return fetch('http://www.malla.io/api/-KIRExHFXrjH0sHOiN23.json')
+  return fetch('http://www.malla.io/api/-KIu8pHPr8i9oyLh56Ok.json')
     .then(response => response.json())
     .then(data => {
       textCache = parseResponse(data);

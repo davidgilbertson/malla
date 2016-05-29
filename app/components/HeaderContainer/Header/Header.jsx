@@ -147,8 +147,8 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
           showModal(MODALS.EXPORT_DATA);
         }}
       >
-        <span style={styles.showForPhoneOnly}>API</span>
-        <span style={styles.showForTabletPortraitUp}>For developers</span>
+        <span style={styles.showForPhoneOnly}>{MALLA_TEXT.apiButtonShort}</span>
+        <span style={styles.showForTabletPortraitUp}>{MALLA_TEXT.apiButtonLong}</span>
       </Button>
     ),
     showHelp: (
@@ -163,7 +163,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
             showHelp: true,
           });
         }}
-      >Help</Button>
+      >{MALLA_TEXT.help}</Button>
     ),
     signOutButton: (
       <Button
@@ -173,7 +173,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         category={EVENTS.CATEGORIES.UI_INTERACTION}
         action={EVENTS.ACTIONS.CLICKED.SIGN_OUT}
         label="Header button"
-      >Sign out</Button>
+      >{MALLA_TEXT.signOut}</Button>
     ),
     myProjects: (
       <Button
@@ -200,7 +200,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         category={EVENTS.CATEGORIES.UI_INTERACTION}
         action={EVENTS.ACTIONS.CLICKED.FEEDBACK}
         label="Header button"
-        title="Tell us what you think"
+        title={MALLA_TEXT.feedbackTooltip}
         onClick={() => {
           showModal(MODALS.FEEDBACK);
         }}
@@ -247,7 +247,7 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
 
     homeLink = (
       <h1 style={styles.title}>
-        <Link to="/">Malla</Link>
+        <Link to="/">{MALLA_TEXT.siteName}</Link>
       </h1>
     );
   }

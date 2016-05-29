@@ -1,5 +1,6 @@
 {
   "title": "Malla",
+  "siteName": "Malla",
   "slogan": "A super-simple way to manage the text for your website or app.",
   "box1Title": "Super fast",
   "box1Desc": "Update your site's copy in seconds. Just click, drag, type.",
@@ -7,12 +8,22 @@
   "box2Desc": "As you type, the layout instantly updates for all connected users.",
   "box3Title": "Simple API",
   "box3Desc": "A single URL.\nSeriously.",
-  "signUp": "Sign up - it's free!",
+  "signUpLong": "Sign up - it's free!",
   "question1": "Sounds marvelous, but what exactly is it?",
   "answer1": "Malla is a centralized place to store the text in your website or app, so that it isn't buried in code. It gives the control back to those who write the copy and takes the burden off of developers.",
   "question2": "So... it's a CMS?",
   "answer2": "Close, but not quite. Malla is designed to make it easy to store any text from your website or mobile app: headings, intros, buttons, disclaimers... you get the idea.\nAnd since it doesn't focus on articles and pages and pictures like a CMS does, it's much simpler, and much faster than a typical CMS. Check out the video above to see how easy it is.",
   "question3": "How do I get started?",
   "answer3": "An excellent question! Just sign up. It's free and you'll be up and running in seconds.",
-  "signIn": "Sign in"
+  "signIn": "Sign in",
+  "signUp": "Sign up",
+  "signOut": "Sign out",
+  "apiButtonShort": "API",
+  "apiButtonLong": "For developers",
+  "help": "Help",
+  "shareFacebookTooltip": "Share Malla on Facebook",
+  "shareTwitterTooltip": "Tweet about Malla",
+  "shareLinkedInTooltip": "Share on LinkedIn",
+  "feedbackTooltip": "Tell us what you think",
+  "betaDisclaimer": "This is a beta release of Malla. It is not covered by any SLA or deprecation policy."
 }
