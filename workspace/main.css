@@ -12,9 +12,9 @@ body {
 }
 
 .header {
-  background-color: darkblue;
+  background-color: royalblue;
   color: white;
-  height: 160px;
+  height: 240px;
 }
 
 .header__text {
@@ -38,6 +38,10 @@ body {
 .header__actions__social {
   display: flex;
   flex-flow: row;
+}
+
+.header__actions__social-icon {
+  margin-right: 10px;
 }
 
 .workspace {
@@ -104,7 +108,7 @@ body {
   left: 80px;
   width: 500px;
   height: 80px;
-  color: darkblue;
+  color: royalblue;
 }
 
 .workspace__canvas__box--text {
