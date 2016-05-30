@@ -4,24 +4,38 @@ import Radium from 'radium';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
+import ScreenHeader from '../ScreenHeader/ScreenHeader.jsx';
 
-import {snap} from '../../../utils';
 import {
+  css,
+  snap,
+} from '../../../utils';
+
+import {
+  BREAKPOINTS,
   CLICK_LENGTH_MS,
   COLORS,
   DIMENSIONS,
   GRID_SIZE,
-  Z_INDEXES,
 } from '../../../constants.js';
 
 const styles = {
-  page: {
+  workspace: {
+    position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh',
-    paddingTop: DIMENSIONS.LAYOUT.HEADER_HEIGHT,
+    left: 0,
+    right: 0,
+    top: DIMENSIONS.SPACE_L,
+    bottom: DIMENSIONS.SPACE_M,
+    background: COLORS.WHITE,
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      left: DIMENSIONS.SPACE_M,
+      right: DIMENSIONS.SPACE_M,
+      ...css.shadow('large'),
+    }
   },
-  main: {
+  canvas: {
     flex: '0 1 100%',
     position: 'relative', // to contain absolute descendants
     overflow: 'auto',
@@ -29,7 +43,7 @@ const styles = {
     backgroundSize: '10px 10px',
     backgroundPosition: '1px 1px',
     cursor: 'crosshair',
-    boxShadow: `inset 1px 1px ${COLORS.WHITE}`, // covers the first dots
+    boxShadow: `inset 1px 1px ${COLORS.WHITE}, inset -2px -2px ${COLORS.WHITE}`, // covers dots near the edge
   },
   betaFooter: {
     position: 'fixed',
@@ -37,10 +51,10 @@ const styles = {
     right: 0,
     bottom: 0,
     padding: '7px 10px',
-    backgroundColor: COLORS.GRAY_DARK,
-    color: COLORS.WHITE,
-    fontSize: 14,
-    zIndex: Z_INDEXES.BETA_FOOTER,
+    fontWeight: 400,
+    fontSize: 12,
+    color: COLORS.GRAY_DARK,
+    textAlign: 'center',
   },
 };
 
@@ -138,9 +152,11 @@ class Screen extends Component {
 
   render() {
     return (
-      <div style={styles.page}>
+      <div style={styles.workspace}>
+        <ScreenHeader {...this.props}/>
+        
         <div
-          style={styles.main}
+          style={styles.canvas}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
         >

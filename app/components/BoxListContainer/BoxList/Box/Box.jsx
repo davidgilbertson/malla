@@ -3,6 +3,8 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 import cloneDeep from 'lodash/cloneDeep';
 
+import Icon from '../../../Icon/Icon.jsx';
+
 import {
   css,
   eventWasAClick,
@@ -13,6 +15,7 @@ import {
 import {
   BOX_MODES,
   COLORS,
+  ICONS,
   FONT_FAMILIES,
   GRID_SIZE,
   Z_INDEXES,
@@ -44,10 +47,10 @@ const baseStyles = {
   handles: {
     display: 'none',
   },
-  deleteText: {
+  deleteButton: {
     position: 'absolute',
-    bottom: -30,
-    right: 0,
+    bottom: -6,
+    right: -40,
     padding: 5,
     textAlign: 'right',
     color: COLORS.ACCENT,
@@ -61,7 +64,7 @@ const baseStyles = {
     backgroundColor: COLORS.ACCENT,
     transform: 'translate(-50%, -50%)',
     borderRadius: '50%',
-    ...css.shadow(),
+    ...css.shadow('medium'),
     opacity: 0.8,
   },
   handleTop: {
@@ -329,8 +332,8 @@ class Box extends Component {
 
       styles.box = {
         ...styles.box,
-        ...css.border(1, 'solid', COLORS.GRAY),
-        ...css.shadow('large'),
+        borderWidth: 0,
+        ...css.shadow('medium'),
         cursor: 'move',
         zIndex: Z_INDEXES.MOVING_BOX,
       };
@@ -355,9 +358,16 @@ class Box extends Component {
           style={styles.handles}
         >
           <button
-            style={styles.deleteText}
+            style={styles.deleteButton}
             onClick={this.maybeDeleteBox}
-          >Delete</button>
+            title="Delete this box"
+          >
+            <Icon
+              size={25}
+              icon={ICONS.BIN2}
+              color={COLORS.GRAY_LIGHT}
+            />
+          </button>
           <div
             style={[styles.handle, styles.handleTop]}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.TOP)}

@@ -1,4 +1,3 @@
-// TODO (davidg): rename me ScreenPage
 import {connect} from 'react-redux';
 
 import * as actionCreators from '../../data/actionCreators.js';
@@ -10,6 +9,7 @@ import {
 const mapStateToProps = state  => {
   return {
     user: state.user,
+    currentTool: state.currentTool,
   };
 };
 
@@ -25,11 +25,11 @@ const mapDispatchToProps = dispatch => {
         dispatch(actionCreators.setActiveBox(id, mode));
       },
     },
-    hideModal: () => {
-      dispatch(actionCreators.hideModal());
+    showModal: modal => {
+      dispatch(actionCreators.showModal(modal));
     },
-    showModal: () => {
-      dispatch(actionCreators.showModal());
+    selectTool: tool => {
+      dispatch(actionCreators.selectTool(tool));
     },
   };
 };

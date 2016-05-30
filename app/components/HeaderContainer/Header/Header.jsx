@@ -21,41 +21,41 @@ import {css} from '../../../utils';
 
 import {EVENTS} from '../../../tracker.js';
 
-const HEIGHT = DIMENSIONS.LAYOUT.HEADER_HEIGHT;
-const GUTTER = 6;
-
 const baseStyles = {
   header: {
     position: 'absolute',
     width: '100%',
-    height: DIMENSIONS.LAYOUT.HEADER_HEIGHT,
-    flex: `0 0 ${HEIGHT}px`,
+    height: DIMENSIONS.SPACE_L * 3,
     backgroundColor: COLORS.PRIMARY_DARK,
+  },
+  headerContent: {
     textAlign: 'center',
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     color: COLORS.WHITE,
-    paddingLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
+    height: DIMENSIONS.SPACE_L,
+    padding: `0 8px`,
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      padding: `0 ${DIMENSIONS.SPACE_M}px`,
+    }
   },
   title: {
-    fontSize: 24,
+    fontSize: 35,
   },
   actionItems: {
     display: 'flex',
     alignItems: 'center',
   },
   headerButton: {
-    height: HEIGHT - (DIMENSIONS.LAYOUT.HEADER_SPACING * 2),
+    height: DIMENSIONS.SPACE_M,
     color: COLORS.WHITE,
-    background: COLORS.PRIMARY,
-    padding: '0 8px',
-    marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
+    marginLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
   },
   signInOrOutButton: {
     color: COLORS.WHITE,
-    marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
+    marginLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
   },
   homePageHeaderButton: {
     margin: '15px 15px 15px 0',
@@ -82,7 +82,7 @@ const baseStyles = {
   headerPrimaryButton: {
     background: COLORS.ACCENT,
     color: COLORS.WHITE,
-    ...css.shadow('light'),
+    ...css.shadow('small'),
   },
   showForPhoneOnly: {
     [BREAKPOINTS.TABLET_PORTRAIT]: {
@@ -134,21 +134,6 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         }}
       >
         {MALLA_TEXT.signUp}
-      </Button>
-    ),
-    exportData: (
-      <Button
-        key="exportData"
-        style={styles.headerButton}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.EXPORT_DATA}
-        label="Header button"
-        onClick={() => {
-          showModal(MODALS.EXPORT_DATA);
-        }}
-      >
-        <span style={styles.showForPhoneOnly}>{MALLA_TEXT.apiButtonShort}</span>
-        <span style={styles.showForTabletPortraitUp}>{MALLA_TEXT.apiButtonLong}</span>
       </Button>
     ),
     showHelp: (
@@ -234,13 +219,12 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
   } else {
     if (signedIn) {
       actionItemElements.push(actionItems.userName);
-      actionItemElements.push(actionItems.exportData);
 
       if (!user.showHelp) {
         actionItemElements.push(actionItems.showHelp);
       }
       actionItemElements.push(actionItems.signOutButton);
-      actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={HEIGHT - (DIMENSIONS.LAYOUT.HEADER_SPACING * 2)}/>);
+      actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height}/>);
 
       actionItemElements.push(actionItems.feedback);
     }
@@ -254,12 +238,14 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
 
   return (
     <header style={styles.header}>
-      <div>
-        {homeLink}
-      </div>
+      <div style={styles.headerContent}>
+        <div>
+          {homeLink}
+        </div>
 
-      <div style={styles.actionItems}>
-        {actionItemElements}
+        <div style={styles.actionItems}>
+          {actionItemElements}
+        </div>
       </div>
     </header>
   );

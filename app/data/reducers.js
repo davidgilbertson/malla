@@ -7,6 +7,7 @@ import {
   ACTIONS,
   MODALS,
   SIGN_IN_STATUSES,
+  TOOLS,
 } from '../constants.js';
 
 const activeBox = (state = {}, action) => {
@@ -20,6 +21,16 @@ const activeBox = (state = {}, action) => {
         id: action.id,
         mode: action.mode,
       };
+    default :
+      return state;
+  }
+};
+
+const currentTool = (state = TOOLS.TEXT, action) => {
+  switch (action.type) {
+    case ACTIONS.SELECT_TOOL :
+      return action.tool;
+    
     default :
       return state;
   }
@@ -126,6 +137,7 @@ const interaction = (state = null, action) => {
 
 export default combineReducers({
   activeBox,
+  currentTool,
   interaction,
   modal,
   boxes,

@@ -77,6 +77,13 @@ export function hideModal() {
   };
 }
 
+export function selectTool(tool) {
+  return {
+    type: ACTIONS.SELECT_TOOL,
+    tool,
+  };
+}
+
 /*  --  USERS  --  */
 export function signIn(provider) {
   firebaseActions.signIn(provider);

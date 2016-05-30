@@ -114,7 +114,7 @@ const styles = {
     fontSize: 25,
     fontWeight: 400,
     padding: 15,
-    ...css.shadow('light'),
+    ...css.shadow('small'),
     width: 400,
     margin: '40px auto 0',
     [BREAKPOINTS.PHONE_ONLY]: {

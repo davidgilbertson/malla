@@ -1,3 +1,7 @@
+import {
+  BREAKPOINTS,
+} from '../constants.js';
+
 export function hover(styles) {
   return {':hover': styles};
 }
@@ -48,16 +52,16 @@ export function background(rules) {
   return result;
 }
 
-export function shadow(style = 'large') {
-  const px = style === 'large' ? '10px' : '5px';
-
+export function shadow(style = 'medium') {
   switch (style) {
-    case 'light' :
-      return {boxShadow: `0 0 10px rgba(0, 0, 0, .2)`};
+    case 'small' :
+      return {boxShadow: `0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.2),0 1px 5px 0 rgba(0,0,0,0.12)`};
+    case 'medium' :
+      return {boxShadow: `0 2px 15px rgba(0,0,0,0.30)`};
     case 'large' :
-      return {boxShadow: `2px 2px 20px rgba(0, 0, 0, .2)`};
+      return {boxShadow: `0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15)`};
     default :
-      return {boxShadow: `0 0 5px rgba(51, 51, 51, .2)`};
+      return {};
   }
 }
 
@@ -77,4 +81,21 @@ export function border(...args) {
     borderStyle: components[1],
     borderColor: components[2],
   };
+}
+
+export function showForPhoneOnly() {
+  return {
+    [BREAKPOINTS.TABLET_PORTRAIT]: {
+      display: 'none',
+    },
+  }
+}
+
+export function showForTabletPortraitUp() {
+  return {
+    display: 'none',
+      [BREAKPOINTS.TABLET_PORTRAIT]: {
+      display: 'initial',
+    }
+  }
 }

@@ -18,17 +18,17 @@ import * as actionCreators from '../../data/actionCreators.js';
 
 import {EVENTS} from '../../tracker.js';
 
-const PANEL_TOP = DIMENSIONS.LAYOUT.HEADER_HEIGHT + 20;
+const PANEL_TOP = DIMENSIONS.SPACE_L + 20;
 const styles = {
   panel: {
     position: 'fixed',
     flex: '0 0 auto',
     display: 'flex',
     flexFlow: 'column',
-    top: PANEL_TOP,
+    top: DIMENSIONS.SPACE_L * 2 + 20,
     right: 10,
     left: 10,
-    maxHeight: `calc(100vh - ${PANEL_TOP + 20}px)`,
+    maxHeight: `calc(100vh - ${DIMENSIONS.SPACE_L + 20}px)`,
     maxWidth: '98vw',
     backgroundColor: COLORS.WHITE,
     ...css.shadow(),
@@ -38,6 +38,9 @@ const styles = {
       width: 400,
       right: 20,
       left: 'auto',
+    },
+    [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      right: DIMENSIONS.SPACE_M + 20,
     },
   },
   header: {

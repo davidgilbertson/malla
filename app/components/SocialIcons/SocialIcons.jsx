@@ -18,13 +18,11 @@ let SocialIcons = props => {
     headerButton: {
       height: props.buttonHeight,
       color: COLORS.WHITE,
-      background: COLORS.PRIMARY,
-      padding: '0 8px',
-      marginRight: DIMENSIONS.LAYOUT.HEADER_SPACING,
+      marginLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
     },
     showForTabletLandscapeUp: {
       display: 'none',
-      [BREAKPOINTS.TABLET_LANDSCAPE]: {
+      [BREAKPOINTS.TABLET_PORTRAIT]: {
         display: 'initial',
       },
     },
