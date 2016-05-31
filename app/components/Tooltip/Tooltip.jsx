@@ -1,9 +1,9 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 import Radium from 'radium';
 import {connect} from 'react-redux';
 
-import TextToolTooltip from './ToolTooltip/ToolTooltip.jsx';
+import ToolTooltip from './ToolTooltip/ToolTooltip.jsx';
 
 import {
   COLORS,
@@ -32,39 +32,32 @@ const styles = {
   }
 };
 
-class Tooltip extends Component {
-  constructor(props) {
-    super(props);
+const Tooltip = props => {
+  let Child;
+
+  switch (props.currentTooltip) {
+    case TOOLTIPS.NONE:
+      return null;
+
+    case TOOLTIPS.TEXT:
+    case TOOLTIPS.LABEL:
+      Child = ToolTooltip;
+      break;
+
+    default:
+      return null;
   }
 
-  render() {
-    let Child;
-
-    switch (this.props.currentTooltip) {
-      case TOOLTIPS.NONE:
-        return null;
-
-      case TOOLTIPS.TEXT:
-      case TOOLTIPS.LABEL:
-        Child = TextToolTooltip;
-        break;
-
-      default:
-        return null;
-    }
-
-    return (
-      <Child
-        currentTooltip={this.props.currentTooltip}
-        styles={styles}
-        triangle={<div style={styles.triangle}>▲</div>}
-      />
-    );
-  }
-}
+  return (
+    <Child
+      currentTooltip={props.currentTooltip}
+      styles={styles}
+      triangle={<div style={styles.triangle}>▲</div>}
+    />
+  );
+};
 
 Tooltip.propTypes = {
-  // state
   currentTooltip: PropTypes.string.isRequired,
 };
 

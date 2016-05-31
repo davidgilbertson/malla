@@ -1,5 +1,5 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 import Radium from 'radium';
 
 import {
@@ -12,46 +12,40 @@ import {
   css,
 } from '../../../utils';
 
-class ToolTooltip extends Component {
-  constructor(props) {
-    super(props);
+const ToolTooltip = props => {
+  let body = null;
+  let anchorEl;
+
+  const styles = {
+    back: {
+      width: DIMENSIONS.SPACE_L * 4,
+      ...css.shadow('small'),
+    }
+  };
+
+  if (props.currentTooltip === TOOLTIPS.TEXT) {
+    body = <div>Add text that you want to use in your website or app</div>;
+    anchorEl = document.getElementById(`${ELEMENT_IDS.TEXT_TOOL}`);
   }
 
-  render() {
-    let body = null;
-    let anchorEl;
-
-    const styles = {
-      back: {
-        width: DIMENSIONS.SPACE_L * 3,
-        ...css.shadow('small'),
-      }
-    };
-
-    if (this.props.currentTooltip === TOOLTIPS.TEXT) {
-      body = <div>Add text that you want to use in your website or app</div>;
-      anchorEl = document.getElementById(`${ELEMENT_IDS.TEXT_TOOL}`);
-    }
-
-    if (this.props.currentTooltip === TOOLTIPS.LABEL) {
-      body = <div>Add labels that are only visible in Malla</div>;
-      anchorEl = document.getElementById(`${ELEMENT_IDS.LABEL_TOOL}`);
-    }
-
-    const anchorDims = anchorEl.getBoundingClientRect();
-    styles.back.left = anchorDims.left + anchorDims.width / 2 - styles.back.width / 2;
-    styles.back.top = anchorDims.top + anchorDims.height + 13;
-
-    return (
-      <div
-        style={[this.props.styles.back, styles.back]}
-      >
-        {this.props.triangle}
-        {body}
-      </div>
-    )
+  if (props.currentTooltip === TOOLTIPS.LABEL) {
+    body = <div>Add labels that are only visible in Malla</div>;
+    anchorEl = document.getElementById(`${ELEMENT_IDS.LABEL_TOOL}`);
   }
-}
+
+  const anchorDims = anchorEl.getBoundingClientRect();
+  styles.back.left = anchorDims.left + anchorDims.width / 2 - styles.back.width / 2;
+  styles.back.top = anchorDims.top + anchorDims.height + 13;
+
+  return (
+    <div
+      style={[props.styles.back, styles.back]}
+    >
+      {props.triangle}
+      {body}
+    </div>
+  )
+};
 
 ToolTooltip.propTypes = {
   currentTooltip: PropTypes.string.isRequired,
