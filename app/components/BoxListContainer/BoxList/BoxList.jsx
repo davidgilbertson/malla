@@ -5,19 +5,20 @@ import forOwn from 'lodash/forOwn';
 
 import Box from './Box/Box.jsx';
 
-const BoxList = ({activeBox, boxes, boxActions}) => {
+const BoxList = (props) => {
   const boxComponents = [];
   // TODO (davidg): filter for boxes in this project/screen only
   
-  forOwn(boxes, (box, id) => {
+  forOwn(props.boxes, (box, id) => {
     if (box) {
       boxComponents.push(
         <Box
           key={id}
           id={id}
           box={box}
-          boxActions={boxActions}
-          activeBox={activeBox}
+          boxActions={props.boxActions}
+          currentTool={props.currentTool}
+          activeBox={props.activeBox}
         />
       );
     }
@@ -31,8 +32,12 @@ const BoxList = ({activeBox, boxes, boxActions}) => {
 };
 
 BoxList.propTypes = {
+  // state
   boxes: PropTypes.object.isRequired,
+  currentTool: PropTypes.string.isRequired,
   activeBox: PropTypes.object.isRequired,
+
+  // actions
   boxActions: PropTypes.object.isRequired,
 };
 

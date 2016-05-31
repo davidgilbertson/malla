@@ -39,7 +39,8 @@ export const ACTIONS = {
   UPDATE_BOX: 'UPDATE_BOX',
   CLEAR_BOXES: 'CLEAR_BOXES',
   SHOW_MODAL: 'SHOW_MODAL',
-  HIDE_MODAL: 'HIDE_MODAL',
+  SHOW_TOOLTIP: 'SHOW_TOOLTIP',
+  HIDE_MODAL: 'HIDE_MODAL', // TODO (davidg): can go?
   SIGN_IN_USER: 'SIGN_IN_USER',
   SIGN_OUT: 'SIGN_OUT',
   SET_INTERACTION: 'SET_INTERACTION',
@@ -72,6 +73,12 @@ export const TOOLS = {
   TEXT: 'TEXT',
   LABEL: 'LABEL',
   MOVE: 'MOVE',
+};
+
+export const TOOLTIPS = {
+  NONE: 'NONE',
+  TEXT: 'TEXT', // these should match the tool name
+  LABEL: 'LABEL', // these should match the tool name
 };
 
 export const GRID_SIZE = 10;
@@ -129,14 +136,21 @@ export const COLORS = {
   WHITE: '#FFFFFF',
 };
 
+export const ELEMENT_IDS = {
+  TEXT_TOOL: 'TEXT_TOOL',
+  LABEL_TOOL: 'LABEL_TOOL',
+};
+
 export const FONT_FAMILIES = {
+  CURSIVE: 'Handlee, cursive',
   SANS_SERIF: `'Open Sans', sans-serif`,
-  SERIF: `'Roboto Slab', serif`
+  SERIF: `'Roboto Slab', serif`,
 };
 
 export const Z_INDEXES = {
   MOVING_BOX: 1,
   SCREEN_HEADER: 2,
   HELP_PANEL: 3,
-  MODAL: 4,
+  TOOLTIP: 4,
+  MODAL: 5,
 };

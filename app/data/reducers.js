@@ -8,6 +8,7 @@ import {
   MODALS,
   SIGN_IN_STATUSES,
   TOOLS,
+  TOOLTIPS,
 } from '../constants.js';
 
 const activeBox = (state = {}, action) => {
@@ -33,6 +34,19 @@ const currentTool = (state = TOOLS.TEXT, action) => {
     
     default :
       return state;
+  }
+};
+
+const currentTooltip = (state = TOOLTIPS.NONE, action) => {
+  switch (action.type) {
+    case ACTIONS.SHOW_TOOLTIP :
+      if (!action.tooltip) {
+        return TOOLTIPS.NONE;
+      }
+      return action.tooltip;
+    
+    default :
+      return TOOLTIPS.NONE;
   }
 };
 
@@ -139,6 +153,7 @@ export default combineReducers({
   activeBox,
   currentTool,
   interaction,
+  currentTooltip,
   modal,
   boxes,
   screens,

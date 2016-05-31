@@ -17,6 +17,7 @@ import {
   COLORS,
   DIMENSIONS,
   GRID_SIZE,
+  TOOLS,
 } from '../../../constants.js';
 
 const styles = {
@@ -65,6 +66,7 @@ class Screen extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.sendBox = this.sendBox.bind(this);
 
     this.dragStartTime = null;
     this.isMoving = false;
@@ -127,7 +129,7 @@ class Screen extends Component {
     const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
 
     if (moreThanAClick && (moreThanGridWidth || moreThanGridHeight)) {
-      this.props.boxActions.add(relativeDims);
+      this.sendBox(relativeDims);
     }
 
     this.placeholderEl.style.display = 'none';
@@ -136,6 +138,18 @@ class Screen extends Component {
     window.removeEventListener('mouseup', this.onDragEnd, false);
     window.removeEventListener('touchmove', this.onDragMove, false);
     window.removeEventListener('touchend', this.onDragEnd, false);
+  }
+
+  sendBox(dims) {
+    const type = this.props.currentTool === TOOLS.LABEL
+      ? TOOLS.LABEL
+      : TOOLS.TEXT;
+
+    this.props.boxActions.add({
+      ...dims,
+      type,
+    });
+
   }
 
   getRelativeDims(el) {
@@ -183,10 +197,12 @@ class Screen extends Component {
 Screen.propTypes = {
   // state
   user: PropTypes.object.isRequired,
+  currentTool: PropTypes.string.isRequired,
 
   // actions
   boxActions: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired,
+  showTooltip: PropTypes.func.isRequired,
 };
 
 export default Radium(Screen);

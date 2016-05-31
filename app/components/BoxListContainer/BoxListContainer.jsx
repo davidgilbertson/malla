@@ -7,6 +7,7 @@ const mapStateToProps = state => {
   return {
     boxes: state.boxes,
     activeBox: state.activeBox,
+    currentTool: state.currentTool,
   }
 };
 

@@ -18,6 +18,7 @@ import {
   ICONS,
   FONT_FAMILIES,
   GRID_SIZE,
+  TOOLS,
   Z_INDEXES,
 } from '../../../../constants.js';
 
@@ -127,7 +128,11 @@ class Box extends Component {
   }
 
   maybeDeleteBox() {
-    const sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
+    let sure = true;
+
+    if (this.props.box.type !== TOOLS.LABEL && this.props.box.text) {
+      sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
+    }
 
     if (sure) this.props.boxActions.remove(this.props.id);
   };
@@ -344,9 +349,23 @@ class Box extends Component {
     if (this.isInTypingMode(this.props)) {
       styles.textArea.display = 'block';
       styles.box = {
-        ...styles.box,
+        ...styles.box, // TODO (davidg): what?
       };
       styles.displayText.display = 'none';
+    }
+
+    if (box.type === TOOLS.LABEL) {
+      styles.box = {
+        ...styles.box,
+        color: COLORS.PRIMARY_DARK,
+        fontSize: 24,
+        fontFamily: FONT_FAMILIES.CURSIVE,
+        borderWidth: 0,
+        backgroundColor: 'transparent',
+      };
+
+      styles.textArea.padding = 4;
+      styles.displayText.padding = 4;
     }
 
     return (
@@ -409,10 +428,13 @@ class Box extends Component {
 }
 
 Box.propTypes = {
+  // state
   activeBox: PropTypes.object.isRequired,
   box: PropTypes.object.isRequired,
-  boxActions: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
+
+  // actions
+  boxActions: PropTypes.object.isRequired,
 };
 
 export default Radium(Box);

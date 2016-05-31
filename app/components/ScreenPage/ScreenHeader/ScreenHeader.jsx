@@ -4,9 +4,11 @@ import Radium from 'radium';
 
 import Button from '../../Button/Button.jsx';
 import Icon from '../../Icon/Icon.jsx';
+
 import {
   COLORS,
   DIMENSIONS,
+  ELEMENT_IDS,
   ICONS,
   MODALS,
   TOOLS,
@@ -21,11 +23,13 @@ import {EVENTS} from '../../../tracker.js';
 
 const tools = [
   {
+    elementId: ELEMENT_IDS.TEXT_TOOL,
     name: 'Text',
     icon: ICONS.T,
     code: TOOLS.TEXT,
   },
   {
+    elementId: ELEMENT_IDS.LABEL_TOOL,
     name: 'Labels',
     icon: ICONS.LABEL,
     code: TOOLS.LABEL,
@@ -54,7 +58,7 @@ const ScreenHeader = props => {
       justifyContent: 'space-between',
       alignItems: 'center',
       height: DIMENSIONS.SPACE_M,
-      width: 120,
+      width: DIMENSIONS.SPACE_L * 2,
       border: `1px solid ${COLORS.GRAY_LIGHT}`,
       color: COLORS.GRAY,
       ':focus': {
@@ -91,11 +95,18 @@ const ScreenHeader = props => {
 
     return (
       <button
+        id={tool.elementId}
         key={tool.code}
         style={style}
         onClick={() => {
-        props.selectTool(tool.code);
-      }}
+          props.selectTool(tool.code);
+        }}
+        onMouseEnter={() => {
+          props.showTooltip(tool.code);
+        }}
+        onMouseLeave={() => {
+          props.showTooltip(null);
+        }}
       >
         <div style={styles.toolButtonIconWrapper}>
           <Icon
@@ -117,11 +128,9 @@ const ScreenHeader = props => {
         Project 1 / Screen 1
       </div>
 
-      {/*
       <div style={styles.toolButtons}>
         {renderToolButtons(tools)}
       </div>
-      */}
 
       <div>
         <Button
@@ -131,7 +140,6 @@ const ScreenHeader = props => {
           action={EVENTS.ACTIONS.CLICKED.EXPORT_DATA}
           label="Screen header button"
           onClick={() => {
-          console.log('  --  >  ScreenHeader.jsx:129 > ');
             props.showModal(MODALS.EXPORT_DATA);
           }}
         >
@@ -145,6 +153,7 @@ const ScreenHeader = props => {
 
 ScreenHeader.propTypes = {
   showModal: PropTypes.func.isRequired,
+  showTooltip: PropTypes.func.isRequired,
 };
 
 export default Radium(ScreenHeader);

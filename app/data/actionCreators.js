@@ -20,14 +20,14 @@ import {
 const onClient = typeof window !== 'undefined';
 
 /*  --  BOXES  --  */
-export function addBox(dims) {
+export function addBox(box) {
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.ADDED_BOX,
   });
   
   return firebaseActions.addBox({
-    ...dims,
+    ...box,
     text: '',
   });
 }
@@ -68,6 +68,13 @@ export function showModal(modal) {
   return {
     type: ACTIONS.SHOW_MODAL,
     modal,
+  };
+}
+
+export function showTooltip(tooltip) {
+  return {
+    type: ACTIONS.SHOW_TOOLTIP,
+    tooltip,
   };
 }
 

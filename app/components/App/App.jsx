@@ -6,6 +6,7 @@ import {
 } from '../../constants.js';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import ModalContainer from '../ModalContainer/ModalContainer.jsx';
+import Tooltip from '../Tooltip/Tooltip.jsx';
 
 const styles = {
   css: {
@@ -78,6 +79,7 @@ const App = (props) => (
     {props.children}
 
     <ModalContainer />
+    <Tooltip />
   </StyleRoot>
 );
 
