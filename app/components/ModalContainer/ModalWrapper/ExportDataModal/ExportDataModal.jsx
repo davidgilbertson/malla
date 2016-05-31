@@ -3,7 +3,11 @@ const {Component, PropTypes} = React;
 import forOwn from 'lodash/forOwn';
 
 import Modal from '../Modal/Modal.jsx';
-import {COLORS} from '../../../../constants.js';
+import {
+  COLORS,
+  BOX_TYPES,
+  FONT_FAMILIES,
+} from '../../../../constants.js';
 
 const styles = {
   textArea: {
@@ -11,13 +15,16 @@ const styles = {
     marginTop: 20,
     lineHeight: 1.6,
     fontSize: 14,
-    fontFamily: 'Courier New, courier, monospace',
+    fontFamily: FONT_FAMILIES.MONOSPACE,
     color: COLORS.GRAY_DARK,
+    whiteSpace: 'pre',
   },
   apiUrl: {
-    textDecoration: 'underlin',
     color: COLORS.ACCENT,
     fontWeight: 400,
+  },
+  proTip: {
+    marginTop: 20,
   },
 };
 
@@ -32,9 +39,24 @@ class ExportDataModal extends Component {
 
   render() {
     const exportData = {};
+    let hasLineBreaks = false;
+
     forOwn(this.props.boxes, (box, id) => {
-      if (box) exportData[box.label || id] = box.text;
+      if (box && box.type !== BOX_TYPES.LABEL) {
+        exportData[box.label || id] = box.text;
+
+        if (box.text.includes('\n')) {
+          hasLineBreaks = true;
+        }
+      }
     });
+
+    const lineBreakHint = hasLineBreaks
+      ? (
+        <p style={styles.proTip}>
+          <strong>Pro tip:</strong> to maintain the line breaks in your text, use <code>white-space: pre-wrap</code> in your CSS.
+        </p>
+      ) : null;
 
     const {currentProjectKey} = this.props.user;
 
@@ -64,6 +86,8 @@ class ExportDataModal extends Component {
           style={styles.textArea}
           rows={exportData.length * 4}
         />
+
+        {lineBreakHint}
       </Modal>
     );
   }

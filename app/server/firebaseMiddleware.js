@@ -1,6 +1,8 @@
 import firebase from 'firebase';
 import forOwn from 'lodash/forOwn';
 
+import {BOX_TYPES} from '../constants.js';
+
 const config = {
   serviceAccount: {
     projectId: process.env.FIREBASE_PROJECT_ID,
@@ -25,7 +27,9 @@ export default function(req, res) {
       const json = {};
 
       forOwn(boxSnapshot.val(), box => {
-        json[box.label] = box.text;
+        if (box && box.type !== BOX_TYPES.LABEL) {
+          json[box.label] = box.text;
+        }
       });
 
       res.header('Access-Control-Allow-Origin', '*');
