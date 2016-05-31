@@ -143,6 +143,7 @@ export const ELEMENT_IDS = {
 
 export const FONT_FAMILIES = {
   CURSIVE: 'Handlee, cursive',
+  MONOSPACE: 'Courier New, courier, monospace',
   SANS_SERIF: `'Open Sans', sans-serif`,
   SERIF: `'Roboto Slab', serif`,
 };

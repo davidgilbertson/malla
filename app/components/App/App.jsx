@@ -2,6 +2,7 @@ import React from 'react';
 import Radium, {Style, StyleRoot} from 'radium';
 
 import {
+  COLORS,
   FONT_FAMILIES,
 } from '../../constants.js';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
@@ -49,6 +50,12 @@ const styles = {
     a: {
       color: 'inherit',
       textDecoration: 'none',
+    },
+    code: {
+      padding: '0.2em 0.5em',
+      backgroundColor: COLORS.OFF_WHITE,
+      borderRadius: 3,
+      fontFamily: FONT_FAMILIES.MONOSPACE,
     },
     button: {
       background: 'none',
