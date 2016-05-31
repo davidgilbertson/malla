@@ -40,7 +40,7 @@ export const ACTIONS = {
   CLEAR_BOXES: 'CLEAR_BOXES',
   SHOW_MODAL: 'SHOW_MODAL',
   SHOW_TOOLTIP: 'SHOW_TOOLTIP',
-  HIDE_MODAL: 'HIDE_MODAL', // TODO (davidg): can go?
+  HIDE_MODAL: 'HIDE_MODAL',
   SIGN_IN_USER: 'SIGN_IN_USER',
   SIGN_OUT: 'SIGN_OUT',
   SET_INTERACTION: 'SET_INTERACTION',
@@ -81,8 +81,8 @@ export const TOOLS = {
 
 export const TOOLTIPS = {
   NONE: 'NONE',
-  TEXT: TEXT, // these should match the tool name
-  LABEL: LABEL, // these should match the tool name
+  TEXT: TEXT,
+  LABEL: LABEL,
 };
 
 export const BOX_TYPES = {
