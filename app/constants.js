@@ -69,16 +69,25 @@ export const MODALS = {
   FEEDBACK: 'FEEDBACK',
 };
 
+// these two are used for tools, tooltips and boxtypes so are shared
+const TEXT = 'TEXT';
+const LABEL = 'LABEL';
+
 export const TOOLS = {
-  TEXT: 'TEXT',
-  LABEL: 'LABEL',
+  TEXT: TEXT,
+  LABEL: LABEL,
   MOVE: 'MOVE',
 };
 
 export const TOOLTIPS = {
   NONE: 'NONE',
-  TEXT: 'TEXT', // these should match the tool name
-  LABEL: 'LABEL', // these should match the tool name
+  TEXT: TEXT, // these should match the tool name
+  LABEL: LABEL, // these should match the tool name
+};
+
+export const BOX_TYPES = {
+  TEXT: TEXT,
+  LABEL: LABEL,
 };
 
 export const GRID_SIZE = 10;

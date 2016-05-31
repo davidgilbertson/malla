@@ -14,6 +14,7 @@ import {
 
 import {
   BOX_MODES,
+  BOX_TYPES,
   COLORS,
   ICONS,
   FONT_FAMILIES,
@@ -130,7 +131,7 @@ class Box extends Component {
   maybeDeleteBox() {
     let sure = true;
 
-    if (this.props.box.type !== TOOLS.LABEL && this.props.box.text) {
+    if (this.props.box.type !== BOX_TYPES.LABEL && this.props.box.text) {
       sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
     }
 
@@ -354,7 +355,7 @@ class Box extends Component {
       styles.displayText.display = 'none';
     }
 
-    if (box.type === TOOLS.LABEL) {
+    if (box.type === BOX_TYPES.LABEL) {
       styles.box = {
         ...styles.box,
         color: COLORS.PRIMARY_DARK,

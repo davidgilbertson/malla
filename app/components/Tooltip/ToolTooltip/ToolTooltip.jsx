@@ -5,7 +5,7 @@ import Radium from 'radium';
 import {
   ELEMENT_IDS,
   DIMENSIONS,
-  TOOLS,
+  TOOLTIPS,
 } from '../../../constants.js';
 
 import {
@@ -28,12 +28,12 @@ class ToolTooltip extends Component {
       }
     };
 
-    if (this.props.currentTooltip === TOOLS.TEXT) {
+    if (this.props.currentTooltip === TOOLTIPS.TEXT) {
       body = <div>Add text that you want to use in your website or app</div>;
       anchorEl = document.getElementById(`${ELEMENT_IDS.TEXT_TOOL}`);
     }
 
-    if (this.props.currentTooltip === TOOLS.LABEL) {
+    if (this.props.currentTooltip === TOOLTIPS.LABEL) {
       body = <div>Add labels that are only visible in Malla</div>;
       anchorEl = document.getElementById(`${ELEMENT_IDS.LABEL_TOOL}`);
     }

@@ -12,12 +12,13 @@ import {
 } from '../../../utils';
 
 import {
+  BOX_TYPES,
   BREAKPOINTS,
   CLICK_LENGTH_MS,
   COLORS,
   DIMENSIONS,
   GRID_SIZE,
-  TOOLS,
+  TOOLTIPS,
 } from '../../../constants.js';
 
 const styles = {
@@ -141,9 +142,9 @@ class Screen extends Component {
   }
 
   sendBox(dims) {
-    const type = this.props.currentTool === TOOLS.LABEL
-      ? TOOLS.LABEL
-      : TOOLS.TEXT;
+    const type = this.props.currentTool === TOOLTIPS.LABEL
+      ? BOX_TYPES.LABEL
+      : BOX_TYPES.TEXT;
 
     this.props.boxActions.add({
       ...dims,
