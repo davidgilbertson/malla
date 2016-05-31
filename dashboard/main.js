@@ -49,7 +49,7 @@ function makeUserDom(users) {
   const tableEl = makeEl('table', null, 'user-table');
 
   const headerRowEl = makeEl('tr', null, 'user-table-header');
-  headerRowEl.appendChild(makeEl('th', 'Name'));
+  headerRowEl.appendChild(makeEl('th', `Name (${users.length})`));
   headerRowEl.appendChild(makeEl('th', 'Boxes'));
   headerRowEl.appendChild(makeEl('th', 'Last sign in (local)'));
   headerRowEl.appendChild(makeEl('th', 'Key'));
