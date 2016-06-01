@@ -5,14 +5,14 @@ import Radium from 'radium';
 import {
   ELEMENT_IDS,
   DIMENSIONS,
-  TOOLTIPS,
+  DROP_MODALS,
 } from '../../../constants.js';
 
 import {
   css,
 } from '../../../utils';
 
-const ToolTooltip = props => {
+const ToolDropModal = props => {
   let body = null;
   let anchorEl;
 
@@ -23,12 +23,12 @@ const ToolTooltip = props => {
     }
   };
 
-  if (props.currentTooltip === TOOLTIPS.TEXT) {
+  if (props.currentDropModal === DROP_MODALS.TEXT) {
     body = <div>Add text that you want to use in your website or app</div>;
     anchorEl = document.getElementById(`${ELEMENT_IDS.TEXT_TOOL}`);
   }
 
-  if (props.currentTooltip === TOOLTIPS.LABEL) {
+  if (props.currentDropModal === DROP_MODALS.LABEL) {
     body = <div>Add labels that are only visible in Malla</div>;
     anchorEl = document.getElementById(`${ELEMENT_IDS.LABEL_TOOL}`);
   }
@@ -47,10 +47,10 @@ const ToolTooltip = props => {
   )
 };
 
-ToolTooltip.propTypes = {
-  currentTooltip: PropTypes.string.isRequired,
+ToolDropModal.propTypes = {
+  currentDropModal: PropTypes.string.isRequired,
   styles: PropTypes.object.isRequired,
   triangle: PropTypes.object,
 };
 
-export default Radium(ToolTooltip);
+export default Radium(ToolDropModal);

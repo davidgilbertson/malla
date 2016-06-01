@@ -18,7 +18,7 @@ import {
   COLORS,
   DIMENSIONS,
   GRID_SIZE,
-  TOOLTIPS,
+  DROP_MODALS,
 } from '../../../constants.js';
 
 const styles = {
@@ -142,7 +142,7 @@ class Screen extends Component {
   }
 
   sendBox(dims) {
-    const type = this.props.currentTool === TOOLTIPS.LABEL
+    const type = this.props.currentTool === DROP_MODALS.LABEL
       ? BOX_TYPES.LABEL
       : BOX_TYPES.TEXT;
 
@@ -203,7 +203,7 @@ Screen.propTypes = {
   // actions
   boxActions: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired,
-  showTooltip: PropTypes.func.isRequired,
+  showDropModal: PropTypes.func.isRequired,
 };
 
 export default Radium(Screen);

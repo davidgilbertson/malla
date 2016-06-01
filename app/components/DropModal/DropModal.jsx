@@ -3,11 +3,11 @@ const {PropTypes} = React;
 import Radium from 'radium';
 import {connect} from 'react-redux';
 
-import ToolTooltip from './ToolTooltip/ToolTooltip.jsx';
+import ToolDropModal from './ToolDropModal/ToolDropModal.jsx';
 
 import {
   COLORS,
-  TOOLTIPS,
+  DROP_MODALS,
   Z_INDEXES,
 } from '../../constants.js';
 
@@ -18,7 +18,7 @@ const styles = {
     textAlign: 'center',
     color: COLORS.WHITE,
     background: COLORS.GRAY_DARK,
-    zIndex: Z_INDEXES.TOOLTIP,
+    zIndex: Z_INDEXES.DROP_MODAL,
   },
   triangle: {
     position: 'absolute',
@@ -32,16 +32,16 @@ const styles = {
   }
 };
 
-const Tooltip = props => {
+const DropModal = props => {
   let Child;
 
-  switch (props.currentTooltip) {
-    case TOOLTIPS.NONE:
+  switch (props.currentDropModal) {
+    case DROP_MODALS.NONE:
       return null;
 
-    case TOOLTIPS.TEXT:
-    case TOOLTIPS.LABEL:
-      Child = ToolTooltip;
+    case DROP_MODALS.TEXT:
+    case DROP_MODALS.LABEL:
+      Child = ToolDropModal;
       break;
 
     default:
@@ -50,21 +50,21 @@ const Tooltip = props => {
 
   return (
     <Child
-      currentTooltip={props.currentTooltip}
+      currentDropModal={props.currentDropModal}
       styles={styles}
       triangle={<div style={styles.triangle}>▲</div>}
     />
   );
 };
 
-Tooltip.propTypes = {
-  currentTooltip: PropTypes.string.isRequired,
+DropModal.propTypes = {
+  currentDropModal: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => {
   return {
-    currentTooltip: state.currentTooltip,
+    currentDropModal: state.currentDropModal,
   };
 };
 
-export default connect(mapStateToProps)(Radium(Tooltip));
+export default connect(mapStateToProps)(Radium(DropModal));

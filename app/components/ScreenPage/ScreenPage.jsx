@@ -28,8 +28,8 @@ const mapDispatchToProps = dispatch => {
     showModal: modal => {
       dispatch(actionCreators.showModal(modal));
     },
-    showTooltip: tooltip => {
-      dispatch(actionCreators.showTooltip(tooltip));
+    showDropModal: dropModal => {
+      dispatch(actionCreators.showDropModal(dropModal));
     },
     selectTool: tool => {
       dispatch(actionCreators.selectTool(tool));

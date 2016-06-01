@@ -71,10 +71,10 @@ export function showModal(modal) {
   };
 }
 
-export function showTooltip(tooltip) {
+export function showDropModal(dropModal) {
   return {
-    type: ACTIONS.SHOW_TOOLTIP,
-    tooltip,
+    type: ACTIONS.SHOW_DROP_MODAL,
+    dropModal,
   };
 }
 

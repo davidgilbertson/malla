@@ -8,7 +8,7 @@ import {
   MODALS,
   SIGN_IN_STATUSES,
   TOOLS,
-  TOOLTIPS,
+  DROP_MODALS,
 } from '../constants.js';
 
 const activeBox = (state = {}, action) => {
@@ -37,16 +37,16 @@ const currentTool = (state = TOOLS.TEXT, action) => {
   }
 };
 
-const currentTooltip = (state = TOOLTIPS.NONE, action) => {
+const currentDropModal = (state = DROP_MODALS.NONE, action) => {
   switch (action.type) {
-    case ACTIONS.SHOW_TOOLTIP :
-      if (!action.tooltip) {
-        return TOOLTIPS.NONE;
+    case ACTIONS.SHOW_DROP_MODAL :
+      if (!action.dropModal) {
+        return DROP_MODALS.NONE;
       }
-      return action.tooltip;
+      return action.dropModal;
     
     default :
-      return TOOLTIPS.NONE;
+      return DROP_MODALS.NONE;
   }
 };
 
@@ -153,7 +153,7 @@ export default combineReducers({
   activeBox,
   currentTool,
   interaction,
-  currentTooltip,
+  currentDropModal,
   modal,
   boxes,
   screens,

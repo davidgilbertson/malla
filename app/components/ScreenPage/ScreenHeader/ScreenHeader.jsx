@@ -102,10 +102,10 @@ const ScreenHeader = props => {
           props.selectTool(tool.code);
         }}
         onMouseEnter={() => {
-          props.showTooltip(tool.code);
+          props.showDropModal(tool.code);
         }}
         onMouseLeave={() => {
-          props.showTooltip(null);
+          props.showDropModal(null);
         }}
       >
         <div style={styles.toolButtonIconWrapper}>
@@ -153,7 +153,7 @@ const ScreenHeader = props => {
 
 ScreenHeader.propTypes = {
   showModal: PropTypes.func.isRequired,
-  showTooltip: PropTypes.func.isRequired,
+  showDropModal: PropTypes.func.isRequired,
 };
 
 export default Radium(ScreenHeader);

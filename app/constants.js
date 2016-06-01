@@ -39,7 +39,7 @@ export const ACTIONS = {
   UPDATE_BOX: 'UPDATE_BOX',
   CLEAR_BOXES: 'CLEAR_BOXES',
   SHOW_MODAL: 'SHOW_MODAL',
-  SHOW_TOOLTIP: 'SHOW_TOOLTIP',
+  SHOW_DROP_MODAL: 'SHOW_DROP_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
   SIGN_IN_USER: 'SIGN_IN_USER',
   SIGN_OUT: 'SIGN_OUT',
@@ -69,7 +69,7 @@ export const MODALS = {
   FEEDBACK: 'FEEDBACK',
 };
 
-// these two are used for tools, tooltips and boxtypes so are shared
+// these two are used for tools, drop modals and boxtypes so are shared
 const TEXT = 'TEXT';
 const LABEL = 'LABEL';
 
@@ -79,7 +79,7 @@ export const TOOLS = {
   MOVE: 'MOVE',
 };
 
-export const TOOLTIPS = {
+export const DROP_MODALS = {
   NONE: 'NONE',
   TEXT: TEXT,
   LABEL: LABEL,
@@ -161,6 +161,6 @@ export const Z_INDEXES = {
   MOVING_BOX: 1,
   SCREEN_HEADER: 2,
   HELP_PANEL: 3,
-  TOOLTIP: 4,
+  DROP_MODAL: 4,
   MODAL: 5,
 };
