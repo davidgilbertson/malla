@@ -4,7 +4,7 @@ import Radium, {Style} from 'radium';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import Button from '../Button/Button.jsx';
-import {showModal} from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 
 import {
   BREAKPOINTS,
@@ -250,10 +250,10 @@ const bindStateToProps = state => {
   };
 };
 
-const bindDispatchToProps = dispatch => {
+const bindDispatchToProps = () => {
   return {
     showModal: modal => {
-      dispatch(showModal(modal));
+      actions.showModal(modal);
     },
   };
 };

@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import * as actionCreators from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 import Screen from './Screen/Screen.jsx';
 import {
   BOX_MODES,
@@ -16,29 +16,29 @@ const mapStateToProps = state  => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
     boxActions: {
       add: box => {
-        const newBoxId = actionCreators.addBox(box);
+        const newBoxId = actions.addBox(box);
 
-        dispatch(actionCreators.setActiveBox(newBoxId, BOX_MODES.TYPING));
+        actions.setActiveBox(newBoxId, BOX_MODES.TYPING);
       },
       setActiveBox: (id, mode) => {
-        dispatch(actionCreators.setActiveBox(id, mode));
+        actions.setActiveBox(id, mode);
       },
     },
     showModal: modal => {
-      dispatch(actionCreators.showModal(modal));
+      actions.showModal(modal);
     },
     showDropModal: dropModal => {
-      dispatch(actionCreators.showDropModal(dropModal));
+      actions.showDropModal(dropModal);
     },
     selectTool: tool => {
-      dispatch(actionCreators.selectTool(tool));
+      actions.selectTool(tool);
     },
     navigateToScreen: key => {
-      actionCreators.navigateToScreen(key);
+      actions.navigateToScreen(key);
     },
   };
 };

@@ -14,7 +14,7 @@ import {
 import {
   css,
 } from '../../utils'
-import * as actionCreators from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 
 import {EVENTS} from '../../tracker.js';
 
@@ -178,8 +178,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = () => {
   return {
-    updateUser: (newProps) => {
-      actionCreators.updateUser(newProps);
+    updateUser: newProps => {
+      actions.updateUser(newProps);
     },
   };
 };

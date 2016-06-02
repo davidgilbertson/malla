@@ -1,30 +1,30 @@
 import {connect} from 'react-redux';
 
-import * as actionCreators from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 import ModalWrapper from './ModalWrapper/ModalWrapper.jsx';
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
     hideModal: modal => {
-      dispatch(actionCreators.hideModal(modal));
+      actions.hideModal(modal);
     },
     signIn: provider => {
-      actionCreators.signIn(provider);
+      actions.signIn(provider);
     },
     setInteraction: interaction => {
-      dispatch(actionCreators.setInteraction(interaction));
+      actions.setInteraction(interaction);
     },
     sendFeedback: feedback => {
-      actionCreators.sendFeedback(feedback);
+      actions.sendFeedback(feedback);
     },
     addScreen: screen => {
-      actionCreators.addScreen(screen);
+      actions.addScreen(screen);
     },
     updateScreen: (key, val) => {
-      actionCreators.updateScreen(key, val);
+      actions.updateScreen(key, val);
     },
     removeScreen: key => {
-      actionCreators.removeScreen(key);
+      actions.removeScreen(key);
     },
   };
 };

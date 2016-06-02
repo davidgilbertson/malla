@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import * as actionCreators from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 import Header from './Header/Header.jsx';
 
 const mapStateToProps = state => {
@@ -11,19 +11,19 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
     showModal: modal => {
-      dispatch(actionCreators.showModal(modal));
+      actions.showModal(modal);
     },
     updateUser: (newProps) => {
-      actionCreators.updateUser(newProps);
+      actions.updateUser(newProps);
     },
     signOut: () => {
-      actionCreators.signOut();
+      actions.signOut();
     },
     navigateToScreen: key => {
-      actionCreators.navigateToScreen(key);
+      actions.navigateToScreen(key);
     },
   };
 };

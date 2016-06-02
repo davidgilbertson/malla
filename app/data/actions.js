@@ -1,10 +1,9 @@
 /**
- * This module contains a mix of functions that:
- * - return an action
- * - call a firebaseAction and perhaps send an analytics event
- * - functions that don't return actions should probably be in their own file
- * - is there a reason they're not just in firebaseActions.js?
- * - that file can send to tracker, why not?
+ * This module contains functions that:
+ * - dispatch to the store (for UI states)
+ * - call a firebaseAction (for persistent data)
+ * - trigger an analytics event
+ * - redirect to another URL (changing screens, logging out)
  */
 
 import {browserHistory} from 'react-router';
@@ -33,7 +32,7 @@ export function addScreen(screen) {
   const newScreen = firebaseActions.addScreen(screen, currentProjectKey);
 
   const url = getUrlForScreenKey(store, newScreen.key);
-  
+
   // update the URL.
   // routes.js will dispatch navigateToScreen() when the URL changes
   browserHistory.push(url);
@@ -70,7 +69,7 @@ export function addBox(box) {
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.ADDED_BOX,
   });
-  
+
   return firebaseActions.addBox({
     ...box,
     text: '',
@@ -86,53 +85,53 @@ export function removeBox(boxKey) {
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.REMOVED_BOX,
   });
- 
+
   firebaseActions.removeBox(boxKey);
 }
 
 export function setActiveBox(id, mode) {
   if (!onClient) return;
 
-  return {
+  store.dispatch({
     type: ACTIONS.SET_ACTIVE_BOX,
     id,
     mode,
-  };
+  });
 }
 
 /*  --  UI  --  */
 export function setInteraction(interaction) {
-  return {
+  store.dispatch({
     type: ACTIONS.SET_INTERACTION,
     interaction,
-  };
+  });
 }
 
 export function showModal(modal) {
-  return {
+  store.dispatch({
     type: ACTIONS.SHOW_MODAL,
     modal,
-  };
+  });
 }
 
 export function showDropModal(dropModal) {
-  return {
+  store.dispatch({
     type: ACTIONS.SHOW_DROP_MODAL,
     dropModal,
-  };
+  });
 }
 
 export function hideModal() {
-  return {
+  store.dispatch({
     type: ACTIONS.HIDE_MODAL,
-  };
+  });
 }
 
 export function selectTool(tool) {
-  return {
+  store.dispatch({
     type: ACTIONS.SELECT_TOOL,
     tool,
-  };
+  });
 }
 
 /*  --  USERS  --  */
@@ -146,7 +145,7 @@ export function updateUser(newProps) {
 
 export function signOut() {
   firebaseActions.signOut();
-  
+
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.SYSTEM,
     action: tracker.EVENTS.ACTIONS.SIGNED_OUT,

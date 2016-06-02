@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import ToolDropModal from './ToolDropModal/ToolDropModal.jsx';
 import ScreenSelector from './ScreenSelector/ScreenSelector.jsx';
 
-import * as actionCreators from '../../data/actionCreators.js';
+import * as actions from '../../data/actions.js';
 
 import {
   COLORS,
@@ -94,13 +94,13 @@ DropModal.propTypes = {
   currentDropModal: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
     navigateToScreen: key => {
-      actionCreators.navigateToScreen(key);
+      actions.navigateToScreen(key);
     },
     showModal: modal => {
-      dispatch(actionCreators.showModal(modal));
+      actions.showModal(modal);
     },
   };
 };
