@@ -45,6 +45,7 @@ const ScreenSelector = props => {
       flex: 1,
       whiteSpace: 'nowrap',
       overflow: 'hidden',
+      textTransform: 'none',
     },
     listItemGear: {
       color: COLORS.WHITE,
