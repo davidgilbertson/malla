@@ -1,27 +1,32 @@
 import {connect} from 'react-redux';
 
-import * as actions from '../../data/actionCreators.js';
+import * as actionCreators from '../../data/actionCreators.js';
 import ModalWrapper from './ModalWrapper/ModalWrapper.jsx';
-
-const mapStateToProps = (state) => {
-  return {...state}; // modals potentially need everything
-};
 
 const mapDispatchToProps = dispatch => {
   return {
     hideModal: modal => {
-      dispatch(actions.hideModal(modal));
+      dispatch(actionCreators.hideModal(modal));
     },
     signIn: provider => {
-      actions.signIn(provider);
+      actionCreators.signIn(provider);
     },
     setInteraction: interaction => {
-      dispatch(actions.setInteraction(interaction));
+      dispatch(actionCreators.setInteraction(interaction));
     },
     sendFeedback: feedback => {
-      actions.sendFeedback(feedback);
+      actionCreators.sendFeedback(feedback);
+    },
+    addScreen: screen => {
+      actionCreators.addScreen(screen);
+    },
+    updateScreen: (key, val) => {
+      actionCreators.updateScreen(key, val);
+    },
+    removeScreen: key => {
+      actionCreators.removeScreen(key);
     },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalWrapper);
+export default connect(state => state, mapDispatchToProps)(ModalWrapper);

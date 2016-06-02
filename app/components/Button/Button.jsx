@@ -4,6 +4,10 @@ import Radium from 'radium';
 
 import {sendEvent} from '../../tracker.js';
 
+import {
+  COLORS,
+} from '../../constants.js';
+
 const Button = (props) => {
   const onButtonClick = () => {
     if (props.category && props.action) {
@@ -17,12 +21,21 @@ const Button = (props) => {
 
     props.onClick();
   };
-  
+
+  const style = {...props.style};
+
+  if (props.disabled) {
+    style.backgroundColor = COLORS.GRAY;
+    style.cursor = 'default';
+  }
+
   return (
     <button
-      style={props.style}
+      id={props.id}
+      style={style}
       title={props.title}
       onClick={onButtonClick}
+      disabled={props.disabled}
     >
       {props.children}
     </button>
@@ -30,7 +43,8 @@ const Button = (props) => {
 };
 
 Button.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  // props
+  id: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.array,
@@ -42,6 +56,10 @@ Button.propTypes = {
   label: PropTypes.string,
   title: PropTypes.string,
   value: PropTypes.number,
+  disabled: PropTypes.bool,
+
+  // actions
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Radium(Button);

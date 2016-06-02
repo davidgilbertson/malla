@@ -9,6 +9,7 @@
 
 import {browserHistory} from 'react-router';
 
+import store from './store.js';
 import * as firebaseActions from './firebaseActions.js';
 import * as tracker from '../tracker.js';
 const mockBoxes = require('./mockBoxes.json');
@@ -17,7 +18,51 @@ import {
   ACTIONS,
 } from '../constants.js';
 
+import {
+  getUrlForScreenKey,
+} from '../utils';
+
 const onClient = typeof window !== 'undefined';
+
+/*  --  SCREENS  --  */
+export function addScreen(screen) {
+  const storeState = store.getState();
+  const currentScreenKey = storeState.currentScreenKey;
+  const currentProjectKey = storeState.screens[currentScreenKey].projectKey;
+
+  const newScreen = firebaseActions.addScreen(screen, currentProjectKey);
+
+  const url = getUrlForScreenKey(store, newScreen.key);
+  
+  // update the URL.
+  // routes.js will dispatch navigateToScreen() when the URL changes
+  browserHistory.push(url);
+}
+
+export function updateScreen(key, val) {
+  firebaseActions.updateScreen({key, val});
+}
+
+export function removeScreen(key) {
+  firebaseActions.removeScreen(key);
+  navigateToScreen(); // sending no key will go to the first screen
+}
+
+export function navigateToScreen(key) {
+  let keyToSelect = key;
+
+  if (!key) {
+    keyToSelect = Object.keys(store.getState().screens)[0];
+  }
+
+  const url = getUrlForScreenKey(store, keyToSelect);
+
+  firebaseActions.updateUser({
+    lastUrl: url,
+  });
+
+  browserHistory.push(url);
+}
 
 /*  --  BOXES  --  */
 export function addBox(box) {
@@ -54,7 +99,6 @@ export function setActiveBox(id, mode) {
     mode,
   };
 }
-
 
 /*  --  UI  --  */
 export function setInteraction(interaction) {

@@ -1,5 +1,9 @@
+import {
+  BOX_TYPES,
+} from '../constants.js';
 import {getApp} from './firebaseApp.js';
 import * as tracker from '../tracker.js';
+import slug from 'speakingurl';
 
 let db;
 let firebaseApp;
@@ -83,6 +87,7 @@ function createUser(providerUser) {
   };
 
   newUser.lastUrl = `/s/${newScreenKey}/${newProject.slug}/${newScreen.slug}`;
+  newUser.mruScreenKey = newScreenKey;
 
   const newData = {
     [`users/${uid}`]: newUser,
@@ -147,9 +152,18 @@ function createOrUpdateUser({user, isNewUser, existingUser}) {
   } else {
     action = tracker.EVENTS.ACTIONS.SIGNED_IN;
 
-    updateUser({
+    const newProps = {
       lastSignIn: new Date().toISOString(),
-    });
+    };
+
+    if (!existingUser.mruScreenKey) {
+      if (!existingUser.screenKeys) {
+        console.warn('This user does not have any screenKeys. Something has gone wrong');
+      }
+      newProps.mruScreenKey = Object.keys(existingUser.screenKeys)[0];
+    }
+
+    updateUser(newProps);
 
     resultUser = existingUser;
     // TODO (davidg): else update the record if profile pic or something changed?
@@ -188,11 +202,84 @@ export function signOut() {
 }
 
 
+/*  --  SCREENS  --  */
+
+export function addScreen(screen, currentProjectKey) {
+  const userKey = firebaseApp.auth().currentUser.uid;
+  const newScreenKey = db.child('data/screens').push().key;
+  const newBoxKey = db.child('data/boxes').push().key;
+
+  screen.projectKey = currentProjectKey;
+  screen.slug = slug(screen.name);
+  screen.boxKeys = {
+    [newBoxKey]: true,
+  };
+
+  const newBox = {
+    height: 40,
+    label: `${screen.slug}-label`,
+    type: BOX_TYPES.LABEL,
+    left: 20,
+    text: screen.name,
+    top: 20,
+    width: 500,
+    projectKey: currentProjectKey,
+    screenKeys: {
+      [newScreenKey]: true,
+    }
+  };
+
+  const newData = {
+    [`users/${userKey}/screenKeys/${newScreenKey}`]: true,
+    [`users/${userKey}/boxKeys/${newBoxKey}`]: true,
+    [`data/projects/${currentProjectKey}/screenKeys/${newScreenKey}`]: true,
+    [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
+    [`data/screens/${newScreenKey}`]: screen,
+    [`data/boxes/${newBoxKey}`]: newBox,
+  };
+
+  db.update(newData);
+
+  return {
+    key: newScreenKey,
+    val: screen,
+  };
+}
+
+export function updateScreen({key, val}) {
+  db
+    .child('data/screens')
+    .child(key)
+    .update(val);
+}
+
+export function removeScreen(key) {
+  // note that this does not remove any boxes.
+  const userKey = firebaseApp.auth().currentUser.uid;
+
+  db.child('data/screens').child(key).once('value', screenSnapshot => {
+    const screen = screenSnapshot.val();
+
+    if (!screen) return console.warn(`No screen with key '${key}' exists`);
+
+    const updateData = {
+      [`data/screens/${key}`]: null,
+      [`data/projects/${screen.projectKey}/screenKeys/${key}`]: null,
+      [`users/${userKey}/screenKeys/${key}`]: null,
+    };
+
+    db.update(updateData);
+  });
+}
+
+
 /*  --  BOXES  --  */
 
 export function addBox(box) {
   const state = reduxStore.getState();
-  const {currentProjectKey, currentScreenKey, uid} = state.user;
+  const currentScreenKey = state.currentScreenKey;
+  const currentProjectKey = state.screens[currentScreenKey].projectKey;
+  const {uid} = state.user;
 
   const newBoxKey = db.child('data/boxes').push().key;
 

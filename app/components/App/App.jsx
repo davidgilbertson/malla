@@ -32,12 +32,10 @@ const styles = {
     h1: {
       margin: 0,
       letterSpacing: 1,
-      lineHeight: 1,
       fontWeight: '300',
     },
     h2: {
       margin: 0,
-      lineHeight: 1,
       fontWeight: '300',
     },
     p: {
@@ -68,12 +66,18 @@ const styles = {
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
+    input: {
+      color: 'inherit',
+      fontFamily: 'inherit',
+      fontWeight: 'inherit',
+      fontSize: 'inherit',
+    },
     textarea: {
       color: 'inherit',
       fontFamily: 'inherit',
       fontWeight: 'inherit',
       fontSize: 'inherit',
-    }
+    },
   }
 };
 

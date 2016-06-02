@@ -104,7 +104,7 @@ const baseStyles = {
   },
 };
 
-const Header = ({user, updateUser, showModal, signOut, location}) => {
+const Header = ({user, updateUser, showModal, signOut, location, navigateToScreen}) => {
   const styles = cloneDeep(baseStyles);
 
   const actionItems = {
@@ -168,9 +168,9 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
         action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
         label="Header button"
         onClick={() => {
-          browserHistory.push(user.lastUrl);
+          navigateToScreen();
         }}
-      >My screen</Button>
+      >My workspace</Button>
     ),
     userName: (
       <span
@@ -254,9 +254,12 @@ const Header = ({user, updateUser, showModal, signOut, location}) => {
 Header.propTypes = {
   // state
   user: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   // actions
   showModal: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
+  navigateToScreen: PropTypes.func.isRequired,
 };
 
 export default Radium(Header);

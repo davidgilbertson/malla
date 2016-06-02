@@ -1,10 +1,12 @@
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
+import store from './data/store.js';
 import App from './components/App/App.jsx';
 import HomePage from './components/HomePage/HomePage.jsx';
 import ScreenPage from './components/ScreenPage/ScreenPage.jsx';
 import * as tracker from './tracker.js';
+import {ACTIONS} from './constants.js';
 
 export default (
   <Route path="/" component={App}>
@@ -18,7 +20,12 @@ export default (
     <Route
       path="/s/:screenKey/:projectSlug/:screenSlug"
       component={ScreenPage}
-      onEnter={() => {
+      onEnter={state => {
+        store.dispatch({
+          type: ACTIONS.SET_CURRENT_SCREEN,
+          key: state.params.screenKey,
+        });
+
         tracker.setPage('screen');
       }}
     />

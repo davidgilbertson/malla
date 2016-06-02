@@ -10,6 +10,9 @@ const mapStateToProps = state  => {
   return {
     user: state.user,
     currentTool: state.currentTool,
+    currentScreenKey: state.currentScreenKey,
+    screens: state.screens,
+    projects: state.projects,
   };
 };
 
@@ -33,6 +36,9 @@ const mapDispatchToProps = dispatch => {
     },
     selectTool: tool => {
       dispatch(actionCreators.selectTool(tool));
+    },
+    navigateToScreen: key => {
+      actionCreators.navigateToScreen(key);
     },
   };
 };

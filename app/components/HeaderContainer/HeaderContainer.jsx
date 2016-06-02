@@ -22,6 +22,9 @@ const mapDispatchToProps = dispatch => {
     signOut: () => {
       actionCreators.signOut();
     },
+    navigateToScreen: key => {
+      actionCreators.navigateToScreen(key);
+    },
   };
 };
 

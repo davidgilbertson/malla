@@ -1,27 +1,31 @@
 import React from 'react';
-const {PropTypes} = React;
 
 import {MODALS} from '../../../constants.js';
 import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
 import SignInModal from './SignInModal/SignInModal.jsx';
 import FeedbackModal from './FeedbackModal/FeedbackModal.jsx';
+import ScreenDetails from './ScreenDetails/ScreenDetails.jsx';
 
 const ModalWrapper = (props) => {
-  switch (props.modal) {
+  switch (props.currentModal) {
     case MODALS.EXPORT_DATA :
       return <ExportDataModal {...props}/>;
+    
     case MODALS.SOCIAL_SIGN_IN :
       return <SignInModal {...props}/>;
+    
     case MODALS.FEEDBACK :
       return <FeedbackModal {...props}/>;
+    
+    case MODALS.EDIT_SCREEN :
+      return <ScreenDetails {...props} mode="edit"/>;
+
+    case MODALS.ADD_SCREEN :
+      return <ScreenDetails {...props} mode="add"/>;
+
     default :
       return null;
   }
-};
-
-ModalWrapper.propTypes = {
-  modal: PropTypes.string.isRequired,
-  hideModal: PropTypes.func.isRequired,
 };
 
 export default ModalWrapper;

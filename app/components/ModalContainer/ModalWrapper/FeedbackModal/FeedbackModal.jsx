@@ -25,7 +25,7 @@ class FeedbackModal extends Component {
       <Modal
         {...this.props}
         title="Send feedback"
-        showOK={true}
+        showOk={true}
         okText="Send"
         width={400}
         hideModal={() => {

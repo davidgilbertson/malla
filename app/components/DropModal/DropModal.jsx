@@ -4,12 +4,20 @@ import Radium from 'radium';
 import {connect} from 'react-redux';
 
 import ToolDropModal from './ToolDropModal/ToolDropModal.jsx';
+import ScreenSelector from './ScreenSelector/ScreenSelector.jsx';
+
+import * as actionCreators from '../../data/actionCreators.js';
 
 import {
   COLORS,
+  DIMENSIONS,
   DROP_MODALS,
   Z_INDEXES,
 } from '../../constants.js';
+
+import {
+  css,
+} from '../../utils';
 
 const styles = {
   back: {
@@ -18,7 +26,10 @@ const styles = {
     textAlign: 'center',
     color: COLORS.WHITE,
     background: COLORS.GRAY_DARK,
+    transform: 'translateX(-50%)',
+    width: DIMENSIONS.SPACE_L * 4,
     zIndex: Z_INDEXES.DROP_MODAL,
+    ...css.shadow('small'),
   },
   triangle: {
     position: 'absolute',
@@ -32,6 +43,22 @@ const styles = {
   }
 };
 
+function getCoordinates(elementId) {
+  const anchorEl = document.getElementById(elementId);
+  
+  if (!anchorEl) {
+    console.warn(`Element with id ${elementId} does not exist`);
+    return {};
+  }
+
+  const anchorDims = anchorEl.getBoundingClientRect();
+
+  return {
+    left: Math.max(0, anchorDims.left + anchorDims.width / 2),
+    top: anchorDims.top + anchorDims.height + 13,
+  };
+}
+
 const DropModal = props => {
   let Child;
 
@@ -44,27 +71,38 @@ const DropModal = props => {
       Child = ToolDropModal;
       break;
 
+    case DROP_MODALS.SCREEN_SELECTOR:
+      Child = ScreenSelector;
+      break;
+
     default:
       return null;
   }
 
   return (
     <Child
-      currentDropModal={props.currentDropModal}
+      {...props}
       styles={styles}
+      getCoordinates={getCoordinates}
       triangle={<div style={styles.triangle}>▲</div>}
     />
   );
 };
 
 DropModal.propTypes = {
+  // state
   currentDropModal: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    currentDropModal: state.currentDropModal,
+    navigateToScreen: key => {
+      actionCreators.navigateToScreen(key);
+    },
+    showModal: modal => {
+      dispatch(actionCreators.showModal(modal));
+    },
   };
 };
 
-export default connect(mapStateToProps)(Radium(DropModal));
+export default connect(state => state, mapDispatchToProps)(Radium(DropModal));

@@ -1,67 +1,10 @@
-import {combineReducers} from 'redux';
-import mapValues from 'lodash/mapValues';
 import cloneDeep from 'lodash/cloneDeep';
 import merge from 'lodash/merge';
 
 import {
   ACTIONS,
-  MODALS,
   SIGN_IN_STATUSES,
-  TOOLS,
-  DROP_MODALS,
-} from '../constants.js';
-
-const activeBox = (state = {}, action) => {
-  switch (action.type) {
-    case ACTIONS.SET_ACTIVE_BOX :
-      if (!action.id) {
-        return {};
-      }
-
-      return {
-        id: action.id,
-        mode: action.mode,
-      };
-    default :
-      return state;
-  }
-};
-
-const currentTool = (state = TOOLS.TEXT, action) => {
-  switch (action.type) {
-    case ACTIONS.SELECT_TOOL :
-      return action.tool;
-    
-    default :
-      return state;
-  }
-};
-
-const currentDropModal = (state = DROP_MODALS.NONE, action) => {
-  switch (action.type) {
-    case ACTIONS.SHOW_DROP_MODAL :
-      if (!action.dropModal) {
-        return DROP_MODALS.NONE;
-      }
-      return action.dropModal;
-    
-    default :
-      return DROP_MODALS.NONE;
-  }
-};
-
-const modal = (state = MODALS.NONE, action) => {
-  switch (action.type) {
-    case ACTIONS.SHOW_MODAL :
-      if (!MODALS[action.modal]) {
-        return MODALS.NONE;
-      }
-
-      return action.modal;
-    default :
-      return MODALS.NONE;
-  }
-};
+} from '../../constants.js';
 
 function upsert(state, action) {
   let nextState = {};
@@ -91,6 +34,11 @@ const screens = (state = {}, action) => {
     case ACTIONS.UPSERT_SCREEN :
       return upsert(state, action);
 
+    case ACTIONS.REMOVE_SCREEN :
+      const newState = cloneDeep(state);
+      delete newState[action.key];
+      return newState;
+
     case ACTIONS.SIGN_OUT :
       return {};
 
@@ -106,7 +54,7 @@ const boxes = (state = {}, action) => {
 
     case ACTIONS.REMOVE_BOX :
       const newState = cloneDeep(state);
-      delete newState[action.id];
+      delete newState[action.key];
       return newState;
 
     case ACTIONS.CLEAR_BOXES :
@@ -139,24 +87,9 @@ const user = (state = {}, action) => {
   }
 };
 
-const interaction = (state = null, action) => {
-  switch (action.type) {
-    case ACTIONS.SET_INTERACTION:
-      return action.interaction;
-
-    default:
-      return state;
-  }
-};
-
-export default combineReducers({
-  activeBox,
-  currentTool,
-  interaction,
-  currentDropModal,
-  modal,
+export default {
   boxes,
   screens,
   projects,
   user,
-});
+};

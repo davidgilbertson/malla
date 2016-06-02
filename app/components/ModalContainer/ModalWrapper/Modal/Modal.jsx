@@ -53,6 +53,8 @@ const baseStyles = {
   title: {
     fontSize: 22,
     paddingLeft: 20,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
   },
   close: {
     padding: 20,
@@ -95,12 +97,13 @@ class Modal extends Component {
       styles.panel.width = this.props.width;
     }
 
-    const actions = this.props.showOK
+    const actions = this.props.showOk
       ? (
         <div style={styles.actions}>
           <Button
             style={styles.okButton}
             onClick={this.props.hideModal}
+            disabled={this.props.okDisabled}
           >
             {this.props.okText || 'OK'}
           </Button>
@@ -150,7 +153,8 @@ Modal.propTypes = {
   ]).isRequired,
   hideModal: PropTypes.func.isRequired,
   width: PropTypes.number,
-  showOK: PropTypes.bool,
+  showOk: PropTypes.bool,
+  okDisabled: PropTypes.bool,
   okText: PropTypes.string,
 };
 

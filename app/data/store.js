@@ -2,7 +2,7 @@ import {createStore} from 'redux';
 
 import * as firebaseActions from './firebaseActions.js';
 import firebaseWatcher from './firebaseWatcher.js';
-import reducers from './reducers.js';
+import reducers from './reducers';
 
 const onClient = typeof window !== 'undefined';
 

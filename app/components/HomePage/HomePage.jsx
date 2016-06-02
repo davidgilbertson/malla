@@ -11,6 +11,7 @@ import {
   COLORS,
   DIMENSIONS,
   FONT_FAMILIES,
+  INTERACTIONS,
   MODALS,
   SIGN_IN_STATUSES,
   WORDS,
@@ -158,10 +159,13 @@ class HomePage extends Component {
 
   componentWillReceiveProps(nextProps) {
     // If we are on the home page and a user signs in, then navigate them to the last URL they were at
+    const userInitiatedSignIn = this.props.interaction === INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE;
+
     const justSignedIn = this.props.user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN
       && nextProps.user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
 
-    if (justSignedIn && nextProps.user.lastUrl) {
+    if (userInitiatedSignIn && justSignedIn && nextProps.user.lastUrl) {
+      // TODO (davidg): reset the interaction to null
       browserHistory.push(nextProps.user.lastUrl);
     }
   }
@@ -229,6 +233,7 @@ HomePage.propTypes = {
   user: PropTypes.object.isRequired,
   projects: PropTypes.object.isRequired,
   screens: PropTypes.object.isRequired,
+  interaction: PropTypes.string,
 
   // actions
   showModal: PropTypes.func.isRequired,
@@ -241,6 +246,7 @@ const bindStateToProps = state => {
     user: state.user,
     projects: state.projects,
     screens: state.screens,
+    interaction: state.interaction,
   };
 };
 

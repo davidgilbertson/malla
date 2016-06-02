@@ -10,7 +10,7 @@ const BoxList = (props) => {
   // TODO (davidg): filter for boxes in this project/screen only
   
   forOwn(props.boxes, (box, id) => {
-    if (box) {
+    if (box && box.screenKeys[props.currentScreenKey]) {
       boxComponents.push(
         <Box
           key={id}
@@ -35,6 +35,7 @@ BoxList.propTypes = {
   // state
   boxes: PropTypes.object.isRequired,
   currentTool: PropTypes.string.isRequired,
+  currentScreenKey: PropTypes.string.isRequired,
   activeBox: PropTypes.object.isRequired,
 
   // actions

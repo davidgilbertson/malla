@@ -1,6 +1,7 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
+import {browserHistory} from 'react-router';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
@@ -166,6 +167,11 @@ class Screen extends Component {
   }
 
   render() {
+    const thereAreNoScreens = !Object.keys(this.props.screens).length;
+    const noCurrentScreen = !this.props.screens[this.props.currentScreenKey];
+
+    if (thereAreNoScreens || noCurrentScreen) return null;
+
     return (
       <div style={styles.workspace}>
         <ScreenHeader {...this.props}/>
@@ -199,11 +205,15 @@ Screen.propTypes = {
   // state
   user: PropTypes.object.isRequired,
   currentTool: PropTypes.string.isRequired,
+  currentScreenKey: PropTypes.string.isRequired,
+  screens: PropTypes.object.isRequired,
+  projects: PropTypes.object.isRequired,
 
   // actions
   boxActions: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired,
   showDropModal: PropTypes.func.isRequired,
+  navigateToScreen: PropTypes.func.isRequired,
 };
 
 export default Radium(Screen);

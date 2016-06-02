@@ -8,6 +8,7 @@ import Icon from '../../Icon/Icon.jsx';
 import {
   COLORS,
   DIMENSIONS,
+  DROP_MODALS,
   ELEMENT_IDS,
   ICONS,
   MODALS,
@@ -49,6 +50,10 @@ const ScreenHeader = props => {
       ...css.shadow('small'),
       zIndex: Z_INDEXES.SCREEN_HEADER,
     },
+    projectOrScreenButton: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+    },
     toolButtons: {
       display: 'flex',
       flexFlow: 'row',
@@ -61,9 +66,6 @@ const ScreenHeader = props => {
       width: DIMENSIONS.SPACE_L * 2,
       border: `1px solid ${COLORS.GRAY_LIGHT}`,
       color: COLORS.GRAY,
-      ':focus': {
-        outline: 'none'
-      }
     },
     toolButtonIconWrapper: {
       position: 'relative',
@@ -80,6 +82,9 @@ const ScreenHeader = props => {
       padding: '8px 12px',
     },
   };
+
+  const currentScreen = props.screens[props.currentScreenKey];
+  const currentProject = props.projects[currentScreen.projectKey];
 
   const renderToolButtons = tools => tools.map(tool => {
     let style = styles.toolButton;
@@ -125,7 +130,24 @@ const ScreenHeader = props => {
   return (
     <div style={styles.header}>
       <div>
-        Project 1 / Screen 1
+        <Button
+          id={ELEMENT_IDS.PROJECT_SELECTOR_BUTTON}
+          onClick={() => {}}
+        >
+          {currentProject.name}
+        </Button>
+
+        <span> / </span>
+
+        <Button
+          style={styles.projectOrScreenButton}
+          id={ELEMENT_IDS.SCREEN_SELECTOR_BUTTON}
+          onClick={() => {
+            props.showDropModal(DROP_MODALS.SCREEN_SELECTOR);
+          }}
+        >
+          {currentScreen.name} ▼
+        </Button>
       </div>
 
       <div style={styles.toolButtons}>
@@ -152,6 +174,12 @@ const ScreenHeader = props => {
 };
 
 ScreenHeader.propTypes = {
+  // state
+  currentScreenKey: PropTypes.string.isRequired,
+  screens: PropTypes.object.isRequired,
+  projects: PropTypes.object.isRequired,
+
+  // actions
   showModal: PropTypes.func.isRequired,
   showDropModal: PropTypes.func.isRequired,
 };

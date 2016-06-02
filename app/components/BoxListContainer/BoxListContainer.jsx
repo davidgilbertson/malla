@@ -8,6 +8,7 @@ const mapStateToProps = state => {
     boxes: state.boxes,
     activeBox: state.activeBox,
     currentTool: state.currentTool,
+    currentScreenKey: state.currentScreenKey,
   }
 };
 

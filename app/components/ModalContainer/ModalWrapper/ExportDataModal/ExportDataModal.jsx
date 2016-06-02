@@ -74,7 +74,7 @@ class ExportDataModal extends Component {
       <Modal
         {...this.props}
         title="API access"
-        showOK={true}
+        showOk={true}
         width={1200}
       >
         <p>To access this data via API, go to {apiLink}</p>
