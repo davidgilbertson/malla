@@ -78,6 +78,7 @@ class ExportDataModal extends Component {
         width={1200}
       >
         <p>To access this data via API, go to {apiLink}</p>
+        <p>Note that this will fetch the text for all screens in the current project.</p>
 
         <textarea
           ref={el => this.textAreaEl = el}
