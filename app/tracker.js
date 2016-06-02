@@ -48,6 +48,7 @@ export const EVENTS = {
     BOUGHT_BOXES: 'Bought boxes',
     ADDED_PROJECT: 'Added project',
     ADDED_SCREEN: 'Added screen',
+    REMOVED_SCREEN: 'Removed screen',
     ADDED_BOX: 'Added box',
     MOVED_BOX: 'Edited box',
     TYPED_IN_BOX: 'Typed in box',

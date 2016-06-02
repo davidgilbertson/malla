@@ -25,6 +25,11 @@ const onClient = typeof window !== 'undefined';
 
 /*  --  SCREENS  --  */
 export function addScreen(screen) {
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.ADDED_SCREEN,
+  });
+
   const storeState = store.getState();
   const currentScreenKey = storeState.currentScreenKey;
   const currentProjectKey = storeState.screens[currentScreenKey].projectKey;
@@ -43,6 +48,11 @@ export function updateScreen(key, val) {
 }
 
 export function removeScreen(key) {
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.REMOVED_SCREEN,
+  });
+
   firebaseActions.removeScreen(key);
   navigateToScreen(); // sending no key will go to the first screen
 }
