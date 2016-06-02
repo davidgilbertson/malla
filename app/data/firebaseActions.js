@@ -247,26 +247,31 @@ export function addScreen(screen, currentProjectKey) {
 }
 
 export function updateScreen({key, val}) {
-  db
-    .child('data/screens')
-    .child(key)
-    .update(val);
+  db.child('data/screens').child(key).update(val);
 }
 
-export function removeScreen(key) {
-  // note that this does not remove any boxes.
+export function removeScreen(screenKey) {
   const userKey = firebaseApp.auth().currentUser.uid;
 
-  db.child('data/screens').child(key).once('value', screenSnapshot => {
+  db.child('data/screens').child(screenKey).once('value', screenSnapshot => {
     const screen = screenSnapshot.val();
 
-    if (!screen) return console.warn(`No screen with key '${key}' exists`);
+    if (!screen) return console.warn(`No screen with screenKey '${screenKey}' exists`);
 
     const updateData = {
-      [`data/screens/${key}`]: null,
-      [`data/projects/${screen.projectKey}/screenKeys/${key}`]: null,
-      [`users/${userKey}/screenKeys/${key}`]: null,
+      [`users/${userKey}/screenKeys/${screenKey}`]: null,
+      [`data/projects/${screen.projectKey}/screenKeys/${screenKey}`]: null,
+      [`data/screens/${screenKey}`]: null,
     };
+
+    // When the feature of box linking is in, deleting a screen should not delete the boxes on it.
+    if (screen.boxKeys) {
+      Object.keys(screen.boxKeys).forEach(boxKey => {
+        updateData[`users/${userKey}/boxKeys/${boxKey}`] = null;
+        updateData[`data/projects/${screen.projectKey}/boxKeys/${boxKey}`] = null;
+        updateData[`data/boxes/${boxKey}`] = null;
+      });
+    }
 
     db.update(updateData);
   });

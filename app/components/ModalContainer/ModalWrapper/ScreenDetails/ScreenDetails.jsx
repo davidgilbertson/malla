@@ -71,7 +71,10 @@ class ScreenDetails extends Component {
     });
 
     if (boxes > 0) {
-      sure = window.confirm(`Are you sure you want to delete this screen?\nThe text on this screen will NOT be deleted.`);
+      const screen = this.props.screens[this.props.currentScreenKey];
+      let msg = `Are you sure you want to delete the screen '${screen.name}'?`;
+      msg += `\nThis will also delete the ${boxes} text item${boxes === 1 ? '' : 's'} on the screen.`;
+      sure = window.confirm(msg);
     }
 
     if (sure) {
