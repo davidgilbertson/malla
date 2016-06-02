@@ -1,7 +1,7 @@
 import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
-import {Link, browserHistory} from 'react-router';
+import {Link} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
 
 import Button from '../../Button/Button.jsx';
@@ -111,7 +111,7 @@ const Header = ({user, updateUser, showModal, signOut, location, navigateToScree
     signInButton: (
       <Button
         key="signInButton"
-        style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
+        style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
         category={EVENTS.CATEGORIES.UI_INTERACTION}
         action={EVENTS.ACTIONS.CLICKED.SIGN_IN}
         label="Header button"
@@ -125,7 +125,7 @@ const Header = ({user, updateUser, showModal, signOut, location, navigateToScree
     signUpButton: (
       <Button
         key="signUpButton"
-        style={[styles.homePageHeaderButton, styles.headerPrimaryButton]}
+        style={{...styles.homePageHeaderButton, ...styles.headerPrimaryButton}}
         category={EVENTS.CATEGORIES.UI_INTERACTION}
         action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
         label="Header button"
@@ -163,7 +163,7 @@ const Header = ({user, updateUser, showModal, signOut, location, navigateToScree
     myProjects: (
       <Button
         key="myProjects"
-        style={[styles.homePageHeaderButton, styles.headerSecondaryButton]}
+        style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
         category={EVENTS.CATEGORIES.UI_INTERACTION}
         action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
         label="Header button"

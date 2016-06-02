@@ -47,8 +47,9 @@ const ScreenSelector = props => {
       overflow: 'hidden',
     },
     listItemGear: {
-      color: COLORS.GRAY,
+      color: COLORS.WHITE,
       flex: 0,
+      opacity: 0.5,
     },
     addNew: {
       margin: `${DIMENSIONS.SPACE_M}px auto`,
@@ -56,6 +57,7 @@ const ScreenSelector = props => {
       width: DIMENSIONS.SPACE_L * 3,
       background: COLORS.WHITE,
       color: COLORS.GRAY_DARK,
+      fontWeight: 400,
     }
   };
 
@@ -63,8 +65,9 @@ const ScreenSelector = props => {
     const style = {...styles.listItem};
 
     if (key === props.currentScreenKey) {
-      style.backgroundColor = COLORS.GRAY_LIGHT;
-      style.color = COLORS.GRAY_DARK;
+      style.backgroundColor = COLORS.PRIMARY;
+      style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+      style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
     }
 
     screens.push(

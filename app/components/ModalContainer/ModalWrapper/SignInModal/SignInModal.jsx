@@ -55,7 +55,7 @@ class SignInModal extends Component {
         <p style={styles.title}>Choose your flavor</p>
 
         <Button
-          style={[styles.button, styles.facebookButton]}
+          style={{...styles.button, ...styles.facebookButton}}
           onClick={this.signIn.bind(this, 'facebook')}
           category={EVENTS.CATEGORIES.UI_INTERACTION}
           action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_FACEBOOK}
@@ -65,7 +65,7 @@ class SignInModal extends Component {
         </Button>
 
         <Button
-          style={[styles.button, styles.googleButton]}
+          style={{...styles.button, ...styles.googleButton}}
           onClick={this.signIn.bind(this, 'google')}
           category={EVENTS.CATEGORIES.UI_INTERACTION}
           action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_GOOGLE}
@@ -75,7 +75,7 @@ class SignInModal extends Component {
         </Button>
 
         <Button
-          style={[styles.button, styles.twitterButton]}
+          style={{...styles.button, ...styles.twitterButton}}
           onClick={this.signIn.bind(this, 'twitter')}
           category={EVENTS.CATEGORIES.UI_INTERACTION}
           action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_TWITTER}
