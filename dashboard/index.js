@@ -25,6 +25,7 @@ app.get('/users', (req, res) => {
       const user = userList[key];
 
       user.boxCount = user.boxKeys ? Object.keys(user.boxKeys).length : 0;
+      user.screenCount = user.screenKeys ? Object.keys(user.screenKeys).length : 0;
       user.key = key;
 
       return user;
