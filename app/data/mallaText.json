@@ -1,7 +1,7 @@
 {
   "title": "Malla",
   "siteName": "Malla",
-  "slogan": "A super-simple way to manage the text for your website or app.",
+  "slogan": "A simple way to manage your website's text.",
   "box1Title": "Super fast",
   "box1Desc": "Update your site's copy in seconds. Just click, drag, type.",
   "box2Title": "Collaborative",
@@ -9,7 +9,7 @@
   "box3Title": "Simple API",
   "box3Desc": "A single URL.\nSeriously.",
   "signUpLong": "Sign up - it's free!",
-  "question1": "Sounds marvelous, but what exactly is it?",
+  "question1": "Sounds great, but what exactly is it?",
   "answer1": "Malla is a centralized place to store the text in your website or app, so that it isn't buried in code. It gives the control back to those who write the copy and takes the burden off of developers.",
   "question2": "So... it's a CMS?",
   "answer2": "Close, but not quite. Malla is designed to make it easy to store any text from your website or mobile app: headings, intros, buttons, disclaimers... you get the idea.\nAnd since it doesn't focus on articles and pages and pictures like a CMS does, it's much simpler, and much faster than a typical CMS. Check out the video above to see how easy it is.",
