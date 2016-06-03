@@ -47,7 +47,7 @@ const baseStyles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottom: `3px solid ${COLORS.PRIMARY_LIGHT}`,
-    background: COLORS.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
     color: COLORS.WHITE,
   },
   title: {
@@ -70,7 +70,7 @@ const baseStyles = {
     textAlign: 'center',
   },
   okButton: {
-    background: COLORS.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
     color: COLORS.WHITE,
     padding: 12,
     minWidth: 100,
@@ -82,11 +82,20 @@ class Modal extends Component {
     super(props);
 
     this.maybeClose = this.maybeClose.bind(this);
+    this.onOk = this.onOk.bind(this);
   }
 
   maybeClose(e) {
     if (e.target !== e.currentTarget) return;
 
+    this.props.hideModal();
+  }
+  
+  onOk() {
+    // if okOK is passed in, then execute it
+    this.props.onOk && this.props.onOk();
+
+    // then close the modal
     this.props.hideModal();
   }
 
@@ -102,7 +111,7 @@ class Modal extends Component {
         <div style={styles.actions}>
           <Button
             style={styles.okButton}
-            onClick={this.props.hideModal}
+            onClick={this.onOk}
             disabled={this.props.okDisabled}
           >
             {this.props.okText || 'OK'}
@@ -145,17 +154,21 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
+  // props
   title: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.element,
     PropTypes.string,
   ]).isRequired,
-  hideModal: PropTypes.func.isRequired,
   width: PropTypes.number,
   showOk: PropTypes.bool,
   okDisabled: PropTypes.bool,
   okText: PropTypes.string,
+  
+  // methods
+  hideModal: PropTypes.func.isRequired,
+  onOk: PropTypes.func,
 };
 
 export default Radium(Modal);

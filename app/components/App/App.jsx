@@ -7,7 +7,7 @@ import {
 } from '../../constants.js';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import ModalContainer from '../ModalContainer/ModalContainer.jsx';
-import DropModal from '../DropModal/DropModal.jsx';
+import DropModalConnector from '../DropModal/DropModalConnector.jsx';
 
 const styles = {
   css: {
@@ -56,7 +56,7 @@ const styles = {
       fontFamily: FONT_FAMILIES.MONOSPACE,
     },
     button: {
-      background: 'none',
+      backgroundColor: 'transparent',
       border: 0,
       color: 'inherit',
       fontFamily: 'inherit',
@@ -90,7 +90,7 @@ const App = (props) => (
     {props.children}
 
     <ModalContainer />
-    <DropModal />
+    <DropModalConnector />
   </StyleRoot>
 );
 

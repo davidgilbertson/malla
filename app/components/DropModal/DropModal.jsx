@@ -1,12 +1,10 @@
 import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
-import {connect} from 'react-redux';
 
 import ToolDropModal from './ToolDropModal/ToolDropModal.jsx';
 import ScreenSelector from './ScreenSelector/ScreenSelector.jsx';
-
-import * as actions from '../../data/actions.js';
+import BoxActions from './BoxActions/BoxActions.jsx';
 
 import {
   COLORS,
@@ -25,7 +23,7 @@ const styles = {
     padding: 8,
     textAlign: 'center',
     color: COLORS.WHITE,
-    background: COLORS.GRAY_DARK,
+    backgroundColor: COLORS.GRAY_DARK,
     transform: 'translateX(-50%)',
     width: DIMENSIONS.SPACE_L * 4,
     zIndex: Z_INDEXES.DROP_MODAL,
@@ -75,6 +73,10 @@ const DropModal = props => {
       Child = ScreenSelector;
       break;
 
+    case DROP_MODALS.BOX_ACTIONS:
+      Child = BoxActions;
+      break;
+
     default:
       return null;
   }
@@ -94,15 +96,4 @@ DropModal.propTypes = {
   currentDropModal: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = () => {
-  return {
-    navigateToScreen: key => {
-      actions.navigateToScreen(key);
-    },
-    showModal: modal => {
-      actions.showModal(modal);
-    },
-  };
-};
-
-export default connect(state => state, mapDispatchToProps)(Radium(DropModal));
+export default Radium(DropModal);

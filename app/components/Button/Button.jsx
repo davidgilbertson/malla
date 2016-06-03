@@ -8,7 +8,7 @@ import {
   COLORS,
 } from '../../constants.js';
 
-const Button = (props) => {
+const Button = props => {
   const onButtonClick = () => {
     if (props.category && props.action) {
       sendEvent({

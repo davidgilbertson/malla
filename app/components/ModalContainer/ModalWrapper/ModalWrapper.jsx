@@ -5,6 +5,7 @@ import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
 import SignInModal from './SignInModal/SignInModal.jsx';
 import FeedbackModal from './FeedbackModal/FeedbackModal.jsx';
 import ScreenDetails from './ScreenDetails/ScreenDetails.jsx';
+import BoxDetails from './BoxDetails/BoxDetails.jsx';
 
 const ModalWrapper = (props) => {
   switch (props.currentModal) {
@@ -22,6 +23,9 @@ const ModalWrapper = (props) => {
 
     case MODALS.ADD_SCREEN :
       return <ScreenDetails {...props} mode="add"/>;
+
+    case MODALS.EDIT_BOX :
+      return <BoxDetails {...props}/>;
 
     default :
       return null;

@@ -56,7 +56,7 @@ const ScreenSelector = props => {
       margin: `${DIMENSIONS.SPACE_M}px auto`,
       padding: 8,
       width: DIMENSIONS.SPACE_L * 3,
-      background: COLORS.WHITE,
+      backgroundColor: COLORS.WHITE,
       color: COLORS.GRAY_DARK,
       fontWeight: 400,
     }

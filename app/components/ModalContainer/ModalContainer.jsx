@@ -5,8 +5,8 @@ import ModalWrapper from './ModalWrapper/ModalWrapper.jsx';
 
 const mapDispatchToProps = () => {
   return {
-    hideModal: modal => {
-      actions.hideModal(modal);
+    hideModal: () => {
+      actions.hideModal();
     },
     signIn: provider => {
       actions.signIn(provider);
@@ -25,6 +25,15 @@ const mapDispatchToProps = () => {
     },
     removeScreen: key => {
       actions.removeScreen(key);
+    },
+    updateBox: (key, val) => {
+      actions.updateBox(key, val);
+    },
+    removeBox: key => {
+      actions.removeBox(key);
+    },
+    setActiveBox: (id, mode) => {
+      actions.setActiveBox(id, mode);
     },
   };
 };

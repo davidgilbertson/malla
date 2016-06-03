@@ -5,7 +5,7 @@ import forOwn from 'lodash/forOwn';
 
 import Box from './Box/Box.jsx';
 
-const BoxList = (props) => {
+const BoxList = props => {
   const boxComponents = [];
   // TODO (davidg): filter for boxes in this project/screen only
   
@@ -19,6 +19,7 @@ const BoxList = (props) => {
           boxActions={props.boxActions}
           currentTool={props.currentTool}
           activeBox={props.activeBox}
+          showModal={props.showModal}
         />
       );
     }
@@ -40,6 +41,7 @@ BoxList.propTypes = {
 
   // actions
   boxActions: PropTypes.object.isRequired,
+  showModal: PropTypes.func.isRequired,
 };
 
 export default Radium(BoxList);

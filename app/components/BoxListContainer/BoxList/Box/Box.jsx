@@ -4,6 +4,7 @@ import Radium from 'radium';
 import cloneDeep from 'lodash/cloneDeep';
 
 import Icon from '../../../Icon/Icon.jsx';
+import DropModal from '../../../DropModal/DropModal.jsx';
 
 import {
   css,
@@ -16,6 +17,7 @@ import {
   BOX_MODES,
   BOX_TYPES,
   COLORS,
+  DROP_MODALS,
   ICONS,
   FONT_FAMILIES,
   GRID_SIZE,
@@ -47,7 +49,13 @@ const baseStyles = {
     fontSize: 15,
   },
   handles: {
-    display: 'none',
+    display: 'none', // made visible when in move mode
+  },
+  boxActions: {
+    display: 'none', // made visible when there's an active box
+    position: 'absolute',
+    left: '50%',
+    bottom: -HANDLE_SIZE,
   },
   deleteButton: {
     position: 'absolute',
@@ -120,23 +128,12 @@ class Box extends Component {
       lastY: 0,
     };
 
-    this.maybeDeleteBox = this.maybeDeleteBox.bind(this);
     this.resize = this.resize.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onTextAreaChange = this.onTextAreaChange.bind(this);
   }
-
-  maybeDeleteBox() {
-    let sure = true;
-
-    if (this.props.box.type !== BOX_TYPES.LABEL && this.props.box.text) {
-      sure = window.confirm('If you delete this and it is being used, things will break. Cool?');
-    }
-
-    if (sure) this.props.boxActions.remove(this.props.id);
-  };
 
   resize() {
     if (!this.dragInfo.isMoving) return;
@@ -325,7 +322,7 @@ class Box extends Component {
   }
 
   render() {
-    const {box} = this.props;
+    const {activeBox, box, boxActions, id} = this.props;
 
     const styles = cloneDeep(baseStyles);
 
@@ -334,14 +331,13 @@ class Box extends Component {
     styles.box.transform = `translate(${box.left}px, ${box.top}px)`;
 
     if (this.isInMovingMode(this.props)) {
-      styles.handles.display = 'block';
+      styles.handles.display = 'block'; // TODO (davidg): should all these 'blocks' be 'initial'?
 
       styles.box = {
         ...styles.box,
         borderWidth: 0,
         ...css.shadow('medium'),
         cursor: 'move',
-        zIndex: Z_INDEXES.MOVING_BOX,
       };
 
       styles.displayText.overflow = 'hidden';
@@ -349,10 +345,13 @@ class Box extends Component {
 
     if (this.isInTypingMode(this.props)) {
       styles.textArea.display = 'block';
-      styles.box = {
-        ...styles.box, // TODO (davidg): what?
-      };
+
       styles.displayText.display = 'none';
+    }
+
+    if (activeBox.id === id) {
+      styles.boxActions.display = 'block';
+      styles.box.zIndex = Z_INDEXES.MOVING_BOX;
     }
 
     if (box.type === BOX_TYPES.LABEL) {
@@ -377,17 +376,6 @@ class Box extends Component {
         <div
           style={styles.handles}
         >
-          <button
-            style={styles.deleteButton}
-            onClick={this.maybeDeleteBox}
-            title="Delete this box"
-          >
-            <Icon
-              size={25}
-              icon={ICONS.BIN2}
-              color={COLORS.GRAY_LIGHT}
-            />
-          </button>
           <div
             style={[styles.handle, styles.handleTop]}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.TOP)}
@@ -408,6 +396,16 @@ class Box extends Component {
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.RIGHT)}
             onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.RIGHT)}
           ></div>
+        </div>
+
+        <div style={styles.boxActions}>
+          <DropModal
+            currentDropModal={DROP_MODALS.BOX_ACTIONS}
+            id={id}
+            box={box}
+            boxActions={boxActions}
+            showModal={this.props.showModal}
+          />
         </div>
 
         <textarea
@@ -436,6 +434,7 @@ Box.propTypes = {
 
   // actions
   boxActions: PropTypes.object.isRequired,
+  showModal: PropTypes.func.isRequired,
 };
 
 export default Radium(Box);

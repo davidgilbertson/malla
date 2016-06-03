@@ -51,7 +51,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottom: `3px solid ${COLORS.PRIMARY_LIGHT}`,
-    background: COLORS.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
     color: COLORS.WHITE,
   },
   title: {
@@ -84,7 +84,7 @@ const styles = {
     flex: '0 0 auto',
   },
   okButton: {
-    background: COLORS.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
     color: COLORS.WHITE,
     padding: 12,
     minWidth: 100,

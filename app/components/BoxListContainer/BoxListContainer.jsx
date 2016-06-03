@@ -24,7 +24,10 @@ const mapDispatchToProps = () => {
       setActiveBox: (id, mode) => {
         actions.setActiveBox(id, mode);
       },
-    }
+    },
+    showModal: modal => {
+      actions.showModal(modal);
+    },
   };
 };
 

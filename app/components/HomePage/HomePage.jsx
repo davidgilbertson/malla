@@ -111,7 +111,7 @@ const styles = {
   },
   bigSignUpButton: {
     display: 'block',
-    background: COLORS.ACCENT,
+    backgroundColor: COLORS.ACCENT,
     fontSize: 25,
     fontWeight: 400,
     padding: 15,

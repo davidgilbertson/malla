@@ -6,6 +6,7 @@ import Modal from '../Modal/Modal.jsx';
 
 import {
   BOX_TYPES,
+  COLORS,
   DIMENSIONS,
 } from '../../../../constants.js';
 
@@ -27,7 +28,7 @@ const styles = {
     ...css.shadow('inset'),
   },
   deleteRow: {
-    color: 'red',
+    color: COLORS.ERROR,
     textAlign: 'right',
     fontSize: 14,
     fontWeight: 400,

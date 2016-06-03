@@ -45,7 +45,7 @@ const ScreenHeader = props => {
       justifyContent: 'space-between',
       alignItems: 'center',
       height: DIMENSIONS.SPACE_L,
-      background: COLORS.OFF_WHITE,
+      backgroundColor: COLORS.OFF_WHITE,
       padding: '0 12px',
       ...css.shadow('small'),
       zIndex: Z_INDEXES.SCREEN_HEADER,
@@ -77,7 +77,7 @@ const ScreenHeader = props => {
       textAlign: 'center',
     },
     apiButton: {
-      background: COLORS.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       color: COLORS.WHITE,
       padding: '8px 12px',
     },

@@ -80,7 +80,7 @@ const baseStyles = {
     },
   },
   headerPrimaryButton: {
-    background: COLORS.ACCENT,
+    backgroundColor: COLORS.ACCENT,
     color: COLORS.WHITE,
     ...css.shadow('small'),
   },
