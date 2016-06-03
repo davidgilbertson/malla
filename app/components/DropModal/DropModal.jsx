@@ -31,7 +31,7 @@ const styles = {
   },
   triangle: {
     position: 'absolute',
-    top: -20,
+    top: -18,
     width: 20,
     height: 20,
     transform: 'translateX(-50%)',
