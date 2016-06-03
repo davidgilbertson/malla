@@ -16,7 +16,7 @@ const BoxActions = props => {
     back: {
       ...props.styles.back,
       width: 80,
-      padding: '8px 5px',
+      padding: '5px 5px 7px',
       display: 'flex',
       flexFlow: 'row',
       justifyContent: 'space-around',
