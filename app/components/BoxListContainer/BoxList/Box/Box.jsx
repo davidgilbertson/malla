@@ -19,7 +19,6 @@ import {
   ICONS,
   FONT_FAMILIES,
   GRID_SIZE,
-  TOOLS,
   Z_INDEXES,
 } from '../../../../constants.js';
 

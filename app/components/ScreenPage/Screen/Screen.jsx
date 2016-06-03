@@ -1,7 +1,6 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
-import {browserHistory} from 'react-router';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
