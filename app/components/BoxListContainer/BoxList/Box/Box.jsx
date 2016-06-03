@@ -37,6 +37,7 @@ const TEXT_PADDING = '4px 8px';
 const baseStyles = {
   box: {
     position: 'absolute',
+    marginBottom: 200, // so there's always space at the bottom of the page
     ...css.border(1, 'dashed', COLORS.GRAY_LIGHT),
     left: 0,
     top: 0,
