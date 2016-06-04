@@ -2,17 +2,15 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import forOwn from 'lodash/forOwn';
 
-import Modal from '../Modal/Modal.jsx';
-
 import {
   BOX_TYPES,
   COLORS,
   DIMENSIONS,
-} from '../../../../constants.js';
+} from '../../../constants.js';
 
 import {
   css,
-} from '../../../../utils';
+} from '../../../utils';
 
 const styles = {
   nameInput: {
@@ -86,11 +84,18 @@ class ScreenDetails extends Component {
 
   componentDidMount() {
     this.nameEl.focus();
+
+    this.props.setModalState({
+      title: this.props.mode === 'add' ? 'Add a screen' : 'Edit screen',
+      width: DIMENSIONS.SPACE_L * 7,
+      showOk: true,
+      okText: 'Save',
+      onOk: this.upsertScreen,
+    });
   }
 
   render() {
     let screen;
-    let title;
     let deleteButton = null;
 
     if (this.props.mode === 'add') {
@@ -98,10 +103,8 @@ class ScreenDetails extends Component {
         name: '',
         description: '',
       };
-      title = 'Add a screen';
     } else {
       screen = this.props.screens[this.props.currentScreenKey];
-      title = `Editing '${screen.name}'`;
 
       deleteButton = Object.keys(this.props.screens).length > 1
         ? (
@@ -117,13 +120,7 @@ class ScreenDetails extends Component {
     }
 
     return (
-      <Modal
-        {...this.props}
-        title={title}
-        width={DIMENSIONS.SPACE_L * 7}
-        hideModal={this.upsertScreen}
-        showOk={true}
-      >
+      <div>
         <div>
           <input
             ref={el => this.nameEl = el}
@@ -141,7 +138,7 @@ class ScreenDetails extends Component {
         </div>
 
         {deleteButton}
-      </Modal>
+      </div>
     );
   }
 }
@@ -157,6 +154,7 @@ ScreenDetails.propTypes = {
   addScreen: PropTypes.func.isRequired,
   updateScreen: PropTypes.func.isRequired,
   removeScreen: PropTypes.func.isRequired,
+  setModalState: PropTypes.func.isRequired,
 };
 
 export default ScreenDetails;

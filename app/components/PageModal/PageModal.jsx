@@ -1,15 +1,22 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
-import cloneDeep from 'lodash/cloneDeep';
+
+import Button from '../Button/Button.jsx';
+import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
+import SignInModal from './SignInModal/SignInModal.jsx';
+import FeedbackModal from './FeedbackModal/FeedbackModal.jsx';
+import ScreenDetails from './ScreenDetails/ScreenDetails.jsx';
+import BoxDetails from './BoxDetails/BoxDetails.jsx';
 
 import {
   COLORS,
+  DIMENSIONS,
+  MODALS,
   Z_INDEXES,
-} from '../../../../constants.js';
-import Button from '../../../Button/Button.jsx';
+} from '../../constants.js';
 
-const baseStyles = {
+const styles = {
   back: {
     position: 'fixed',
     display: 'flex',
@@ -31,7 +38,6 @@ const baseStyles = {
     flex: '0 0 auto',
     display: 'flex',
     flexFlow: 'column',
-    width: 400,
     maxHeight: '94vh',
     maxWidth: '98vw',
     backgroundColor: COLORS.WHITE,
@@ -62,7 +68,7 @@ const baseStyles = {
   },
   body: {
     flex: 1,
-    padding: 20,
+    padding: DIMENSIONS.SPACE_S,
     overflow: 'auto',
   },
   actions: {
@@ -81,55 +87,101 @@ class Modal extends Component {
   constructor(props) {
     super(props);
 
-    this.maybeClose = this.maybeClose.bind(this);
+    this.onBackgroundClick = this.onBackgroundClick.bind(this);
     this.onOk = this.onOk.bind(this);
+    
+    // state can be passed UP from the modal's content
+    // this is kinda the equivalent of defaultProps
+    this.defaultState = {
+      title: '',
+      showOk: true,
+      okText: 'OK',
+      okDisabled: false,
+      width: 400,
+      onOk: () => {}
+    };
+
+    this.state = this.defaultState; // doesn't matter that this is a ref because setState clones
   }
 
-  maybeClose(e) {
+  onBackgroundClick(e) {
     if (e.target !== e.currentTarget) return;
 
     this.props.hideModal();
   }
   
   onOk() {
-    // if okOK is passed in, then execute it
-    this.props.onOk && this.props.onOk();
-
-    // then close the modal
+    this.state.onOk();
     this.props.hideModal();
   }
 
-  render() {
-    const styles = cloneDeep(baseStyles);
+  componentWillReceiveProps(nextProps) {
+    // When the modal changes, we need to reset the state
+    // to clear any props not set by the new state
+    if (nextProps.currentModal !== this.props.currentModal) {
+      this.setState(this.defaultState);
+    }
+  }
 
-    if (this.props.width) {
-      styles.panel.width = this.props.width;
+  render() {
+    let ModalBody;
+    let extraProps = {};
+
+    switch (this.props.currentModal) {
+      case MODALS.EXPORT_DATA :
+        ModalBody = ExportDataModal;
+        break;
+
+      case MODALS.SOCIAL_SIGN_IN :
+        ModalBody = SignInModal;
+        break;
+
+      case MODALS.FEEDBACK :
+        ModalBody = FeedbackModal;
+        break;
+
+      case MODALS.ADD_SCREEN :
+        ModalBody = ScreenDetails;
+        extraProps.mode = 'add';
+        break;
+
+      case MODALS.EDIT_SCREEN :
+        ModalBody = ScreenDetails;
+        extraProps.mode = 'edit';
+        break;
+
+      case MODALS.EDIT_BOX :
+        ModalBody = BoxDetails;
+        break;
+
+      default :
+        return null;
     }
 
-    const actions = this.props.showOk
+    const actions = this.state.showOk
       ? (
         <div style={styles.actions}>
           <Button
             style={styles.okButton}
             onClick={this.onOk}
-            disabled={this.props.okDisabled}
+            disabled={this.state.okDisabled}
           >
-            {this.props.okText || 'OK'}
+            {this.state.okText}
           </Button>
         </div>
       ) : null;
-
+    
     return (
       <div
         style={styles.back}
-        onClick={this.maybeClose}
+        onClick={this.onBackgroundClick}
       >
         <div style={styles.panelAboveSpacer}></div>
 
-        <div style={styles.panel}>
+        <div style={[styles.panel, {width: this.state.width}]}>
           <div style={styles.header}>
             <h1 style={styles.title}>
-              {this.props.title}
+              {this.state.title}
             </h1>
 
             <Button
@@ -141,7 +193,11 @@ class Modal extends Component {
           </div>
 
           <div style={styles.body}>
-            {this.props.children}
+            <ModalBody
+              {...this.props}
+              {...extraProps}
+              setModalState={state => this.setState(state)}
+              />
           </div>
 
           {actions}
@@ -155,20 +211,10 @@ class Modal extends Component {
 
 Modal.propTypes = {
   // props
-  title: PropTypes.string.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.element,
-    PropTypes.string,
-  ]).isRequired,
-  width: PropTypes.number,
-  showOk: PropTypes.bool,
-  okDisabled: PropTypes.bool,
-  okText: PropTypes.string,
-  
+  currentModal: PropTypes.string.isRequired,
+
   // methods
   hideModal: PropTypes.func.isRequired,
-  onOk: PropTypes.func,
 };
 
 export default Radium(Modal);

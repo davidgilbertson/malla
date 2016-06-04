@@ -2,12 +2,12 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import forOwn from 'lodash/forOwn';
 
-import Modal from '../Modal/Modal.jsx';
 import {
   COLORS,
+  DIMENSIONS,
   BOX_TYPES,
   FONT_FAMILIES,
-} from '../../../../constants.js';
+} from '../../../constants.js';
 
 const styles = {
   textArea: {
@@ -35,6 +35,12 @@ class ExportDataModal extends Component {
 
   componentDidMount() {
     this.textAreaEl.style.height = `${this.textAreaEl.scrollHeight + 10}px`;
+
+    this.props.setModalState({
+      title: 'API access',
+      showOk: true,
+      width: DIMENSIONS.SPACE_L * 20,
+    });
   }
 
   render() {
@@ -71,13 +77,9 @@ class ExportDataModal extends Component {
      );
 
     return (
-      <Modal
-        {...this.props}
-        title="API access"
-        showOk={true}
-        width={1200}
-      >
+      <div>
         <p>To access this data via API, go to {apiLink}</p>
+
         <p>Note that this will fetch the text for all screens in the current project.</p>
 
         <textarea
@@ -89,7 +91,7 @@ class ExportDataModal extends Component {
         />
 
         {lineBreakHint}
-      </Modal>
+      </div>
     );
   }
 }
@@ -97,6 +99,7 @@ class ExportDataModal extends Component {
 ExportDataModal.propTypes = {
   boxes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  setModalState: PropTypes.func.isRequired,
 };
 
 export default ExportDataModal;

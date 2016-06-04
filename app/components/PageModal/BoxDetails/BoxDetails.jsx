@@ -2,17 +2,15 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import forOwn from 'lodash/forOwn';
 
-import Modal from '../Modal/Modal.jsx';
-
 import {
   BOX_TYPES,
   COLORS,
   DIMENSIONS,
-} from '../../../../constants.js';
+} from '../../../constants.js';
 
 import {
   css,
-} from '../../../../utils';
+} from '../../../utils';
 
 const styles = {
   idInput: {
@@ -67,6 +65,7 @@ class BoxDetails extends Component {
       idIsAvailable: true,
       idIsNotEmpty: true,
       idIsValidFormat: true,
+      isValidOverall: true,
     };
   }
 
@@ -102,6 +101,13 @@ class BoxDetails extends Component {
 
     if (this.state.idIsValidFormat !== idIsValidFormat) {
       this.setState({idIsValidFormat});
+    }
+
+    const isValidOverall = idIsAvailable && idIsNotEmpty && idIsValidFormat;
+
+    if (this.state.isValidOverall !== isValidOverall) {
+      this.setState({isValidOverall});
+      this.props.setModalState({okDisabled: !isValidOverall});
     }
   }
 
@@ -149,6 +155,15 @@ class BoxDetails extends Component {
     } else {
       this.idEl.focus();
     }
+
+    this.props.setModalState({
+      title: 'Edit text item',
+      width: DIMENSIONS.SPACE_L * 11,
+      showOk: true,
+      okText: 'Save',
+      onOk: this.updateBox,
+      okDisabled: !this.state.isValidOverall,
+    });
   }
 
   render() {
@@ -194,14 +209,7 @@ class BoxDetails extends Component {
       ) : null;
 
     return (
-      <Modal
-        {...this.props}
-        title="Edit text item"
-        width={DIMENSIONS.SPACE_L * 8}
-        onOk={this.updateBox}
-        showOk={true}
-        okDisabled={!!idError}
-      >
+      <div>
         {idInputs}
 
         <label>
@@ -222,7 +230,7 @@ class BoxDetails extends Component {
             Delete this text item
           </button>
         </div>
-      </Modal>
+      </div>
     );
   }
 }
@@ -239,6 +247,7 @@ BoxDetails.propTypes = {
   removeBox: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
   setActiveBox: PropTypes.func.isRequired,
+  setModalState: PropTypes.func.isRequired,
 };
 
 export default BoxDetails;

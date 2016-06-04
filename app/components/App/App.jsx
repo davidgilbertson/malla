@@ -6,7 +6,7 @@ import {
   FONT_FAMILIES,
 } from '../../constants.js';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
-import ModalContainer from '../ModalContainer/ModalContainer.jsx';
+import PageModalConnector from '../PageModal/PageModalConnector.jsx';
 import DropModalConnector from '../DropModal/DropModalConnector.jsx';
 
 const styles = {
@@ -89,7 +89,7 @@ const App = (props) => (
 
     {props.children}
 
-    <ModalContainer />
+    <PageModalConnector />
     <DropModalConnector />
   </StyleRoot>
 );

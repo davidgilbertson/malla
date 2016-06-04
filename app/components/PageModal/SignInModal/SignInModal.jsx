@@ -2,27 +2,27 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
 
-import Modal from '../Modal/Modal.jsx';
-import Button from '../../../Button/Button.jsx';
+import Button from '../../Button/Button.jsx';
+
 import {
   COLORS,
+  DIMENSIONS,
   INTERACTIONS,
-} from '../../../../constants.js';
-
-import {EVENTS} from '../../../../tracker.js';
+} from '../../../constants.js';
+import {EVENTS} from '../../../tracker.js';
 
 const styles = {
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 20,
+    margin: DIMENSIONS.SPACE_S,
   },
   button: {
     width: '100%',
     color: COLORS.WHITE,
     marginTop: 16,
     marginBottom: 16,
-    height: 61,
+    height: DIMENSIONS.SPACE_L,
   },
   facebookButton: {
     backgroundColor: '#3B5998',
@@ -45,13 +45,17 @@ class SignInModal extends Component {
     this.props.signIn(provider);
   }
 
+  componentDidMount() {
+    this.props.setModalState({
+      title: 'Sign in',
+      width: DIMENSIONS.SPACE_L * 6,
+      showOk: false,
+    });
+  }
+
   render() {
     return (
-      <Modal
-        {...this.props}
-        title="Sign in"
-        width={400}
-      >
+      <div>
         <p style={styles.title}>Choose your flavor</p>
 
         <Button
@@ -83,13 +87,14 @@ class SignInModal extends Component {
         >
           Twitter
         </Button>
-      </Modal>
+      </div>
     );
   }
 }
 
 SignInModal.propTypes = {
   projects: PropTypes.object.isRequired,
+  setModalState: PropTypes.func.isRequired,
 };
 
 export default Radium(SignInModal);
