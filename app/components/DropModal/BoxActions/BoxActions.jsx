@@ -48,18 +48,7 @@ const BoxActions = props => {
   return (
     <div style={styles.back}>
       {props.triangle}
-      
-      <Button
-        style={styles.iconButton}
-        onClick={editBox}
-      >
-        <Icon
-          icon={ICONS.GEAR}
-          color={COLORS.WHITE}
-          size={20}
-        />
-      </Button>
-    
+
       <Button
         style={styles.iconButton}
         onClick={maybeDeleteBox}
@@ -67,6 +56,17 @@ const BoxActions = props => {
       >
         <Icon
           icon={ICONS.BIN2}
+          color={COLORS.WHITE}
+          size={20}
+        />
+      </Button>
+      
+      <Button
+        style={styles.iconButton}
+        onClick={editBox}
+      >
+        <Icon
+          icon={ICONS.PENCIL}
           color={COLORS.WHITE}
           size={20}
         />
