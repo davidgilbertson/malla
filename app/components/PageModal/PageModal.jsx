@@ -38,7 +38,7 @@ const styles = {
   },
 };
 
-class Modal extends Component {
+class PageModal extends Component {
   constructor(props) {
     super(props);
 
@@ -131,7 +131,7 @@ class Modal extends Component {
   }
 }
 
-Modal.propTypes = {
+PageModal.propTypes = {
   // props
   currentModal: PropTypes.string.isRequired,
 
@@ -139,4 +139,4 @@ Modal.propTypes = {
   hideModal: PropTypes.func.isRequired,
 };
 
-export default Radium(Modal);
+export default Radium(PageModal);
