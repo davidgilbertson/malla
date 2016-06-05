@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import Radium from 'radium';
 
 import Button from '../Button/Button.jsx';
+import Panel from '../Panel/Panel.jsx';
+
 import {
   BREAKPOINTS,
   COLORS,
@@ -11,60 +13,31 @@ import {
   SIGN_IN_STATUSES,
   Z_INDEXES,
 } from '../../constants.js';
-import {
-  css,
-} from '../../utils'
 import * as actions from '../../data/actions.js';
 
 import {EVENTS} from '../../tracker.js';
 
-const PANEL_TOP = DIMENSIONS.SPACE_L + 20;
 const styles = {
   panel: {
-    position: 'fixed',
+    position: 'absolute',
     flex: '0 0 auto',
     display: 'flex',
     flexFlow: 'column',
-    top: DIMENSIONS.SPACE_L * 2 + 20,
-    right: 10,
-    left: 10,
-    maxHeight: `calc(100vh - ${DIMENSIONS.SPACE_L + 20}px)`,
+    top: DIMENSIONS.SPACE_S,
+    right: '1vw',
+    left: '1vw',
+    maxHeight: '90%',
     maxWidth: '98vw',
-    backgroundColor: COLORS.WHITE,
-    ...css.shadow(),
-    fontSize: 14,
+    width: 'auto',
     zIndex: Z_INDEXES.HELP_PANEL,
     [BREAKPOINTS.TABLET_PORTRAIT]: {
       width: 400,
-      right: 20,
+      right: DIMENSIONS.SPACE_S,
       left: 'auto',
     },
-    [BREAKPOINTS.TABLET_LANDSCAPE]: {
-      right: DIMENSIONS.SPACE_M + 20,
-    },
-  },
-  header: {
-    height: 64,
-    flex: '0 0 auto',
-    display: 'flex',
-    flexFlow: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottom: `3px solid ${COLORS.PRIMARY_LIGHT}`,
-    backgroundColor: COLORS.PRIMARY,
-    color: COLORS.WHITE,
-  },
-  title: {
-    fontSize: 22,
-    paddingLeft: 20,
-  },
-  close: {
-    padding: 20,
-    fontSize: 16,
   },
   body: {
     flex: 1,
-    padding: 15,
     overflow: 'auto',
   },
   subtitle: {
@@ -110,12 +83,14 @@ class HelpPanel extends Component {
     if (!user.showHelp || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN) return null;
 
     return (
-      <div style={styles.panel}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Welcome to Malla</h1>
-        </div>
-
-        <div style={styles.body}>
+      <Panel
+        title="Welcome to Malla"
+        showOk={false}
+        width={400}
+        style={styles.panel}
+        showClose={false}
+      >
+        <div>
           <p>On this screen, add any text that you want shown in your website or app.</p>
 
           <h2 style={styles.subtitle}>Things you can do</h2>
@@ -157,7 +132,7 @@ class HelpPanel extends Component {
             Got it
           </Button>
         </div>
-      </div>
+      </Panel>
     );
   }
 }

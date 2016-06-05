@@ -2,7 +2,7 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
 
-import Button from '../Button/Button.jsx';
+import Panel from '../Panel/Panel.jsx';
 import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
 import SignInModal from './SignInModal/SignInModal.jsx';
 import FeedbackModal from './FeedbackModal/FeedbackModal.jsx';
@@ -11,7 +11,6 @@ import BoxDetails from './BoxDetails/BoxDetails.jsx';
 
 import {
   COLORS,
-  DIMENSIONS,
   MODALS,
   Z_INDEXES,
 } from '../../constants.js';
@@ -34,52 +33,8 @@ const styles = {
   panelAboveSpacer: {
     flex: '2 0 auto',
   },
-  panel: {
-    flex: '0 0 auto',
-    display: 'flex',
-    flexFlow: 'column',
-    maxHeight: '94vh',
-    maxWidth: '98vw',
-    backgroundColor: COLORS.WHITE,
-  },
   panelBelowSpacer: {
     flex: '6 0 auto',
-  },
-  header: {
-    height: 64,
-    flex: '0 0 auto',
-    display: 'flex',
-    flexFlow: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottom: `3px solid ${COLORS.PRIMARY_LIGHT}`,
-    backgroundColor: COLORS.PRIMARY,
-    color: COLORS.WHITE,
-  },
-  title: {
-    fontSize: 22,
-    paddingLeft: 20,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-  },
-  close: {
-    padding: 20,
-    fontSize: 16,
-  },
-  body: {
-    flex: 1,
-    padding: DIMENSIONS.SPACE_S,
-    overflow: 'auto',
-  },
-  actions: {
-    padding: 20,
-    textAlign: 'center',
-  },
-  okButton: {
-    backgroundColor: COLORS.PRIMARY,
-    color: COLORS.WHITE,
-    padding: 12,
-    minWidth: 100,
   },
 };
 
@@ -88,7 +43,6 @@ class Modal extends Component {
     super(props);
 
     this.onBackgroundClick = this.onBackgroundClick.bind(this);
-    this.onOk = this.onOk.bind(this);
     
     // state can be passed UP from the modal's content
     // this is kinda the equivalent of defaultProps
@@ -110,14 +64,9 @@ class Modal extends Component {
     this.props.hideModal();
   }
   
-  onOk() {
-    this.state.onOk();
-    this.props.hideModal();
-  }
-
   componentWillReceiveProps(nextProps) {
     // When the modal changes, we need to reset the state
-    // to clear any props not set by the new state
+    // to clear any props not set by the new modal
     if (nextProps.currentModal !== this.props.currentModal) {
       this.setState(this.defaultState);
     }
@@ -158,19 +107,6 @@ class Modal extends Component {
         return null;
     }
 
-    const actions = this.state.showOk
-      ? (
-        <div style={styles.actions}>
-          <Button
-            style={styles.okButton}
-            onClick={this.onOk}
-            disabled={this.state.okDisabled}
-          >
-            {this.state.okText}
-          </Button>
-        </div>
-      ) : null;
-    
     return (
       <div
         style={styles.back}
@@ -178,30 +114,16 @@ class Modal extends Component {
       >
         <div style={styles.panelAboveSpacer}></div>
 
-        <div style={[styles.panel, {width: this.state.width}]}>
-          <div style={styles.header}>
-            <h1 style={styles.title}>
-              {this.state.title}
-            </h1>
-
-            <Button
-              style={styles.close}
-              onClick={this.props.hideModal}
-            >
-              Close
-            </Button>
-          </div>
-
-          <div style={styles.body}>
-            <ModalBody
-              {...this.props}
-              {...extraProps}
-              setModalState={state => this.setState(state)}
-              />
-          </div>
-
-          {actions}
-        </div>
+        <Panel
+          {...this.props}
+          {...this.state}
+        >
+          <ModalBody
+            {...this.props}
+            {...extraProps}
+            setModalState={state => this.setState(state)}
+            />
+        </Panel>
 
         <div style={styles.panelBelowSpacer}></div>
       </div>

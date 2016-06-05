@@ -186,9 +186,9 @@ class Screen extends Component {
             ref={el => this.placeholderEl = el}
             style={this.placeholderStyle}
           ></div>
-        </div>
 
-        <HelpPanel />
+          <HelpPanel />
+        </div>
 
         <footer
           style={styles.betaFooter}

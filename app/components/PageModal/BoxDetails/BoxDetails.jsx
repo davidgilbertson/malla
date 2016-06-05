@@ -186,7 +186,7 @@ class BoxDetails extends Component {
     } else if (!this.state.idIsNotEmpty) {
       idError = 'Try something a little more descriptive';
     } else if (!this.state.idIsValidFormat) {
-      idError = 'Please use only letters and numbers, dashes and underscores, starting with a letter';
+      idError = 'The ID must only contain letters, numbers, dashes and underscores. It cannot start with a number.';
     }
 
     // Don't show ID stuff if the box is just a label
