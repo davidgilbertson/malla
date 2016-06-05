@@ -93,7 +93,6 @@ class SignInModal extends Component {
 }
 
 SignInModal.propTypes = {
-  projects: PropTypes.object.isRequired,
   setModalState: PropTypes.func.isRequired,
 };
 
