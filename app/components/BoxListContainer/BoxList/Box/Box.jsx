@@ -331,7 +331,7 @@ class Box extends Component {
     styles.box.transform = `translate(${box.left}px, ${box.top}px)`;
 
     if (this.isInMovingMode(this.props)) {
-      styles.handles.display = 'block'; // TODO (davidg): should all these 'blocks' be 'initial'?
+      styles.handles.display = 'initial';
 
       styles.box = {
         ...styles.box,
@@ -344,13 +344,13 @@ class Box extends Component {
     }
 
     if (this.isInTypingMode(this.props)) {
-      styles.textArea.display = 'block';
+      styles.textArea.display = 'initial';
 
       styles.displayText.display = 'none';
     }
 
     if (activeBox.id === id) {
-      styles.boxActions.display = 'block';
+      styles.boxActions.display = 'initial';
       styles.box.zIndex = Z_INDEXES.MOVING_BOX;
     }
 
@@ -377,22 +377,22 @@ class Box extends Component {
           style={styles.handles}
         >
           <div
-            style={[styles.handle, styles.handleTop]}
+            style={{...styles.handle, ...styles.handleTop}}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.TOP)}
             onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.TOP)}
           ></div>
           <div
-            style={[styles.handle, styles.handleBottom]}
+            style={{...styles.handle, ...styles.handleBottom}}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.BOTTOM)}
             onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.BOTTOM)}
           ></div>
           <div
-            style={[styles.handle, styles.handleLeft]}
+            style={{...styles.handle, ...styles.handleLeft}}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.LEFT)}
             onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.LEFT)}
           ></div>
           <div
-            style={[styles.handle, styles.handleRight]}
+            style={{...styles.handle, ...styles.handleRight}}
             onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.RIGHT)}
             onTouchStart={this.onDragStart.bind(this, DRAG_TYPES.RIGHT)}
           ></div>

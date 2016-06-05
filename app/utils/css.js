@@ -23,13 +23,11 @@ export function pos(top, right, bottom, left) {
   return result;
 }
 
-export function inputStyle() {
-  return {
-    padding: '10px 12px',
-    border: `1px solid ${COLORS.GRAY_LIGHT}`,
-    borderRadius: 4,
-  };
-}
+export const inputStyle = {
+  padding: '10px 12px',
+  border: `1px solid ${COLORS.GRAY_LIGHT}`,
+  borderRadius: 4,
+};
 
 export function padding(top, right, bottom, left) {
   return {

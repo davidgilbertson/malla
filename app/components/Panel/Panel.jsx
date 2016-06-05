@@ -96,6 +96,7 @@ class Panel extends Component {
           Close
         </Button>
       ) : null;
+    
     const panelStyle = {
       ...styles.panel,
       width: this.props.width,

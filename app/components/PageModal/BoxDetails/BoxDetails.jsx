@@ -15,7 +15,7 @@ import {
 const styles = {
   idInput: {
     width: '100%',
-    ...css.inputStyle(),
+    ...css.inputStyle,
     ...css.shadow('inset'),
   },
   label: {
@@ -39,7 +39,7 @@ const styles = {
   textInput: {
     width: '100%',
     height: DIMENSIONS.SPACE_L * 3,
-    ...css.inputStyle(),
+    ...css.inputStyle,
     ...css.shadow('inset'),
   },
   deleteRow: {

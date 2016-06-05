@@ -15,14 +15,14 @@ import {
 const styles = {
   nameInput: {
     width: '100%',
-    ...css.inputStyle(),
+    ...css.inputStyle,
     ...css.shadow('inset'),
   },
   descInput: {
     width: '100%',
     marginTop: DIMENSIONS.SPACE_S,
     height: DIMENSIONS.SPACE_L * 2,
-    ...css.inputStyle(),
+    ...css.inputStyle,
     ...css.shadow('inset'),
   },
   deleteRow: {
