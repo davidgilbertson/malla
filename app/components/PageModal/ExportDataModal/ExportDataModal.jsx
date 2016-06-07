@@ -23,6 +23,7 @@ const styles = {
     fontFamily: FONT_FAMILIES.MONOSPACE,
     color: COLORS.GRAY_DARK,
     whiteSpace: 'pre',
+    resize: 'none',
   },
   apiUrlWrapper: {
     marginTop: 20,
@@ -58,7 +59,7 @@ class ExportDataModal extends Component {
   }
 
   componentDidMount() {
-    this.textAreaEl.style.height = `${this.textAreaEl.scrollHeight + 10}px`;
+    this.textAreaEl.style.height = `${this.textAreaEl.scrollHeight + 30}px`;
 
     this.props.setModalState({
       title: 'API access',
