@@ -1,15 +1,21 @@
 import React from 'react';
 const {Component, PropTypes} = React;
+import Radium from 'radium';
 import forOwn from 'lodash/forOwn';
+
+import MarkedDownText from '../../MarkedDownText/MarkedDownText.jsx';
+import Icon from '../../Icon/Icon.jsx';
 
 import {
   BOX_TYPES,
   COLORS,
   DIMENSIONS,
+  ICONS,
 } from '../../../constants.js';
 
 import {
   css,
+  markdownToHtml,
 } from '../../../utils';
 
 const styles = {
@@ -36,17 +42,45 @@ const styles = {
     color: COLORS.ERROR,
     marginTop: 4,
   },
+  textWrapper: {
+    position: 'relative',
+    height: DIMENSIONS.SPACE_L * 6,
+  },
   textInput: {
+    display: 'block', // normalize textarea and div
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
     width: '100%',
-    height: DIMENSIONS.SPACE_L * 3,
+    resize: 'none',
     ...css.inputStyle,
     ...css.shadow('inset'),
   },
-  deleteRow: {
-    color: COLORS.ERROR,
-    textAlign: 'right',
-    fontSize: 14,
-    fontWeight: 400,
+  formattedPreview: {
+    backgroundColor: COLORS.WHITE,
+    overflow: 'auto',
+  },
+  formatWrapper: {
+    display: 'flex',
+    direction: 'row',
+    justifyContent: 'space-between',
+    margin: '10px 5px',
+  },
+  previewButton: {
+    color: COLORS.WHITE,
+    padding: '7px 13px',
+    textTransform: 'uppercase',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: DIMENSIONS.SPACE_L * 2,
+  },
+  previewButtonText: {
+    marginLeft: 10,
+  },
+  formattingHelp: {
+    textDecoration: 'underline',
   },
 };
 
@@ -57,15 +91,21 @@ class BoxDetails extends Component {
     this.updateBox = this.updateBox.bind(this);
     this.deleteBox = this.deleteBox.bind(this);
     this.onIdChange = this.onIdChange.bind(this);
+    // this.onTextChange = this.onTextChange.bind(this);
 
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     this.currentProjectKey = currentScreen.projectKey;
+
+    const box = this.props.boxes[this.props.activeBox.id];
 
     this.state = {
       idIsAvailable: true,
       idIsNotEmpty: true,
       idIsValidFormat: true,
       isValidOverall: true,
+      showFormatted: false,
+      text: box.text,
+      id: box.label,
     };
   }
 
@@ -109,7 +149,13 @@ class BoxDetails extends Component {
       this.setState({isValidOverall});
       this.props.setModalState({okDisabled: !isValidOverall});
     }
+
+    this.setState({id: currentId});
   }
+
+  // onTextChange(e) {
+  //   this.setState({text: e.target.value});
+  // }
 
   updateBox() {
     const idIsValid = this.state.idIsNotEmpty && this.state.idIsAvailable;
@@ -118,11 +164,12 @@ class BoxDetails extends Component {
 
     if (isLabel || idIsValid) {
       const newProps = {
-        text: this.textEl.value,
+        text: this.state.text,
+        html: markdownToHtml(this.state.text),
       };
 
       if (!isLabel) {
-        newProps.label = this.idEl.value;
+        newProps.label = this.state.id;
       }
 
       this.props.updateBox(this.props.activeBox.id, newProps);
@@ -208,27 +255,67 @@ class BoxDetails extends Component {
         </label>
       ) : null;
 
+    const showFormatted = this.state.showFormatted || this.state.peekFormatted;
+
     return (
       <div>
         {idInputs}
 
-        <label>
-          <span style={styles.label}>Text</span>
+        <p style={styles.label}>Text</p>
+        <div style={styles.textWrapper}>
 
           <textarea
             ref={el => this.textEl = el}
-            defaultValue={box.text}
+            value={this.state.text}
+            onChange={e => this.setState({text: e.target.value})}
             style={styles.textInput}
           />
-        </label>
+          <MarkedDownText
+            style={{
+              ...styles.textInput,
+              ...styles.formattedPreview,
+              visibility: showFormatted ? 'visible' : 'hidden',
+            }}
+            markdown={this.state.text}
+          />
 
-        <div style={styles.deleteRow}>
+        </div>
+
+        <div style={styles.formatWrapper}>
           <button
-            onClick={this.deleteBox}
-            tabIndex="-1"
+            style={{
+              ...styles.previewButton,
+              backgroundColor: this.state.showFormatted ? COLORS.ACCENT : COLORS.GRAY,
+            }}
+            onClick={() => {
+              this.setState({
+                showFormatted: !this.state.showFormatted,
+                peekFormatted: false,
+              });
+            }}
+            onMouseOver={() => {
+              this.setState({peekFormatted: true});
+            }}
+            onMouseOut={() => {
+              this.setState({peekFormatted: false});
+            }}
           >
-            Delete this text item
+            <Icon
+              icon={ICONS.EYE}
+              size={22}
+              color={COLORS.WHITE}
+            />
+
+            Preview
           </button>
+
+          <a
+            style={styles.formattingHelp}
+            href="http://commonmark.org/help/"
+            target="_blank"
+          >
+            Formatting help
+          </a>
         </div>
       </div>
     );
@@ -250,4 +337,4 @@ BoxDetails.propTypes = {
   setModalState: PropTypes.func.isRequired,
 };
 
-export default BoxDetails;
+export default Radium(BoxDetails);

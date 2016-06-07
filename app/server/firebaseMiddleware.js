@@ -1,7 +1,10 @@
 import firebase from 'firebase';
 import forOwn from 'lodash/forOwn';
 
-import {BOX_TYPES} from '../constants.js';
+import {
+  API_TEXT_FORMATS,
+  BOX_TYPES
+} from '../constants.js';
 
 const config = {
   serviceAccount: {
@@ -18,6 +21,7 @@ const db = firebase.database().ref();
 
 export default function(req, res) {
   const projectId = req.params.projectId;
+  const apiTextFormat = req.query.format || API_TEXT_FORMATS.HTML;
 
   db
     .child('data/boxes')
@@ -28,7 +32,14 @@ export default function(req, res) {
 
       forOwn(boxSnapshot.val(), box => {
         if (box && box.type !== BOX_TYPES.LABEL) {
-          json[box.label] = box.text;
+          let text;
+          
+          if (apiTextFormat === API_TEXT_FORMATS.HTML && box.html) {
+            text = box.html;
+          } else {
+            text = box.text;
+          }
+          json[box.label] = text;
         }
       });
 

@@ -40,7 +40,6 @@ const styles = {
     },
     p: {
       margin: 0,
-      lineHeight: 1.6,
     },
     li: {
       lineHeight: 1.6,
@@ -78,12 +77,36 @@ const styles = {
       fontWeight: 'inherit',
       fontSize: 'inherit',
     },
-  }
+  },
+  markdown: {
+    h1: {
+      marginTop: 20,
+      fontWeight: 700,
+    },
+    h2: {
+      marginTop: 10,
+      fontWeight: 700,
+    },
+    p: {
+      marginBottom: 10,
+    },
+    a: {
+      color: 'blue',
+      textDecoration: 'underline',
+    },
+    ul: {
+      paddingLeft: 30,
+    },
+  },
 };
 
 const App = (props) => (
   <StyleRoot>
     <Style rules={styles.css} />
+    <Style
+      scopeSelector=".markdown-content"
+      rules={styles.markdown}
+    />
     
     <HeaderContainer {...props} />
 

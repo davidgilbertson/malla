@@ -32,7 +32,6 @@ const config = {
       {
         test: /\.json$/,
         loader: 'json',
-        exclude: /node_modules/,
       },
     ],
   },

@@ -5,3 +5,5 @@ export const getDeltaXY = require('./getDeltaXY.js').getDeltaXY;
 export const getUrlForScreenKey = require('./getUrlForScreenKey.js').getUrlForScreenKey;
 export const eventWasAClick = require('./eventWasAClick.js').eventWasAClick;
 export const getEventDims = require('./getEventDims.js').getEventDims;
+export const getCurrentProjectAndScreen = require('./getCurrentProjectAndScreen.js').getCurrentProjectAndScreen;
+export const markdownToHtml = require('./markdownToHtml.js').markdownToHtml;

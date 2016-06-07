@@ -23,6 +23,11 @@ import {
 
 const onClient = typeof window !== 'undefined';
 
+/*  --  PROJECTS  --  */
+export function updateProject(key, val) {
+  firebaseActions.updateProject({key, val});
+}
+
 /*  --  SCREENS  --  */
 export function addScreen(screen) {
   tracker.sendEvent({

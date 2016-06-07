@@ -3,11 +3,16 @@ const {Component, PropTypes} = React;
 import forOwn from 'lodash/forOwn';
 
 import {
+  API_TEXT_FORMATS,
   COLORS,
   DIMENSIONS,
   BOX_TYPES,
   FONT_FAMILIES,
 } from '../../../constants.js';
+
+import {
+  getCurrentProjectAndScreen,
+} from '../../../utils';
 
 const styles = {
   textArea: {
@@ -19,18 +24,37 @@ const styles = {
     color: COLORS.GRAY_DARK,
     whiteSpace: 'pre',
   },
+  apiUrlWrapper: {
+    marginTop: 20,
+  },
   apiUrl: {
     color: COLORS.ACCENT,
     fontWeight: 400,
   },
-  proTip: {
+  note: {
+    fontSize: 14,
+  },
+  formatOptions: {
     marginTop: 20,
+  },
+  formatOptionLabel: {
+    display: 'block',
+    marginTop: 5,
   },
 };
 
 class ExportDataModal extends Component {
   constructor(props) {
     super(props);
+
+    this.onOk = this.onOk.bind(this);
+
+    const {currentProject} = getCurrentProjectAndScreen(this.props);
+    const apiTextFormat = (currentProject.val && currentProject.val.apiTextFormat) || API_TEXT_FORMATS.HTML;
+
+    this.state = {
+      apiTextFormat,
+    };
   }
 
   componentDidMount() {
@@ -39,34 +63,48 @@ class ExportDataModal extends Component {
     this.props.setModalState({
       title: 'API access',
       showOk: true,
+      onOk: this.onOk,
       width: DIMENSIONS.SPACE_L * 20,
     });
   }
 
+  onOk() {
+    const {currentScreenKey, screens, updateProject} = this.props;
+
+    const currentProjectKey = screens[currentScreenKey].projectKey;
+    
+    updateProject(currentProjectKey, {
+      apiTextFormat: this.state.apiTextFormat,
+    });
+  }
+
   render() {
+    const {currentScreenKey, screens} = this.props;
+
+    const currentProjectKey = screens[currentScreenKey].projectKey;
     const exportData = {};
-    let hasLineBreaks = false;
 
     forOwn(this.props.boxes, (box, id) => {
       if (box && box.type !== BOX_TYPES.LABEL) {
-        exportData[box.label || id] = box.text;
+        let value;
 
-        if (box.text.includes('\n')) {
-          hasLineBreaks = true;
+        if (this.state.apiTextFormat === API_TEXT_FORMATS.HTML && box.html) {
+          value = box.html;
+        } else {
+          value = box.text;
         }
+
+        // TODO (davidg): pretty sure it's impossible for a box to not have a label now.
+        // Check this then remove "|| id"
+        exportData[box.label || id] = value;
       }
     });
 
-    const lineBreakHint = hasLineBreaks
-      ? (
-        <p style={styles.proTip}>
-          <strong>Pro tip:</strong> to maintain the line breaks in your text, use <code>white-space: pre-wrap</code> in your CSS.
-        </p>
-      ) : null;
+    const queryParams = this.state.apiTextFormat !== API_TEXT_FORMATS.HTML
+      ? `?format=${this.state.apiTextFormat}`
+      : ''; // html is the default
 
-    const {currentProjectKey} = this.props.user;
-
-    const apiUrl = `${location.origin}/api/${currentProjectKey}.json`;
+    const apiUrl = `${location.origin}/api/${currentProjectKey}.json${queryParams}`;
 
     const apiLink = (
       <a
@@ -78,9 +116,31 @@ class ExportDataModal extends Component {
 
     return (
       <div>
-        <p>To access this data via API, go to {apiLink}</p>
+          <h2>How would you like the text to be formatted?</h2>
 
-        <p>Note that this will fetch the text for all screens in the current project.</p>
+          <div style={styles.formatOptions}>
+            <label style={styles.formatOptionLabel}>
+              <input
+                type="radio"
+                name="outputOption"
+                checked={this.state.apiTextFormat === API_TEXT_FORMATS.HTML}
+                onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.HTML})}
+              />
+              HTML (ready for use in a website)
+            </label>
+
+            <label style={styles.formatOptionLabel}>
+              <input
+                type="radio"
+                name="outputOption"
+                checked={this.state.apiTextFormat === API_TEXT_FORMATS.RAW}
+                onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.RAW})}
+              />
+              Plain text (if you have used markdown for formatting you will need to parse this yourself)
+            </label>
+          </div>
+
+        <p style={styles.apiUrlWrapper}>To access this data via API, go to {apiLink}</p>
 
         <textarea
           ref={el => this.textAreaEl = el}
@@ -90,16 +150,22 @@ class ExportDataModal extends Component {
           rows={exportData.length * 4}
         />
 
-        {lineBreakHint}
+        <p style={styles.note}>The API will return text for all screens in the current project.</p>
       </div>
     );
   }
 }
 
 ExportDataModal.propTypes = {
+  // state
+  screens: PropTypes.object.isRequired,
   boxes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  currentScreenKey: PropTypes.string.isRequired,
+
+  // actions
   setModalState: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
 };
 
 export default ExportDataModal;

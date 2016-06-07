@@ -149,6 +149,7 @@ const styles = {
     marginTop: 10,
     fontSize: 18,
     whiteSpace: 'pre-wrap',
+    lineHeight: 1.6,
   },
 };
 

@@ -22,6 +22,7 @@ const styles = {
     width: '100%',
     marginTop: DIMENSIONS.SPACE_S,
     height: DIMENSIONS.SPACE_L * 2,
+    resize: 'none',
     ...css.inputStyle,
     ...css.shadow('inset'),
   },

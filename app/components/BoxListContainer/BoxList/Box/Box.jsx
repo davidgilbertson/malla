@@ -3,7 +3,7 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 import cloneDeep from 'lodash/cloneDeep';
 
-import Icon from '../../../Icon/Icon.jsx';
+import MarkedDownText from '../../../MarkedDownText/MarkedDownText.jsx';
 import DropModal from '../../../DropModal/DropModal.jsx';
 
 import {
@@ -11,6 +11,7 @@ import {
   eventWasAClick,
   getDeltaXY,
   getEventDims,
+  markdownToHtml,
 } from '../../../../utils';
 
 import {
@@ -18,7 +19,6 @@ import {
   BOX_TYPES,
   COLORS,
   DROP_MODALS,
-  ICONS,
   FONT_FAMILIES,
   GRID_SIZE,
   Z_INDEXES,
@@ -33,7 +33,7 @@ const DRAG_TYPES = {
   LEFT: 'LEFT',
 };
 
-const TEXT_PADDING = '4px 8px';
+const TEXT_PADDING = '4px 8px 0';
 
 const baseStyles = {
   box: {
@@ -43,7 +43,6 @@ const baseStyles = {
     left: 0,
     top: 0,
     backgroundColor: COLORS.WHITE,
-    whiteSpace: 'pre-line', // keep line breaks
     cursor: 'pointer',
     fontFamily: FONT_FAMILIES.SERIF,
     fontSize: 15,
@@ -185,7 +184,7 @@ class Box extends Component {
   onDragStart(dragType, e) {
     if (this.isInTypingMode(this.props)) return; // only move a box in move mode
 
-    if (e.target !== e.currentTarget) return; // only work with clicks originating on the element
+    if (!e.currentTarget.contains(e.target)) return; // only work with clicks originating on the element
 
     this.dragInfo.dragStartTime = performance.now();
 
@@ -248,10 +247,16 @@ class Box extends Component {
 
   onTextAreaChange(e) {
     const text = e.target.value;
+    const html = markdownToHtml(text);
 
+    // TODO (davidg): this should be shared with the BoxDetails.jsx so I'm not doing it in two places
+    // e.g. RichTextEditor and it outputs {raw, html} onChange
     this.props.boxActions.update(
       this.props.id,
-      {text},
+      {
+        text,
+        html,
+      },
     );
   }
 
@@ -415,12 +420,11 @@ class Box extends Component {
           onChange={this.onTextAreaChange}
         />
 
-        <div
+        <MarkedDownText
           style={styles.displayText}
           onMouseDown={this.onDragStart.bind(this, DRAG_TYPES.MOVE)}
-        >
-          {box.text}
-        </div>
+          markdown={box.text}
+        />
       </div>
     );
   }

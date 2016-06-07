@@ -169,7 +169,7 @@ class Screen extends Component {
     const thereAreNoScreens = !Object.keys(this.props.screens).length;
     const noCurrentScreen = !this.props.screens[this.props.currentScreenKey];
 
-    if (thereAreNoScreens || noCurrentScreen) return null;
+    if (thereAreNoScreens || noCurrentScreen) return null; // TODO (davidg): return "loading..."
 
     return (
       <div style={styles.workspace}>

@@ -202,6 +202,13 @@ export function signOut() {
 }
 
 
+/*  --  PROJECTS  --  */
+
+export function updateProject({key, val}) {
+  db.child('data/projects').child(key).update(val);
+}
+
+
 /*  --  SCREENS  --  */
 
 export function addScreen(screen, currentProjectKey) {
