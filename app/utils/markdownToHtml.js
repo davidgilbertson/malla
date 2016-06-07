@@ -1,4 +1,6 @@
-const md = require('markdown-it')();
+const md = require('markdown-it')({
+  xhtmlOut: true,
+});
 
 md.use(require('markdown-it-sup'));
 md.use(require('markdown-it-sub'));
