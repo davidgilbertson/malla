@@ -41,6 +41,7 @@ const styles = {
   formatOptionLabel: {
     display: 'block',
     marginTop: 5,
+    cursor: 'pointer',
   },
 };
 
@@ -80,12 +81,12 @@ class ExportDataModal extends Component {
   }
 
   render() {
-    const {currentScreenKey, screens} = this.props;
+    const {boxes, currentScreenKey, screens} = this.props;
 
     const currentProjectKey = screens[currentScreenKey].projectKey;
     const exportData = {};
 
-    forOwn(this.props.boxes, (box, id) => {
+    forOwn(boxes, (box, id) => {
       if (box && box.type !== BOX_TYPES.LABEL) {
         let value;
 
