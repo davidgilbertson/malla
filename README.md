@@ -1,2 +1,2 @@
 # malla
-A wireframe CMS
+Text management for you website or app
