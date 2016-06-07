@@ -6,6 +6,7 @@ import {
   BOX_TYPES,
   COLORS,
   DIMENSIONS,
+  TEXT_PADDING,
 } from '../../../constants.js';
 
 import {
@@ -24,6 +25,7 @@ const styles = {
     height: DIMENSIONS.SPACE_L * 2,
     resize: 'none',
     ...css.inputStyle,
+    padding: TEXT_PADDING,
     ...css.shadow('inset'),
   },
   deleteRow: {

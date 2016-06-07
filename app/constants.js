@@ -108,6 +108,8 @@ export const BOX_TYPES = {
 
 export const GRID_SIZE = 10;
 
+export const TEXT_PADDING = '4px 8px';
+
 export const CLICK_LENGTH_MS = 150;
 
 export const ANIMATION_DURATION = 150;

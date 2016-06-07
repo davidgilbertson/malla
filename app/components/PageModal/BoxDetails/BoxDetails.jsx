@@ -11,6 +11,7 @@ import {
   COLORS,
   DIMENSIONS,
   ICONS,
+  TEXT_PADDING,
 } from '../../../constants.js';
 
 import {
@@ -55,6 +56,7 @@ const styles = {
     width: '100%',
     resize: 'none',
     ...css.inputStyle,
+    padding: TEXT_PADDING,
     ...css.shadow('inset'),
   },
   formattedPreview: {

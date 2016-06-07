@@ -97,6 +97,10 @@ const styles = {
     ul: {
       paddingLeft: 30,
     },
+    img: {
+      margin: '-4px -8px', // must be the opposite of TEXT_PADDING
+      maxWidth: 'calc(100% + 16px)',
+    },
   },
 };
 

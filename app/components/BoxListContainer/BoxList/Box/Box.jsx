@@ -21,6 +21,7 @@ import {
   DROP_MODALS,
   FONT_FAMILIES,
   GRID_SIZE,
+  TEXT_PADDING,
   Z_INDEXES,
 } from '../../../../constants.js';
 
@@ -32,8 +33,6 @@ const DRAG_TYPES = {
   BOTTOM: 'BOTTOM',
   LEFT: 'LEFT',
 };
-
-const TEXT_PADDING = '4px 8px 0';
 
 const baseStyles = {
   box: {
