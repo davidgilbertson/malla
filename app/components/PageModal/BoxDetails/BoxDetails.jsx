@@ -93,7 +93,6 @@ class BoxDetails extends Component {
     this.updateBox = this.updateBox.bind(this);
     this.deleteBox = this.deleteBox.bind(this);
     this.onIdChange = this.onIdChange.bind(this);
-    // this.onTextChange = this.onTextChange.bind(this);
 
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     this.currentProjectKey = currentScreen.projectKey;
@@ -154,10 +153,6 @@ class BoxDetails extends Component {
 
     this.setState({id: currentId});
   }
-
-  // onTextChange(e) {
-  //   this.setState({text: e.target.value});
-  // }
 
   updateBox() {
     const idIsValid = this.state.idIsNotEmpty && this.state.idIsAvailable;

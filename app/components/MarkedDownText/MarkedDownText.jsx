@@ -1,9 +1,5 @@
 import React from 'react';
 const {PropTypes} = React;
-const md = require('markdown-it')();
-
-md.use(require('markdown-it-sup'));
-md.use(require('markdown-it-sub'));
 
 import {
   markdownToHtml,
