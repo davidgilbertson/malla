@@ -14,6 +14,10 @@ import {
 } from '../../utils'
 
 const styles = {
+  panelWrapper: { // So that the body height is correct. https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
+    display: 'flex',
+    flexFlow: 'column',
+  },
   panel: {
     flex: '0 0 auto',
     display: 'flex',
@@ -105,20 +109,22 @@ class Panel extends Component {
     };
 
     return (
-      <div style={panelStyle}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>
-            {this.props.title}
-          </h1>
+      <div style={styles.panelWrapper}>
+        <div style={panelStyle}>
+          <div style={styles.header}>
+            <h1 style={styles.title}>
+              {this.props.title}
+            </h1>
 
-          {closeButton}
+            {closeButton}
+          </div>
+
+          <div style={styles.body}>
+            {this.props.children}
+          </div>
+
+          {actions}
         </div>
-
-        <div style={styles.body}>
-          {this.props.children}
-        </div>
-
-        {actions}
       </div>
     );
   }
