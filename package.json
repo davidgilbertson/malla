@@ -34,6 +34,7 @@
     "react-router": "^2.4.0",
     "redux": "^3.5.2",
     "rimraf": "^2.5.2",
+    "sanitize-html": "^1.11.4",
     "speakingurl": "^9.0.0",
     "webpack": "^1.13.0"
   },

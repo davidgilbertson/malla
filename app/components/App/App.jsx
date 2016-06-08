@@ -88,7 +88,7 @@ const styles = {
       fontWeight: 700,
     },
     p: {
-      marginBottom: 10,
+      margin: '10px 0',
     },
     a: {
       color: 'blue',

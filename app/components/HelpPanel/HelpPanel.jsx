@@ -5,6 +5,7 @@ import Radium from 'radium';
 
 import Button from '../Button/Button.jsx';
 import Panel from '../Panel/Panel.jsx';
+import HtmlSnippet from '../HtmlSnippet/HtmlSnippet.jsx';
 
 import {
   BREAKPOINTS,
@@ -84,41 +85,18 @@ class HelpPanel extends Component {
 
     return (
       <Panel
-        title="Welcome to Malla"
+        title={MALLA_TEXT.helpPanelTitle}
         showOk={false}
         width={400}
         style={styles.panel}
         showClose={false}
       >
         <div>
-          <p>On this screen, add any text that you want shown in your website or app.</p>
+          <p>{MALLA_TEXT.helpPanelIntro}</p>
 
-          <h2 style={styles.subtitle}>Things you can do</h2>
+          <h2 style={styles.subtitle}>{MALLA_TEXT.helpPanelSubtitle}</h2>
 
-          <ul style={styles.list}>
-            <li style={styles.listItem}>Click and drag to add a new box.</li>
-
-            <li style={styles.listItem}>Click a box once to move or resize the box.</li>
-
-            <li style={styles.listItem}>Click again to edit the text.</li>
-
-            <li style={styles.listItem}>
-              When a box is selected, click delete to remove it. Make sure you
-              don’t remove a box that’s being used in your website!
-            </li>
-
-            <li style={styles.listItem}>
-              You can arrange boxes on the page however you like. This won’t
-              affect how they appear on your site, but will make it easy to locate a
-              particular piece of text in the future.
-            </li>
-
-            <li style={styles.listItem}>
-              When you're done, click the 'For Developers' button in the top
-              right and send the link you see there to your nearest friendly developer;
-              they will make sure the text ends up in the website.
-            </li>
-          </ul>
+          <HtmlSnippet html={MALLA_TEXT.helpPanelList} />
         </div>
 
         <div style={styles.actions}>

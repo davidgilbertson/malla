@@ -230,7 +230,7 @@ const Header = ({user, updateUser, showModal, signOut, location, navigateToScree
 
     homeLink = (
       <h1 style={styles.title}>
-        <Link to="/">{MALLA_TEXT.siteName}</Link>
+        <Link to="/">{MALLA_TEXT.title}</Link>
       </h1>
     );
   }
