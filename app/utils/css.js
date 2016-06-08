@@ -107,9 +107,8 @@ export function showForPhoneOnly() {
 
 export function showForTabletPortraitUp() {
   return {
-    display: 'none',
-      [BREAKPOINTS.TABLET_PORTRAIT]: {
-      display: 'initial',
+    [BREAKPOINTS.PHONE_ONLY]: {
+      display: 'none',
     }
   }
 }

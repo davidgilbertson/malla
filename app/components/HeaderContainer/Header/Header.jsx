@@ -90,16 +90,15 @@ const baseStyles = {
     },
   },
   showForTabletPortraitUp: {
-    display: 'none',
-    [BREAKPOINTS.TABLET_PORTRAIT]: {
-      display: 'initial',
+    [BREAKPOINTS.PHONE_ONLY]: {
+      display: 'none',
     },
   },
   userName: {
     marginRight: 20,
     display: 'none',
     [BREAKPOINTS.TABLET_LANDSCAPE]: {
-      display: 'initial',
+      display: 'inline-block',
     },
   },
 };

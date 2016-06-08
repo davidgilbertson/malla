@@ -19,7 +19,7 @@ import {
 
 const styles = {
   back: {
-    position: 'fixed',
+    position: 'absolute',
     padding: 8,
     textAlign: 'center',
     color: COLORS.WHITE,

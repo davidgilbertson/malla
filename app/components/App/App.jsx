@@ -101,6 +101,9 @@ const styles = {
       margin: '-4px -8px', // must be the opposite of TEXT_PADDING
       maxWidth: 'calc(100% + 16px)',
     },
+    strong: {
+      fontWeight: 700,
+    }
   },
 };
 

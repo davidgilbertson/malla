@@ -42,14 +42,14 @@ const ScreenSelector = props => {
     },
     listItemName: {
       textAlign: 'left',
-      flex: 1,
+      flex: '1 0 auto',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textTransform: 'none',
     },
     listItemGear: {
       color: COLORS.WHITE,
-      flex: 0,
+      flex: '0 0 auto',
       opacity: 0.5,
     },
     addNew: {

@@ -9,7 +9,10 @@ import {
   ICONS,
 } from '../../constants.js';
 import {EVENTS} from '../../tracker.js';
-import {share} from '../../utils';
+import {
+  css,
+  share,
+} from '../../utils';
 import Button from '../Button/Button.jsx';
 import Icon from '../Icon/Icon.jsx';
 
@@ -19,12 +22,6 @@ let SocialIcons = props => {
       height: props.buttonHeight,
       color: COLORS.WHITE,
       marginLeft: DIMENSIONS.LAYOUT.HEADER_SPACING,
-    },
-    showForTabletLandscapeUp: {
-      display: 'none',
-      [BREAKPOINTS.TABLET_PORTRAIT]: {
-        display: 'initial',
-      },
     },
   };
 
@@ -69,7 +66,7 @@ let SocialIcons = props => {
   });
 
   return (
-    <span style={styles.showForTabletLandscapeUp}>
+    <span style={{...css.showForTabletPortraitUp()}}>
       {facebookButton}
       {twitterButton}
       {linkedInButton}

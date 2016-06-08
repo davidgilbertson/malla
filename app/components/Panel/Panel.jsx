@@ -45,11 +45,12 @@ const styles = {
     fontSize: 16,
   },
   body: {
-    flex: 1,
+    flex: '1 1 auto',
     padding: DIMENSIONS.SPACE_S,
     overflow: 'auto',
   },
   actions: {
+    flex: '0 0 auto',
     padding: 20,
     textAlign: 'center',
   },

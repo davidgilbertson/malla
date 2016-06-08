@@ -335,7 +335,7 @@ class Box extends Component {
     styles.box.transform = `translate(${box.left}px, ${box.top}px)`;
 
     if (this.isInMovingMode(this.props)) {
-      styles.handles.display = 'initial';
+      styles.handles.display = 'block';
 
       styles.box = {
         ...styles.box,
@@ -348,13 +348,13 @@ class Box extends Component {
     }
 
     if (this.isInTypingMode(this.props)) {
-      styles.textArea.display = 'initial';
+      styles.textArea.display = 'block';
 
       styles.displayText.display = 'none';
     }
 
     if (activeBox.id === id) {
-      styles.boxActions.display = 'initial';
+      styles.boxActions.display = 'block';
       styles.box.zIndex = Z_INDEXES.MOVING_BOX;
     }
 

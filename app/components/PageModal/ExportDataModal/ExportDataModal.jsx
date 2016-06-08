@@ -11,19 +11,19 @@ import {
 } from '../../../constants.js';
 
 import {
+  css,
   getCurrentProjectAndScreen,
 } from '../../../utils';
 
 const styles = {
-  textArea: {
-    width: '100%',
+  codePreview: {
     marginTop: 20,
     lineHeight: 1.6,
     fontSize: 14,
     fontFamily: FONT_FAMILIES.MONOSPACE,
     color: COLORS.GRAY_DARK,
-    whiteSpace: 'pre',
-    resize: 'none',
+    ...css.inputStyle,
+    overflow: 'auto',
   },
   apiUrlWrapper: {
     marginTop: 20,
@@ -60,8 +60,6 @@ class ExportDataModal extends Component {
   }
 
   componentDidMount() {
-    this.textAreaEl.style.height = `${this.textAreaEl.scrollHeight + 30}px`;
-
     this.props.setModalState({
       title: 'API access',
       showOk: true,
@@ -144,13 +142,9 @@ class ExportDataModal extends Component {
 
         <p style={styles.apiUrlWrapper}>To access this data via API, go to {apiLink}</p>
 
-        <textarea
-          ref={el => this.textAreaEl = el}
-          value={JSON.stringify(exportData, null, 2)}
-          readOnly={true}
-          style={styles.textArea}
-          rows={exportData.length * 4}
-        />
+        <pre style={styles.codePreview}>
+          {JSON.stringify(exportData, null, 2)}
+        </pre>
 
         <p style={styles.note}>The API will return text for all screens in the current project.</p>
       </div>

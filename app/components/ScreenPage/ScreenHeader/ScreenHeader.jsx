@@ -6,6 +6,7 @@ import Button from '../../Button/Button.jsx';
 import Icon from '../../Icon/Icon.jsx';
 
 import {
+  BREAKPOINTS,
   COLORS,
   DIMENSIONS,
   DROP_MODALS,
@@ -59,22 +60,25 @@ const ScreenHeader = props => {
       flexFlow: 'row',
     },
     toolButton: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       height: DIMENSIONS.SPACE_M,
-      width: DIMENSIONS.SPACE_L * 2,
+      width: DIMENSIONS.SPACE_M,
       border: `1px solid ${COLORS.GRAY_LIGHT}`,
       color: COLORS.GRAY,
+      [BREAKPOINTS.TABLET_LANDSCAPE]: {
+        width: DIMENSIONS.SPACE_L * 2,
+      },
     },
     toolButtonIconWrapper: {
       position: 'relative',
       top: -2,
-      flex: 2,
     },
     toolButtonText: {
-      flex: 6,
+      marginLeft: 20,
       textAlign: 'center',
+      display: 'none',
+      [BREAKPOINTS.TABLET_LANDSCAPE]: {
+        display: 'inline-block',
+      },
     },
     apiButton: {
       backgroundColor: COLORS.PRIMARY,
@@ -113,16 +117,16 @@ const ScreenHeader = props => {
           props.showDropModal(null);
         }}
       >
-        <div style={styles.toolButtonIconWrapper}>
+        <span style={styles.toolButtonIconWrapper}>
           <Icon
             color={style.color}
             size={18}
             icon={tool.icon}
           />
-        </div>
-        <div style={styles.toolButtonText}>
+        </span>
+        <span style={styles.toolButtonText}>
           {tool.name}
-        </div>
+        </span>
       </button>
     );
   });
