@@ -63,45 +63,47 @@ const ScreenSelector = props => {
   };
 
   forOwn(props.screens, (screen, key) => {
-    const style = {...styles.listItem};
+    if (!screen.deleted) {
+      const style = {...styles.listItem};
 
-    if (key === props.currentScreenKey) {
-      style.backgroundColor = COLORS.PRIMARY;
-      style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
-      style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+      if (key === props.currentScreenKey) {
+        style.backgroundColor = COLORS.PRIMARY;
+        style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+        style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+      }
+  
+      screens.push(
+        <div
+          key={key}
+          style={style}
+        >
+          <button
+            style={styles.listItemName}
+            title={screen.description}
+            onClick={() => {
+              props.navigateToScreen(key);
+            }}
+          >
+            {screen.name}
+          </button>
+
+          <button
+            style={styles.listItemGear}
+            title="Edit this screen"
+            onClick={() => {
+              props.navigateToScreen(key);
+              props.showModal(MODALS.EDIT_SCREEN);
+            }}
+          >
+            <Icon
+              icon={ICONS.GEAR}
+              size={20}
+              color={styles.listItemGear.color}
+            />
+          </button>
+        </div>
+      );
     }
-
-    screens.push(
-      <div
-        key={key}
-        style={style}
-      >
-        <button
-          style={styles.listItemName}
-          title={screen.description}
-          onClick={() => {
-            props.navigateToScreen(key);
-          }}
-        >
-          {screen.name}
-        </button>
-
-        <button
-          style={styles.listItemGear}
-          title="Edit this screen"
-          onClick={() => {
-            props.navigateToScreen(key);
-            props.showModal(MODALS.EDIT_SCREEN);
-          }}
-        >
-          <Icon
-            icon={ICONS.GEAR}
-            size={20}
-            color={styles.listItemGear.color}
-          />
-        </button>
-      </div>
-    )
   });
 
   return (

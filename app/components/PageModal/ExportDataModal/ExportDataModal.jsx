@@ -1,17 +1,16 @@
 import React from 'react';
 const {Component, PropTypes} = React;
-import forOwn from 'lodash/forOwn';
 
 import {
   API_TEXT_FORMATS,
   COLORS,
   DIMENSIONS,
-  BOX_TYPES,
   FONT_FAMILIES,
 } from '../../../constants.js';
 
 import {
   css,
+  getBoxJson,
   getCurrentProjectAndScreen,
 } from '../../../utils';
 
@@ -82,23 +81,7 @@ class ExportDataModal extends Component {
     const {boxes, currentScreenKey, screens} = this.props;
 
     const currentProjectKey = screens[currentScreenKey].projectKey;
-    const exportData = {};
-
-    forOwn(boxes, (box, id) => {
-      if (box && box.type !== BOX_TYPES.LABEL) {
-        let value;
-
-        if (this.state.apiTextFormat === API_TEXT_FORMATS.HTML && box.html) {
-          value = box.html;
-        } else {
-          value = box.text;
-        }
-
-        // TODO (davidg): pretty sure it's impossible for a box to not have a label now.
-        // Check this then remove "|| id"
-        exportData[box.label || id] = value;
-      }
-    });
+    const exportData = getBoxJson(boxes, this.state.apiTextFormat);
 
     const queryParams = this.state.apiTextFormat !== API_TEXT_FORMATS.HTML
       ? `?format=${this.state.apiTextFormat}`

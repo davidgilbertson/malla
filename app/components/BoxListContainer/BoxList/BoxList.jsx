@@ -10,7 +10,7 @@ const BoxList = props => {
   // TODO (davidg): filter for boxes in this project/screen only
   
   forOwn(props.boxes, (box, id) => {
-    if (box && box.screenKeys[props.currentScreenKey]) {
+    if (box && !box.deleted && box.screenKeys[props.currentScreenKey]) {
       boxComponents.push(
         <Box
           key={id}

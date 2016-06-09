@@ -3,6 +3,7 @@ const {Component, PropTypes} = React;
 import Radium from 'radium';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
+import Button from '../../Button/Button.jsx';
 import HelpPanel from '../../HelpPanel/HelpPanel.jsx';
 import ScreenHeader from '../ScreenHeader/ScreenHeader.jsx';
 
@@ -19,6 +20,8 @@ import {
   DIMENSIONS,
   GRID_SIZE,
   DROP_MODALS,
+  MODALS,
+  SIGN_IN_STATUSES,
 } from '../../../constants.js';
 
 const styles = {
@@ -58,6 +61,17 @@ const styles = {
     color: COLORS.GRAY_DARK,
     textAlign: 'center',
   },
+  signInWords: {
+    textAlign: 'center',
+    margin: `${DIMENSIONS.SPACE_L * 2}px 20px 0`,
+  },
+  signInButton: {
+    backgroundColor: COLORS.PRIMARY,
+    width: DIMENSIONS.SPACE_L * 3,
+    padding: 20,
+    margin: `${DIMENSIONS.SPACE_L * 2}px auto 0`,
+    color: COLORS.WHITE,
+  }
 };
 
 class Screen extends Component {
@@ -82,6 +96,10 @@ class Screen extends Component {
       top: 0,
       left: 0,
     };
+
+    this.state = {
+      patience: true, // waiting for the store to load
+    }
   }
 
   onDragStart(e) {
@@ -165,11 +183,37 @@ class Screen extends Component {
     };
   }
 
+  componentDidMount() {
+    // give the store time to set the user status before rendering the login prompt
+    setTimeout(() => {
+      this.setState({patience: false});
+    }, 50);
+  }
+
   render() {
+    const {user} = this.props;
+
+    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && !this.state.patience) {
+      return (
+        <div style={styles.workspace}>
+          <h1 style={styles.signInWords}>You need to sign in to see what's here.</h1>
+
+          <Button
+            style={styles.signInButton}
+            onClick={() => {
+              this.props.showModal(MODALS.SOCIAL_SIGN_IN);
+            }}
+          >
+            {MALLA_TEXT.signIn}
+          </Button>
+        </div>
+      );
+    }
+
     const thereAreNoScreens = !Object.keys(this.props.screens).length;
     const noCurrentScreen = !this.props.screens[this.props.currentScreenKey];
 
-    if (thereAreNoScreens || noCurrentScreen) return null; // TODO (davidg): return "loading..."
+    if (thereAreNoScreens || noCurrentScreen) return null;
 
     return (
       <div style={styles.workspace}>

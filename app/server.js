@@ -22,9 +22,11 @@ import {match} from 'react-router';
 import {StyleRoot} from 'radium';
 
 import firebaseMiddleware from './server/firebaseMiddleware.js';
+
 import {
-  WORDS,
-} from './constants.js';
+  cacher,
+} from './utils';
+
 import routes from './routes.js';
 import store from './data/store.js';
 import Root from './components/Root/Root.jsx';
@@ -51,7 +53,7 @@ function getHtml(req, props, MALLA_TEXT) {
   } else {
     mallaScriptSrc = `/js/${fileNames.mainJs}`;
   }
-  
+
   const appHtml = renderToString(
     <Root {...props} radiumConfig={{userAgent: req.headers['user-agent']}} />
   );
@@ -105,22 +107,35 @@ function getHtml(req, props, MALLA_TEXT) {
 
 app.get('/api/:projectId.*json', firebaseMiddleware);
 
-app.get('*', (req, res) => {
+function handleRoutes(req, res) {
   match({routes: routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       res.status(500).send(err.message);
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search);
     } else if (props) {
+
       mallaText
         .getText()
         .then(mallaText => {
-          res.send(getHtml(req, props, mallaText));
+          const responsePayload = getHtml(req, props, mallaText);
+          cacher.cacheResponse(req, responsePayload);
+          res.send(responsePayload);
         })
     } else {
       res.status(404).send('Not Found');
     }
   });
+}
+
+app.get('*', (req, res) => {
+  const cachedResponse = cacher.load(req);
+
+  if (cachedResponse) {
+    res.send(cachedResponse);
+  } else {
+    handleRoutes(req, res);
+  }
 });
 
 app.listen(port, '0.0.0.0', (err) => {

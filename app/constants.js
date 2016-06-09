@@ -51,6 +51,7 @@ export const ACTIONS = {
   SIGN_OUT: 'SIGN_OUT',
   SET_INTERACTION: 'SET_INTERACTION',
   SELECT_TOOL: 'SELECT_TOOL',
+  REPLACE_STATE: 'REPLACE_STATE',
 };
 
 export const API_TEXT_FORMATS = {
@@ -82,6 +83,8 @@ export const MODALS = {
   EDIT_SCREEN: 'EDIT_SCREEN',
   EDIT_BOX: 'EDIT_BOX',
 };
+
+export const LS_STORE_NAMESPACE = 'mallaStore-v1';
 
 // these two are used for tools, drop modals and boxtypes so are shared
 const TEXT = 'TEXT';

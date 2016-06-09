@@ -2,6 +2,10 @@ import firebase from 'firebase';
 import forOwn from 'lodash/forOwn';
 
 import {
+  getBoxJson,
+} from '../utils';
+
+import {
   API_TEXT_FORMATS,
   BOX_TYPES
 } from '../constants.js';
@@ -21,27 +25,14 @@ const db = firebase.database().ref();
 
 export default function(req, res) {
   const projectId = req.params.projectId;
-  const apiTextFormat = req.query.format || API_TEXT_FORMATS.HTML;
+  const format = req.query.format || API_TEXT_FORMATS.HTML;
 
   db
     .child('data/boxes')
     .orderByChild(`projectKey`)
     .equalTo(projectId)
     .once('value', boxSnapshot => {
-      const json = {};
-
-      forOwn(boxSnapshot.val(), box => {
-        if (box && box.type !== BOX_TYPES.LABEL) {
-          let text;
-          
-          if (apiTextFormat === API_TEXT_FORMATS.HTML && box.html) {
-            text = box.html;
-          } else {
-            text = box.text;
-          }
-          json[box.label] = text;
-        }
-      });
+      const json = getBoxJson(boxSnapshot.val(), format);
 
       res.header('Access-Control-Allow-Origin', '*');
       res.json(json);

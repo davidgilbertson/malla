@@ -39,6 +39,6 @@ export function getText() {
     const text = fs.readFileSync(textFilePath, 'utf8');
     return Promise.resolve(JSON.parse(text));
   }
-  
-  return fetchMallaText();
+
+  return Promise.resolve(textCache);
 }
