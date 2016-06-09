@@ -1,6 +1,7 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
+import {browserHistory, Link} from 'react-router';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import Button from '../../Button/Button.jsx';
@@ -65,13 +66,6 @@ const styles = {
     textAlign: 'center',
     margin: `${DIMENSIONS.SPACE_L * 2}px 20px 0`,
   },
-  signInButton: {
-    backgroundColor: COLORS.PRIMARY,
-    width: DIMENSIONS.SPACE_L * 3,
-    padding: 20,
-    margin: `${DIMENSIONS.SPACE_L * 2}px auto 0`,
-    color: COLORS.WHITE,
-  }
 };
 
 class Screen extends Component {
@@ -96,9 +90,12 @@ class Screen extends Component {
       top: 0,
       left: 0,
     };
+    this.shortTimer = null;
+    this.longTimer = null;
 
     this.state = {
-      patience: true, // waiting for the store to load
+      waitedABit: false, // waiting for the store to load
+      waitedALot: false, // waiting for the store to load some more
     }
   }
 
@@ -185,21 +182,30 @@ class Screen extends Component {
 
   componentDidMount() {
     // give the store time to set the user status before rendering the login prompt
-    setTimeout(() => {
-      this.setState({patience: false});
+    this.shortTimer = setTimeout(() => {
+      this.setState({waitedABit: true});
     }, 50);
+
+    this.longTimer = setTimeout(() => {
+      this.setState({waitedALot: true});
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.shortTimer);
+    clearTimeout(this.longTimer);
   }
 
   render() {
     const {user} = this.props;
 
-    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && !this.state.patience) {
+    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedALot) {
       return (
         <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>You need to sign in to see what's here.</h1>
+          <h1 style={styles.signInWords}>Something's not right. Try signing in.</h1>
 
           <Button
-            style={styles.signInButton}
+            style={css.buttonStyle}
             onClick={() => {
               this.props.showModal(MODALS.SOCIAL_SIGN_IN);
             }}
@@ -210,10 +216,36 @@ class Screen extends Component {
       );
     }
 
+    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedABit) {
+      return (
+        <div style={styles.workspace}>
+          <h1 style={styles.signInWords}>Loading...</h1>
+        </div>
+      );
+    }
+
     const thereAreNoScreens = !Object.keys(this.props.screens).length;
     const noCurrentScreen = !this.props.screens[this.props.currentScreenKey];
 
-    if (thereAreNoScreens || noCurrentScreen) return null;
+    if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedALot) {
+      return (
+        <div style={styles.workspace}>
+          <h1 style={styles.signInWords}>This screen no longer exists. Please go home.</h1>
+
+          <div style={css.buttonStyle}>
+            <Link to="/">Home</Link>
+          </div>
+        </div>
+      );
+    }
+
+    if (thereAreNoScreens || noCurrentScreen) {
+      return (
+        <div style={styles.workspace}>
+          <h1 style={styles.signInWords}>Loading...</h1>
+        </div>
+      );
+    }
 
     return (
       <div style={styles.workspace}>

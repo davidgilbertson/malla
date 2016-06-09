@@ -1,6 +1,7 @@
 import {
   BREAKPOINTS,
   COLORS,
+  DIMENSIONS,
 } from '../constants.js';
 
 export function hover(styles) {
@@ -27,6 +28,16 @@ export const inputStyle = {
   padding: '10px 12px',
   border: `1px solid ${COLORS.GRAY_LIGHT}`,
   borderRadius: 4,
+};
+
+export const buttonStyle = {
+  backgroundColor: COLORS.PRIMARY,
+  minWidth: DIMENSIONS.SPACE_L * 3,
+  padding: 20,
+  margin: `${DIMENSIONS.SPACE_L * 2}px auto 0`,
+  color: COLORS.WHITE,
+  textAlign: 'center',
+  textTransform: 'uppercase',
 };
 
 export function padding(top, right, bottom, left) {
