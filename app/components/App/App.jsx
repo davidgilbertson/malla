@@ -1,5 +1,7 @@
 import React from 'react';
 import Radium, {Style, StyleRoot} from 'radium';
+import {DragDropContext} from 'react-dnd';
+import ReactDnDHtml5Backend from 'react-dnd-html5-backend';
 
 import {
   COLORS,
@@ -8,6 +10,7 @@ import {
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import PageModalConnector from '../PageModal/PageModalConnector.jsx';
 import DropModalConnector from '../DropModal/DropModalConnector.jsx';
+import TestBox from '../TestBox/TestBox.jsx';
 
 const styles = {
   css: {
@@ -121,7 +124,8 @@ const App = (props) => (
 
     <PageModalConnector />
     <DropModalConnector />
+    <TestBox boxId="box-one" />
   </StyleRoot>
 );
 
-export default Radium(App);
+export default DragDropContext(ReactDnDHtml5Backend)(Radium(App));
