@@ -6,6 +6,9 @@ import reducers from './reducers';
 import {
   ls,
 } from '../utils';
+import {
+  LS_WRITE_DELAY,
+} from '../constants.js';
 
 const onClient = typeof window !== 'undefined';
 
@@ -28,7 +31,7 @@ store.subscribe(() => {
 
   timer = setTimeout(() => {
     ls.save(store.getState());
-  }, 500);
+  }, LS_WRITE_DELAY);
 });
 
 if (onClient) {

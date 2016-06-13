@@ -76,9 +76,8 @@ const user = (state = {}, action) => {
         signInStatus: SIGN_IN_STATUSES.SIGNED_IN
       };
 
-    case ACTIONS.SIGN_OUT :
+    case ACTIONS.SIGN_OUT : // remove all user details, except status
       return {
-        ...state,
         signInStatus: SIGN_IN_STATUSES.SIGNED_OUT
       };
 

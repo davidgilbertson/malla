@@ -85,6 +85,7 @@ export const MODALS = {
 };
 
 export const LS_STORE_NAMESPACE = 'mallaStore-v1';
+export const LS_WRITE_DELAY = 500;
 
 // these two are used for tools, drop modals and boxtypes so are shared
 const TEXT = 'TEXT';

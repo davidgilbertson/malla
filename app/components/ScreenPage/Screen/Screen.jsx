@@ -225,12 +225,13 @@ class Screen extends Component {
     }
 
     const thereAreNoScreens = !Object.keys(this.props.screens).length;
-    const noCurrentScreen = !this.props.screens[this.props.currentScreenKey];
+    const currentScreen = this.props.screens[this.props.currentScreenKey];
+    const noCurrentScreen = !currentScreen || currentScreen.deleted;
 
     if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedALot) {
       return (
         <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>This screen no longer exists. Please go home.</h1>
+          <h1 style={styles.signInWords}>This screen no longer exists. You may go home.</h1>
 
           <div style={css.buttonStyle}>
             <Link to="/">Home</Link>

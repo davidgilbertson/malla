@@ -1,4 +1,10 @@
-import {ACTIONS} from '../constants.js';
+import {
+  ACTIONS,
+  LS_WRITE_DELAY,
+} from '../constants.js';
+import {
+  ls,
+} from '../utils';
 import {getApp} from './firebaseApp.js';
 import * as firebaseActions from './firebaseActions.js';
 
@@ -115,6 +121,10 @@ export default {
         store.dispatch({
           type: ACTIONS.SIGN_OUT,
         });
+
+        setTimeout(() => {
+          ls.empty(); // must be called after anything that would change the store
+        }, LS_WRITE_DELAY + 50);
       }
     });
   }
