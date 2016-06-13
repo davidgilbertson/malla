@@ -88,6 +88,12 @@ const ScreenHeader = props => {
   };
 
   const currentScreen = props.screens[props.currentScreenKey];
+
+  if (!currentScreen) {
+    // When there is a large number of screens, this state may occur before the screens are all loaded
+    return <div style={styles.header}></div>;
+  }
+
   const currentProject = props.projects[currentScreen.projectKey];
 
   const renderToolButtons = tools => tools.map(tool => {
