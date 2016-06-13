@@ -1,20 +1,23 @@
 import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
-import forOwn from 'lodash/forOwn';
+
+import {
+  makeArray,
+} from '../../../utils';
 
 import Box from './Box/Box.jsx';
 
 const BoxList = props => {
-  const boxComponents = [];
   // TODO (davidg): filter for boxes in this project/screen only
-  
-  forOwn(props.boxes, (box, id) => {
-    if (box && !box.deleted && box.screenKeys[props.currentScreenKey]) {
-      boxComponents.push(
+
+  const boxComponents = makeArray(props.boxes)
+    .filter(box => box && !box.deleted && box.screenKeys[props.currentScreenKey])
+    .map(box => {
+      return (
         <Box
-          key={id}
-          id={id}
+          key={box._key}
+          id={box._key}
           box={box}
           boxActions={props.boxActions}
           currentTool={props.currentTool}
@@ -22,8 +25,7 @@ const BoxList = props => {
           showModal={props.showModal}
         />
       );
-    }
-  });
+    });
 
   return (
     <div>

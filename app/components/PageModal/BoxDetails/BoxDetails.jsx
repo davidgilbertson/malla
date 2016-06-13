@@ -1,7 +1,6 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
-import forOwn from 'lodash/forOwn';
 
 import MarkedDownText from '../../MarkedDownText/MarkedDownText.jsx';
 import Icon from '../../Icon/Icon.jsx';
@@ -16,6 +15,7 @@ import {
 
 import {
   css,
+  makeArray,
   markdownToHtml,
 } from '../../../utils';
 
@@ -112,7 +112,7 @@ class BoxDetails extends Component {
 
   onIdChange(e) {
     const currentId = e.target.value;
-    let idIsAvailable = true;
+    let idIsAvailable;
     let idIsNotEmpty = true;
     let idIsValidFormat = true;
 
@@ -122,15 +122,16 @@ class BoxDetails extends Component {
       idIsValidFormat = false;
     }
 
-    forOwn(this.props.boxes, (box, key) => {
-      const boxIsInCurrentProject = box.projectKey === this.currentProjectKey;
-      const boxHasSameLabelAsInput = box.label === currentId;
-      const boxIsNotTheBoxBeingEdited = key !== this.props.activeBox.id;
+    const boxesWithSameId = makeArray(this.props.boxes)
+      .filter(box => {
+        const boxIsInCurrentProject = box.projectKey === this.currentProjectKey;
+        const boxHasSameLabelAsInput = box.label === currentId;
+        const boxIsNotTheBoxBeingEdited = box._key !== this.props.activeBox.id;
 
-      if (boxIsInCurrentProject && boxHasSameLabelAsInput && boxIsNotTheBoxBeingEdited) {
-        idIsAvailable = false;
-      }
-    });
+        return (boxIsInCurrentProject && boxHasSameLabelAsInput && boxIsNotTheBoxBeingEdited);
+      });
+
+    idIsAvailable = !boxesWithSameId.length;
 
     if (this.state.idIsAvailable !== idIsAvailable) {
       this.setState({idIsAvailable});

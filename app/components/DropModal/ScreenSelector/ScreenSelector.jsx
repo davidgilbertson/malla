@@ -1,6 +1,5 @@
 import React from 'react';
 const {PropTypes} = React;
-import forOwn from 'lodash/forOwn';
 
 import Button from '../../Button/Button.jsx';
 import Icon from '../../Icon/Icon.jsx';
@@ -13,9 +12,11 @@ import {
   MODALS,
 } from '../../../constants.js';
 
-const ScreenSelector = props => {
-  const screens = [];
+import {
+  makeArray,
+} from '../../../utils';
 
+const ScreenSelector = props => {
   const coordinates = props.getCoordinates(ELEMENT_IDS.SCREEN_SELECTOR_BUTTON);
 
   const styles = {
@@ -62,26 +63,27 @@ const ScreenSelector = props => {
     }
   };
 
-  forOwn(props.screens, (screen, key) => {
-    if (!screen.deleted) {
+  const screens = makeArray(props.screens)
+    .filter(screen => !screen.deleted)
+    .map(screen => {
       const style = {...styles.listItem};
 
-      if (key === props.currentScreenKey) {
+      if (screen._key === props.currentScreenKey) {
         style.backgroundColor = COLORS.PRIMARY;
         style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
         style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
       }
-  
-      screens.push(
+
+      return (
         <div
-          key={key}
+          key={screen._key}
           style={style}
         >
           <button
             style={styles.listItemName}
             title={screen.description}
             onClick={() => {
-              props.navigateToScreen(key);
+              props.navigateToScreen(screen._key);
             }}
           >
             {screen.name}
@@ -91,7 +93,7 @@ const ScreenSelector = props => {
             style={styles.listItemGear}
             title="Edit this screen"
             onClick={() => {
-              props.navigateToScreen(key);
+              props.navigateToScreen(screen._key);
               props.showModal(MODALS.EDIT_SCREEN);
             }}
           >
@@ -103,8 +105,8 @@ const ScreenSelector = props => {
           </button>
         </div>
       );
-    }
-  });
+
+    });
 
   return (
     <div style={styles.back}>

@@ -1,6 +1,5 @@
 import React from 'react';
 const {Component, PropTypes} = React;
-import forOwn from 'lodash/forOwn';
 
 import {
   BOX_TYPES,
@@ -11,6 +10,7 @@ import {
 
 import {
   css,
+  makeArray,
 } from '../../../utils';
 
 const styles = {
@@ -63,19 +63,16 @@ class ScreenDetails extends Component {
   }
 
   deleteScreen() {
-    let boxes = 0;
     let sure = true;
 
-    forOwn(this.props.boxes, box => {
-      if (box.type !== BOX_TYPES.LABEL && box.screenKeys[this.props.currentScreenKey]) {
-        boxes++;
-      }
-    });
+    const boxCount = makeArray(this.props.boxes)
+      .filter(box => box.type !== BOX_TYPES.LABEL && box.screenKeys[this.props.currentScreenKey])
+      .length;
 
-    if (boxes > 0) {
+    if (boxCount > 0) {
       const screen = this.props.screens[this.props.currentScreenKey];
       let msg = `Are you sure you want to delete the screen '${screen.name}'?`;
-      msg += `\nThis will also delete the ${boxes} text item${boxes === 1 ? '' : 's'} on the screen.`;
+      msg += `\nThis will also delete the ${boxCount} text item${boxCount === 1 ? '' : 's'} on the screen.`;
       sure = window.confirm(msg);
     }
 

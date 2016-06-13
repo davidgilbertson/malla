@@ -1,15 +1,16 @@
-import forOwn from 'lodash/forOwn';
-
 import {
   API_TEXT_FORMATS,
   BOX_TYPES,
 } from '../constants.js'
 
-export function getBoxJson(boxes, format) {
-  const result = {};
+import {
+  makeArray,
+} from '../utils';
 
-  forOwn(boxes, box => {
-    if (box && !box.deleted && box.type !== BOX_TYPES.LABEL) {
+export function getBoxJson(boxList, format) {
+  return makeArray(boxList)
+    .filter(box => (!!box && !box.deleted && box.type !== BOX_TYPES.LABEL))
+    .reduce((result, box) => {
       let value;
 
       if (format === API_TEXT_FORMATS.HTML && box.html) {
@@ -19,8 +20,7 @@ export function getBoxJson(boxes, format) {
       }
 
       result[box.label] = value;
-    }
-  });
-
-  return result;
+      
+      return result;
+    }, {});
 }

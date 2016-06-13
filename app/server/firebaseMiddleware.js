@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import forOwn from 'lodash/forOwn';
 
 import {
   getBoxJson,
@@ -7,7 +6,6 @@ import {
 
 import {
   API_TEXT_FORMATS,
-  BOX_TYPES
 } from '../constants.js';
 
 const config = {
