@@ -19,6 +19,7 @@ import {
 
 import {
   getUrlForScreenKey,
+  makeArray,
 } from '../utils';
 
 const onClient = typeof window !== 'undefined';
@@ -66,7 +67,21 @@ export function navigateToScreen(key) {
   let keyToSelect = key;
 
   if (!key) {
-    keyToSelect = Object.keys(store.getState().screens)[0];
+    const firstScreen = makeArray(store.getState().screens)
+      .find(screen => screen && !screen.deleted);
+
+    if (!firstScreen) {
+      console.warn('Looks like there are no screens at all. Going home');
+
+      firebaseActions.updateUser({
+        lastUrl: null,
+      });
+
+      browserHistory.push('/');
+      return;
+    }
+
+    keyToSelect = firstScreen._key;
   }
 
   const url = getUrlForScreenKey(store, keyToSelect);

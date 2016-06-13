@@ -184,7 +184,7 @@ class Screen extends Component {
     // give the store time to set the user status before rendering the login prompt
     this.shortTimer = setTimeout(() => {
       this.setState({waitedABit: true});
-    }, 50);
+    }, 500);
 
     this.longTimer = setTimeout(() => {
       this.setState({waitedALot: true});
@@ -198,6 +198,12 @@ class Screen extends Component {
 
   render() {
     const {user} = this.props;
+
+    if (typeof window === 'undefined') {
+      // I only ever want this blank coming back from the server
+      // else the 'loading' HTML comes up for a flash
+      return <div style={styles.workspace}></div>;
+    }
 
     if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedALot) {
       return (
@@ -229,18 +235,10 @@ class Screen extends Component {
     const noCurrentScreen = !currentScreen || currentScreen.deleted;
 
     if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedALot) {
-      return (
-        <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>This screen no longer exists. You may go home.</h1>
-
-          <div style={css.buttonStyle}>
-            <Link to="/">Home</Link>
-          </div>
-        </div>
-      );
+      this.props.navigateToScreen(); // navigate to the first screen
     }
 
-    if (thereAreNoScreens || noCurrentScreen) {
+    if (thereAreNoScreens || noCurrentScreen && this.state.waitedABit) {
       return (
         <div style={styles.workspace}>
           <h1 style={styles.signInWords}>Loading...</h1>
