@@ -10,4 +10,4 @@ export const markdownToHtml = require('./markdownToHtml.js').markdownToHtml;
 export const ls = require('./ls.js');
 export const getBoxJson = require('./getBoxJson.js').getBoxJson;
 export const timer = require('./timer.js');
-export const cacher = require('./cacher.js');
+export const cacher = require('./cacher.js').cacher;

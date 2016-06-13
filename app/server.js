@@ -44,7 +44,6 @@ const port = process.env.PORT || 8080;
 
 const fileNames = require('../build/stats/fileNames.json');
 
-
 function getHtml(req, props, MALLA_TEXT) {
   global.MALLA_TEXT = MALLA_TEXT;
   
@@ -109,7 +108,9 @@ function getHtml(req, props, MALLA_TEXT) {
 
 app.get('/api/:projectId.*json', firebaseMiddleware);
 
-function handleRoutes(req, res) {
+app.use(cacher.checkForCache);
+
+app.get('*', (req, res) => {
   match({routes: routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       res.status(500).send(err.message);
@@ -121,23 +122,13 @@ function handleRoutes(req, res) {
         .getText()
         .then(mallaText => {
           const responsePayload = getHtml(req, props, mallaText);
-          cacher.cacheResponse(req, responsePayload);
+          cacher.save(req.url, responsePayload);
           res.send(responsePayload);
         })
     } else {
       res.status(404).send('Not Found');
     }
   });
-}
-
-app.get('*', (req, res) => {
-  const cachedResponse = cacher.load(req);
-
-  if (cachedResponse) {
-    res.send(cachedResponse);
-  } else {
-    handleRoutes(req, res);
-  }
 });
 
 app.listen(port, '0.0.0.0', (err) => {

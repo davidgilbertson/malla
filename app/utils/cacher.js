@@ -1,27 +1,36 @@
 let responseCache = {};
 
-function isHome(req) {
-  return req.url === '/';
+const EXPIRES = 5000;
+
+function getCacheName(url) {
+  if (url === '/') return 'home';
+
+  if (url.startsWith('/s/')) return 'screen';
 }
 
-function isScreen(req) {
-  return req.url.startsWith('/s/');
+function load(url) {
+  const cacheName = getCacheName(url);
+  return responseCache[cacheName];
 }
 
-export function cacheResponse(req, responsePayload) {
-  if (isHome(req)) {
-    responseCache.home = responsePayload;
-  }
+export const cacher = {
+  save(url, responsePayload) {
+    const cacheName = getCacheName(url);
+    if (!cacheName) return;
+    responseCache[cacheName] = responsePayload;
 
-  if (isScreen(req)) {
-    responseCache.screen = responsePayload;
-  }
-}
+    setTimeout(() => {
+      delete responseCache[cacheName];
+    }, EXPIRES);
+  },
 
-export function load(req) {
-  if (isHome(req)) return responseCache.home;
+  checkForCache: function(req, res, next) {
+    const cachedResponse = load(req.url);
 
-  if (isScreen(req)) return responseCache.screen;
-
-  return false;
-}
+    if (cachedResponse) {
+      res.send(cachedResponse);
+    } else {
+      next();
+    }
+  },
+};
