@@ -21,6 +21,8 @@ import compression from 'compression';
 import {match} from 'react-router';
 import {StyleRoot} from 'radium';
 
+require('./utils/normalizeNodeAndBrowser.js');
+
 import firebaseMiddleware from './server/firebaseMiddleware.js';
 
 import {

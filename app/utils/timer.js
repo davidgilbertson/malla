@@ -1,14 +1,14 @@
 let startTime;
+import now from 'performance-now';
 
 export function start() {
-  startTime = process.hrtime();
+  startTime = now();
 }
 
 export function log(name, keepRunning) {
   if (!startTime) start();
-  const end = process.hrtime(startTime);
 
-  const ms = end[0] * 1000  + end[1] / 1000000;
+  const ms = now() - startTime;
   const roundMs = Math.round(ms * 10000) / 10000;
 
   console.info(`${roundMs}ms (${name})`);
