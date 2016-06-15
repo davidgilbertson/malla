@@ -47,7 +47,6 @@ const styles = {
     overflow: 'auto',
     backgroundImage: 'url(/images/grid-dot-gray_20x20.gif)',
     backgroundSize: '10px 10px',
-    backgroundPosition: '1px 1px',
     cursor: 'crosshair',
     boxShadow: `inset 1px 1px ${COLORS.WHITE}, inset -2px -2px ${COLORS.WHITE}`, // covers dots near the edge
   },

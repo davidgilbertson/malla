@@ -116,7 +116,7 @@ export const TEXT_PADDING = '4px 8px';
 
 export const CLICK_LENGTH_MS = 150;
 
-export const ANIMATION_DURATION = 150;
+export const ANIMATION_DURATION = 200;
 
 export const BREAKPOINT_SIZES = {
   // PHONES // iPhone, 6 Plus, Nexus 6
