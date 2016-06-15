@@ -267,7 +267,7 @@ class Screen extends Component {
         <footer
           style={styles.betaFooter}
         >
-          {MALLA_TEXT.betaDisclaimer}
+          {MALLA_TEXT.footerDisclaimer}
         </footer>
       </div>
     );
