@@ -2,12 +2,12 @@
   "title": "Malla",
   "slogan": "A simple way to store and update your website's text.",
   "box1Title": "Super fast",
-  "box1Desc": "Update your site's copy in seconds. Just click, drag, and type.",
+  "box1Desc": "Update your site's text in seconds. Just click, drag, and type.",
   "box3Title": "Simple API",
   "box2Desc": "As you type, the layout instantly updates for all connected users.",
   "box2Title": "Collaborative",
   "box3Desc": "A single URL.\nSeriously.",
-  "signUpLong": "Take it for a spin",
+  "signUpLong": "Try it now",
   "question1": "Sounds great, but what exactly is it?",
   "answer1": "Malla is a centralized place to store the text in your website or app, so that it isn't buried in code. It gives the control back to those who write the copy and takes the burden off of developers.",
   "question2": "So... it's a CMS?",
@@ -30,5 +30,5 @@
   "helpPanelIntro": "On this screen, add any text that you want shown in your website or app.",
   "helpPanelSubtitle": "Things you can do",
   "helpPanelList": "<ul>\n<li>Click and drag to add a new box.</li>\n<li>Click a box once to move or resize the box.</li>\n<li>Click again to edit the text.</li>\n<li>When a box is selected, click delete to remove it. Make sure you don’t remove a box that’s being used in your website!</li>\n<li>You can arrange boxes on the page however you like. This won’t affect how they appear on your site, but will make it easy to locate a particular piece of text in the future.</li>\n<li>When you're done, click the 'For Developers' button in the top right and send the link you see there to your nearest friendly developer; they will make sure the text ends up in the website.</li>\n</ul>\n",
-  "betaDiscalimer": "This is a beta release of Malla. It is not yet covered by any SLA or deprecation policy."
+  "footerDisclaimer": "This is a beta release of Malla. It is not yet covered by any SLA or deprecation policy."
 }
