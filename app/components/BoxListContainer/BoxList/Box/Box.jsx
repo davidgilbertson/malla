@@ -19,6 +19,7 @@ import {
   COLORS,
   DROP_MODALS,
   FONT_FAMILIES,
+  MODALS,
   TEXT_PADDING,
 } from '../../../../constants.js';
 
@@ -138,7 +139,7 @@ class Box extends Component {
   }
 
   render() {
-    const {activeBox, box, boxActions, id} = this.props;
+    const {activeBox, box, boxActions, id, showModal} = this.props;
     const isInTypingMode = this.isInTypingMode(this.props);
 
     const styles = cloneDeep(baseStyles);
@@ -187,6 +188,7 @@ class Box extends Component {
             boxActions.setActiveBox(null);
           }}
           onClick={() => boxActions.setActiveBox(id, BOX_MODES.TYPING)}
+          onDoubleClick={() => showModal(MODALS.EDIT_BOX)}
         >
           <div style={styles.boxActions}>
             <DropModal
@@ -194,7 +196,7 @@ class Box extends Component {
               id={id}
               box={box}
               boxActions={boxActions}
-              showModal={this.props.showModal}
+              showModal={showModal}
             />
           </div>
 

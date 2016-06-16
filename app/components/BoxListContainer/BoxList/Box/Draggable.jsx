@@ -290,6 +290,7 @@ class Draggable extends Component {
         onMouseDown={this.startDrag}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
+        onDoubleClick={this.props.onDoubleClick}
       >
         {this.props.children}
         <div
@@ -326,6 +327,11 @@ Draggable.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  onDoubleClick: PropTypes.func,
+};
+
+Draggable.defaultProps = {
+  onDoubleClick: () => {},
 };
 
 export default Draggable;
