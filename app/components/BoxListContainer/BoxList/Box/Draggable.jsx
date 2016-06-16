@@ -7,7 +7,6 @@ import {
   getEventDims,
 } from '../../../../utils';
 import {
-  ANIMATION_DURATION,
   COLORS,
   GRID_SIZE,
   Z_INDEXES,
