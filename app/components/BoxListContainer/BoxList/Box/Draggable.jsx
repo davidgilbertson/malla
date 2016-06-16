@@ -115,9 +115,12 @@ class Draggable extends Component {
       }
 
       if (this.resizeDirection === RESIZE.LEFT) {
-        if (this.startWidth - movement >= MIN_SIZE) {
-          newDims.width = this.startWidth - movement;
-          newDims.left = this.startLeft + movement;
+        const left = this.startLeft + movement;
+        const width = this.startWidth - movement;
+
+        if (left >= 0 && width >= MIN_SIZE) {
+          newDims.width = width;
+          newDims.left = left;
         }
       }
 
@@ -138,9 +141,12 @@ class Draggable extends Component {
       }
 
       if (this.resizeDirection === RESIZE.TOP) {
-        if (this.startHeight - movement >= MIN_SIZE) {
-          newDims.height = this.startHeight - movement;
-          newDims.top = this.startTop + movement;
+        const height = this.startHeight - movement;
+        const top = this.startTop + movement;
+
+        if (top >= 0 && height >= MIN_SIZE) {
+          newDims.height = height;
+          newDims.top = top;
         }
       }
 
