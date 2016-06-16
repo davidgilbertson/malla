@@ -269,7 +269,7 @@ class Draggable extends Component {
         ...css.shadow('medium'),
         opacity: showHandles ? .8 : 0,
         pointerEvents: showHandles ? null : 'none',
-        transition: showHandles ? `opacity 700ms ${ANIMATION_DURATION * 2}ms` : `opacity ${ANIMATION_DURATION * 2}ms`,
+        transition: showHandles ? `opacity 700ms 300ms` : `opacity 400ms`,
         zIndex: Z_INDEXES.MOVING_BOX + 1, // always above so as they fade away...
       },
       handleTop: {
