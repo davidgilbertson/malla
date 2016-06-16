@@ -36,7 +36,15 @@ class BoxDetails extends Component {
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     this.currentProjectKey = currentScreen.projectKey;
 
+    let textTooLong = false;
+
     const box = this.props.boxes[this.props.activeBox.id];
+
+    if (box) {
+      textTooLong = box.limitLength && box.text.length > box.lengthLimit;
+    } else {
+      console.warn('There is no active box:', this.props);
+    }
 
     this.state = {
       idIsAvailable: true,
@@ -44,7 +52,7 @@ class BoxDetails extends Component {
       idIsValidFormat: true,
       isValidOverall: true,
       showFormatted: false,
-      textTooLong: box.limitLength && box.text.length > box.lengthLimit,
+      textTooLong: textTooLong,
       text: box.text,
       id: box.label,
       limitLength: box.limitLength || false,

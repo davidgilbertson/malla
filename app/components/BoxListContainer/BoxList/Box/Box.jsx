@@ -188,7 +188,13 @@ class Box extends Component {
             boxActions.setActiveBox(null);
           }}
           onClick={() => boxActions.setActiveBox(id, BOX_MODES.TYPING)}
-          onDoubleClick={() => showModal(MODALS.EDIT_BOX)}
+          onDoubleClick={() => {
+            if (!activeBox.id) {
+              // if the user double clicks the HANDLE, the the activeBox will not have been set yet.
+              boxActions.setActiveBox(id, BOX_MODES.TYPING);
+            }
+            showModal(MODALS.EDIT_BOX);
+          }}
         >
           <div style={styles.boxActions}>
             <DropModal
