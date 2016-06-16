@@ -104,16 +104,22 @@ class Draggable extends Component {
     const {x, y} = getEventDims(e, {snap: true});
     let newDims = {};
 
+    const MIN_SIZE = GRID_SIZE * 2;
+
     if (this.resizeDirection === RESIZE.RIGHT || this.resizeDirection === RESIZE.LEFT) {
       const movement = x - this.startX;
 
       if (this.resizeDirection === RESIZE.RIGHT) {
-        newDims.width = this.startWidth + movement;
+        if (this.startWidth + movement >= MIN_SIZE) {
+          newDims.width = this.startWidth + movement;
+        }
       }
 
       if (this.resizeDirection === RESIZE.LEFT) {
-        newDims.width = this.startWidth - movement;
-        newDims.left = this.startLeft + movement;
+        if (this.startWidth - movement >= MIN_SIZE) {
+          newDims.width = this.startWidth - movement;
+          newDims.left = this.startLeft + movement;
+        }
       }
 
       if (Math.abs(this.state.width - newDims.width) >= GRID_SIZE) {
@@ -126,13 +132,17 @@ class Draggable extends Component {
     if (this.resizeDirection === RESIZE.TOP || this.resizeDirection === RESIZE.BOTTOM) {
       const movement = y - this.startY;
 
-      if (this.resizeDirection === RESIZE.TOP) {
-        newDims.height = this.startHeight - movement;
-        newDims.top = this.startTop + movement;
+      if (this.resizeDirection === RESIZE.BOTTOM) {
+        if (this.startHeight + movement >= MIN_SIZE) {
+          newDims.height = this.startHeight + movement;
+        }
       }
 
-      if (this.resizeDirection === RESIZE.BOTTOM) {
-        newDims.height = this.startHeight + movement;
+      if (this.resizeDirection === RESIZE.TOP) {
+        if (this.startHeight - movement >= MIN_SIZE) {
+          newDims.height = this.startHeight - movement;
+          newDims.top = this.startTop + movement;
+        }
       }
 
       if (Math.abs(this.state.height - newDims.height) >= GRID_SIZE) {
@@ -181,7 +191,7 @@ class Draggable extends Component {
   onDrag(e) {
     e.preventDefault();
     const {x, y} = getEventDims(e, {snap: true});
-    
+
     const hasMovedXEnough = Math.abs(x - this.state.left) >= GRID_SIZE;
     const hasMovedYEnough = Math.abs(y - this.state.top) >= GRID_SIZE;
     
@@ -189,10 +199,10 @@ class Draggable extends Component {
 
     this.didMove = true;
 
-    this.setState({
-      left: x - this.startX + this.offsetX,
-      top: y - this.startY + this.offsetY,
-    });
+    const left = Math.max(0, x - this.startX + this.offsetX);
+    const top = Math.max(0, y - this.startY + this.offsetY);
+
+    this.setState({left, top});
   }
 
   endDrag() {
