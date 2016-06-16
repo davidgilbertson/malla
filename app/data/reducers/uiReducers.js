@@ -65,8 +65,12 @@ const currentModal = (state = MODALS.NONE, action) => {
       }
 
       return action.modal;
-    default :
+
+    case ACTIONS.HIDE_MODAL :
       return MODALS.NONE;
+
+    default :
+      return state;
   }
 };
 

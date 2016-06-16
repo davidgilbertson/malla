@@ -26,7 +26,7 @@ export function pos(top, right, bottom, left) {
 
 export const inputStyle = {
   padding: '10px 12px',
-  border: `1px solid ${COLORS.GRAY_LIGHT}`,
+  ...border(1, 'solid', COLORS.GRAY_LIGHT),
   borderRadius: 4,
 };
 

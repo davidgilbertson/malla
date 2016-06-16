@@ -17,7 +17,13 @@ let localState;
 if (onClient) {
   const localStore = ls.load();
 
-  if (localStore) localState = localStore;
+  if (localStore) {
+    delete localStore.activeBox;
+    delete localStore.currentTool;
+    delete localStore.currentDropModal;
+    delete localStore.currentModal;
+    localState = localStore;
+  }
 }
 
 const store = createStore(reducers, localState);

@@ -71,6 +71,12 @@ class Box extends Component {
   constructor(props) {
     super(props);
     this.onTextAreaChange = this.onTextAreaChange.bind(this);
+
+    const {box} = this.props;
+
+    this.state = {
+      textTooLong: box.limitLength && box.text.length > box.lengthLimit,
+    }
   }
 
   isInTypingMode({activeBox, id}) {
@@ -81,6 +87,11 @@ class Box extends Component {
     const text = e.target.value;
     const html = markdownToHtml(text);
 
+    const {box} = this.props;
+
+    this.setState({
+      textTooLong: box.limitLength && text.length > box.lengthLimit,
+    });
     // TODO (davidg): this should be shared with the BoxDetails.jsx so I'm not doing it in two places
     // e.g. RichTextEditor and it outputs {raw, html} onChange
     this.props.boxActions.update(
@@ -101,7 +112,9 @@ class Box extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state !== nextState) return true;
+
     const textAreaNotFocused = document.activeElement !== this.textAreaEl;
     const leavingTypingMode = !this.isInTypingMode(nextProps);
     // don't update the component while the textarea is focused (messes with the cursor)
@@ -133,7 +146,7 @@ class Box extends Component {
     if (isInTypingMode) {
       styles.draggable.borderWidth = 1;
       styles.draggable.borderStyle = 'solid';
-      styles.draggable.borderColor = COLORS.PRIMARY;
+      styles.draggable.borderColor = this.state.textTooLong ? COLORS.ERROR : COLORS.PRIMARY;
 
       styles.textArea.opacity = 1;
       styles.displayText.pointerEvents = 'none';
@@ -195,6 +208,7 @@ class Box extends Component {
           <MarkedDownText
             style={{...styles.textBox, ...styles.displayText}}
             markdown={box.text}
+            doNotParseMarkdown={box.plainTextOnly}
           />
       </Draggable>
     );

@@ -41,6 +41,7 @@ class SignInModal extends Component {
   }
 
   signIn(provider) {
+    this.props.hideModal();
     this.props.setInteraction(INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE);
     this.props.signIn(provider);
   }
@@ -94,6 +95,7 @@ class SignInModal extends Component {
 
 SignInModal.propTypes = {
   setModalState: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 export default Radium(SignInModal);
