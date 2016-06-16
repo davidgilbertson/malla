@@ -1,5 +1,6 @@
 import React from 'react';
 const {PropTypes} = React;
+import Radium from 'radium'; // media queries can be passed in styles
 
 import Button from '../Button/Button.jsx';
 
@@ -126,6 +127,7 @@ Panel.propTypes = {
   okDisabled: PropTypes.bool,
   width: PropTypes.number,
   onOk: PropTypes.func,
+  style: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.element,
@@ -133,7 +135,7 @@ Panel.propTypes = {
   ]).isRequired,
 
   // methods
-  hideModal: PropTypes.func.isRequired,
+  hideModal: PropTypes.func,
 };
 
 Panel.defaultProps = {
@@ -146,4 +148,4 @@ Panel.defaultProps = {
   onOk: () => {}
 };
 
-export default Panel;
+export default Radium(Panel);
