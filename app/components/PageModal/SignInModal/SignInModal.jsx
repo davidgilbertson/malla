@@ -1,8 +1,8 @@
 import React from 'react';
-const {Component, PropTypes} = React;
-import Radium from 'radium';
+const {PropTypes} = React;
 
 import Button from '../../Button/Button.jsx';
+import PageModalWrapper from '../PageModalWrapper.jsx';
 
 import {
   COLORS,
@@ -35,67 +35,57 @@ const styles = {
   },
 };
 
-class SignInModal extends Component {
-  constructor(props) {
-    super(props);
-  }
+const SignInModal = props => {
+  const signIn = provider => {
+    props.hideModal();
+    props.setInteraction(INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE);
+    props.signIn(provider);
+  };
 
-  signIn(provider) {
-    this.props.hideModal();
-    this.props.setInteraction(INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE);
-    this.props.signIn(provider);
-  }
+  return (
+    <PageModalWrapper
+      {...props}
+      title={'Sign in'}
+      width={DIMENSIONS.SPACE_L * 6}
+      showOk={false}
+    >
+      <p style={styles.title}>Choose your flavor</p>
 
-  componentDidMount() {
-    this.props.setModalState({
-      title: 'Sign in',
-      width: DIMENSIONS.SPACE_L * 6,
-      showOk: false,
-    });
-  }
+      <Button
+        style={{...styles.button, ...styles.facebookButton}}
+        onClick={() => signIn('facebook')}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_FACEBOOK}
+        label="Social sign in modal"
+      >
+        Facebook
+      </Button>
 
-  render() {
-    return (
-      <div>
-        <p style={styles.title}>Choose your flavor</p>
+      <Button
+        style={{...styles.button, ...styles.googleButton}}
+        onClick={() => signIn('google')}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_GOOGLE}
+        label="Social sign in modal"
+      >
+        Google
+      </Button>
 
-        <Button
-          style={{...styles.button, ...styles.facebookButton}}
-          onClick={this.signIn.bind(this, 'facebook')}
-          category={EVENTS.CATEGORIES.UI_INTERACTION}
-          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_FACEBOOK}
-          label="Social sign in modal"
-        >
-          Facebook
-        </Button>
-
-        <Button
-          style={{...styles.button, ...styles.googleButton}}
-          onClick={this.signIn.bind(this, 'google')}
-          category={EVENTS.CATEGORIES.UI_INTERACTION}
-          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_GOOGLE}
-          label="Social sign in modal"
-        >
-          Google
-        </Button>
-
-        <Button
-          style={{...styles.button, ...styles.twitterButton}}
-          onClick={this.signIn.bind(this, 'twitter')}
-          category={EVENTS.CATEGORIES.UI_INTERACTION}
-          action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_TWITTER}
-          label="Social sign in modal"
-        >
-          Twitter
-        </Button>
-      </div>
-    );
-  }
-}
+      <Button
+        style={{...styles.button, ...styles.twitterButton}}
+        onClick={() => signIn('twitter')}
+        category={EVENTS.CATEGORIES.UI_INTERACTION}
+        action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_TWITTER}
+        label="Social sign in modal"
+      >
+        Twitter
+      </Button>
+    </PageModalWrapper>
+  );
+};
 
 SignInModal.propTypes = {
-  setModalState: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
 };
 
-export default Radium(SignInModal);
+export default SignInModal;

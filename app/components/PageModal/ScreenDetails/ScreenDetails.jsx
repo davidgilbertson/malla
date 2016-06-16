@@ -1,6 +1,8 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 
+import PageModalWrapper from '../PageModalWrapper.jsx';
+
 import {
   BOX_TYPES,
   COLORS,
@@ -84,14 +86,6 @@ class ScreenDetails extends Component {
 
   componentDidMount() {
     this.nameEl.focus();
-
-    this.props.setModalState({
-      title: this.props.mode === 'add' ? 'Add a screen' : 'Edit screen',
-      width: DIMENSIONS.SPACE_L * 7,
-      showOk: true,
-      okText: 'Save',
-      onOk: this.upsertScreen,
-    });
   }
 
   render() {
@@ -120,7 +114,14 @@ class ScreenDetails extends Component {
     }
 
     return (
-      <div>
+      <PageModalWrapper
+        {...this.props}
+        title={this.props.mode === 'add' ? 'Add a screen' : 'Edit screen'}
+        width={DIMENSIONS.SPACE_L * 7}
+        showOk={true}
+        okText={'Save'}
+        onOk={this.upsertScreen}
+      >
         <div>
           <input
             ref={el => this.nameEl = el}
@@ -138,7 +139,7 @@ class ScreenDetails extends Component {
         </div>
 
         {deleteButton}
-      </div>
+      </PageModalWrapper>
     );
   }
 }
@@ -154,7 +155,6 @@ ScreenDetails.propTypes = {
   addScreen: PropTypes.func.isRequired,
   updateScreen: PropTypes.func.isRequired,
   removeScreen: PropTypes.func.isRequired,
-  setModalState: PropTypes.func.isRequired,
 };
 
 export default ScreenDetails;

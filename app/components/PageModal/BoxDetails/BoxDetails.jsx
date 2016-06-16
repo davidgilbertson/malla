@@ -1,9 +1,9 @@
 import React from 'react';
 const {Component, PropTypes} = React;
-import Radium from 'radium';
 
 import MarkedDownText from '../../MarkedDownText/MarkedDownText.jsx';
 import Icon from '../../Icon/Icon.jsx';
+import PageModalWrapper from '../PageModalWrapper.jsx';
 
 import {
   ANIMATION_DURATION,
@@ -93,7 +93,6 @@ class BoxDetails extends Component {
 
     if (this.state.isValidOverall !== isValidOverall) {
       this.setState({isValidOverall});
-      this.props.setModalState({okDisabled: !isValidOverall});
     }
 
     this.setState({id: currentId});
@@ -164,15 +163,6 @@ class BoxDetails extends Component {
 
   componentDidMount() {
     this.textEl.focus();
-
-    this.props.setModalState({
-      title: 'Edit text item',
-      width: DIMENSIONS.SPACE_L * 11,
-      showOk: true,
-      okText: 'Save',
-      onOk: this.updateBox,
-      okDisabled: !this.state.isValidOverall,
-    });
   }
 
   renderDeveloperOptions() {
@@ -484,7 +474,15 @@ class BoxDetails extends Component {
     };
 
     return (
-      <div>
+      <PageModalWrapper
+        {...this.props}
+        title={'Edit text item'}
+        width={DIMENSIONS.SPACE_L * 11}
+        showOk={true}
+        okText={'Save'}
+        onOk={this.updateBox}
+        okDisabled={!this.state.isValidOverall || this.state.textTooLong}
+      >
         <div style={styles.textWrapper}>
           <textarea
             ref={el => this.textEl = el}
@@ -505,7 +503,7 @@ class BoxDetails extends Component {
         {this.renderFormatWrapper()}
 
         {this.renderDeveloperOptions()}
-      </div>
+      </PageModalWrapper>
     );
   }
 }
@@ -522,7 +520,6 @@ BoxDetails.propTypes = {
   removeBox: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
   setActiveBox: PropTypes.func.isRequired,
-  setModalState: PropTypes.func.isRequired,
 };
 
-export default Radium(BoxDetails);
+export default BoxDetails;

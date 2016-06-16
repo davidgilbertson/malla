@@ -1,6 +1,8 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 
+import PageModalWrapper from '../PageModalWrapper.jsx';
+
 import {
   API_TEXT_FORMATS,
   COLORS,
@@ -58,15 +60,6 @@ class ExportDataModal extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.setModalState({
-      title: 'API access',
-      showOk: true,
-      onOk: this.onOk,
-      width: DIMENSIONS.SPACE_L * 20,
-    });
-  }
-
   onOk() {
     const {currentScreenKey, screens, updateProject} = this.props;
 
@@ -98,30 +91,36 @@ class ExportDataModal extends Component {
      );
 
     return (
-      <div>
-          <h2>How would you like the text to be formatted?</h2>
+      <PageModalWrapper
+        {...this.props}
+        title={'API access'}
+        showOk={true}
+        onOk={this.onOk}
+        width={DIMENSIONS.SPACE_L * 20}
+      >
+        <h2>How would you like the text to be formatted?</h2>
 
-          <div style={styles.formatOptions}>
-            <label style={styles.formatOptionLabel}>
-              <input
-                type="radio"
-                name="outputOption"
-                checked={this.state.apiTextFormat === API_TEXT_FORMATS.HTML}
-                onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.HTML})}
-              />
-              HTML (ready for use in a website)
-            </label>
+        <div style={styles.formatOptions}>
+          <label style={styles.formatOptionLabel}>
+            <input
+              type="radio"
+              name="outputOption"
+              checked={this.state.apiTextFormat === API_TEXT_FORMATS.HTML}
+              onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.HTML})}
+            />
+            HTML (ready for use in a website)
+          </label>
 
-            <label style={styles.formatOptionLabel}>
-              <input
-                type="radio"
-                name="outputOption"
-                checked={this.state.apiTextFormat === API_TEXT_FORMATS.RAW}
-                onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.RAW})}
-              />
-              Plain text (if you have used markdown for formatting you will need to parse this yourself)
-            </label>
-          </div>
+          <label style={styles.formatOptionLabel}>
+            <input
+              type="radio"
+              name="outputOption"
+              checked={this.state.apiTextFormat === API_TEXT_FORMATS.RAW}
+              onChange={() => this.setState({apiTextFormat: API_TEXT_FORMATS.RAW})}
+            />
+            Plain text (if you have used markdown for formatting you will need to parse this yourself)
+          </label>
+        </div>
 
         <p style={styles.apiUrlWrapper}>To access this data via API, go to {apiLink}</p>
 
@@ -130,20 +129,19 @@ class ExportDataModal extends Component {
         </pre>
 
         <p style={styles.note}>The API will return text for all screens in the current project.</p>
-      </div>
+      </PageModalWrapper>
     );
   }
 }
 
 ExportDataModal.propTypes = {
-  // state
+  // props
   screens: PropTypes.object.isRequired,
   boxes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   currentScreenKey: PropTypes.string.isRequired,
 
-  // actions
-  setModalState: PropTypes.func.isRequired,
+  // methods
   updateProject: PropTypes.func.isRequired,
 };
 
