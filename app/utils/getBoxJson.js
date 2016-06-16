@@ -13,7 +13,7 @@ export function getBoxJson(boxList, format) {
     .reduce((result, box) => {
       let value;
 
-      if (format === API_TEXT_FORMATS.HTML && box.html) {
+      if (format === API_TEXT_FORMATS.HTML && box.html && !box.plainTextOnly) {
         value = box.html;
       } else {
         value = box.text;
