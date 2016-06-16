@@ -2,6 +2,7 @@ import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
 import {browserHistory, Link} from 'react-router';
+import isEqual from 'lodash/isEqual';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
 import Button from '../../Button/Button.jsx';
@@ -193,6 +194,18 @@ class Screen extends Component {
   componentWillUnmount() {
     clearTimeout(this.shortTimer);
     clearTimeout(this.longTimer);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState !== this.state) return true;
+
+    return (
+      !isEqual(nextProps.user, this.props.user) ||
+      !isEqual(nextProps.currentTool, this.props.currentTool) ||
+      !isEqual(nextProps.currentScreenKey, this.props.currentScreenKey) ||
+      !isEqual(nextProps.screens, this.props.screens) ||
+      !isEqual(nextProps.projects, this.props.projects)
+    );
   }
 
   render() {

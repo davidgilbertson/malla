@@ -3,6 +3,7 @@ const {PropTypes} = React;
 import Radium from 'radium';
 import {Link} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 
 import Button from '../../Button/Button.jsx';
 import Icon from '../../Icon/Icon.jsx';
@@ -103,152 +104,162 @@ const baseStyles = {
   },
 };
 
-const Header = ({user, updateUser, showModal, signOut, location, navigateToScreen}) => {
-  const styles = cloneDeep(baseStyles);
-
-  const actionItems = {
-    signInButton: (
-      <Button
-        key="signInButton"
-        style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SIGN_IN}
-        label="Header button"
-        onClick={() => {
-          showModal(MODALS.SOCIAL_SIGN_IN);
-        }}
-      >
-        {MALLA_TEXT.signIn}
-      </Button>
-    ),
-    signUpButton: (
-      <Button
-        key="signUpButton"
-        style={{...styles.homePageHeaderButton, ...styles.headerPrimaryButton}}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
-        label="Header button"
-        onClick={() => {
-          showModal(MODALS.SOCIAL_SIGN_IN);
-        }}
-      >
-        {MALLA_TEXT.signUp}
-      </Button>
-    ),
-    showHelp: (
-      <Button
-        key="showHelp"
-        style={styles.headerButton}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.SHOWED_HELP}
-        label="Header button"
-        onClick={() => {
-          updateUser({
-            showHelp: true,
-          });
-        }}
-      >{MALLA_TEXT.help}</Button>
-    ),
-    signOutButton: (
-      <Button
-        key="signOutButton"
-        style={styles.signInOrOutButton}
-        onClick={signOut}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SIGN_OUT}
-        label="Header button"
-      >{MALLA_TEXT.signOut}</Button>
-    ),
-    myProjects: (
-      <Button
-        key="myProjects"
-        style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
-        label="Header button"
-        onClick={() => {
-          navigateToScreen();
-        }}
-      >My workspace</Button>
-    ),
-    userName: (
-      <span
-        key="userName"
-        style={styles.userName}
-      >{user.name}</span>
-    ),
-    feedback: (
-      <Button
-        key="feedback"
-        style={styles.headerButton}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.FEEDBACK}
-        label="Header button"
-        title={MALLA_TEXT.feedbackTooltip}
-        onClick={() => {
-          showModal(MODALS.FEEDBACK);
-        }}
-      >
-        <Icon
-          color={COLORS.WHITE}
-          icon={ICONS.BUBBLE}
-          size={22}
-        />
-      </Button>
-    ),
-  };
-
-  const atHome = location && location.pathname === '/';
-  const signedIn = user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
-
-  const actionItemElements = [];
-  let homeLink = null;
-
-  if (atHome) {
-    styles.header.backgroundColor = 'transparent';
-    styles.header.height = DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME;
-
-    if (signedIn) {
-      actionItemElements.push(actionItems.myProjects);
-      actionItemElements.push(actionItems.signOutButton);
-    } else {
-      actionItemElements.push(actionItems.signInButton);
-      actionItemElements.push(actionItems.signUpButton);
-    }
-  } else {
-    if (signedIn) {
-      actionItemElements.push(actionItems.userName);
-
-      if (!user.showHelp) {
-        actionItemElements.push(actionItems.showHelp);
-      }
-      actionItemElements.push(actionItems.signOutButton);
-      actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height}/>);
-
-      actionItemElements.push(actionItems.feedback);
-    }
-
-    homeLink = (
-      <h1 style={styles.title}>
-        <Link to="/">{MALLA_TEXT.title}</Link>
-      </h1>
+class Header extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      !isEqual(nextProps.user, this.props.user) ||
+      !isEqual(nextProps.location, this.props.location)
     );
   }
 
-  return (
-    <header style={styles.header}>
-      <div style={styles.headerContent}>
-        <div>
-          {homeLink}
-        </div>
+  render() {
+    const {user, updateUser, showModal, signOut, location, navigateToScreen} = this.props;
+    const styles = cloneDeep(baseStyles);
 
-        <div style={styles.actionItems}>
-          {actionItemElements}
+    const actionItems = {
+      signInButton: (
+        <Button
+          key="signInButton"
+          style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_IN}
+          label="Header button"
+          onClick={() => {
+            showModal(MODALS.SOCIAL_SIGN_IN);
+          }}
+        >
+          {MALLA_TEXT.signIn}
+        </Button>
+      ),
+      signUpButton: (
+        <Button
+          key="signUpButton"
+          style={{...styles.homePageHeaderButton, ...styles.headerPrimaryButton}}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+          label="Header button"
+          onClick={() => {
+            showModal(MODALS.SOCIAL_SIGN_IN);
+          }}
+        >
+          {MALLA_TEXT.signUp}
+        </Button>
+      ),
+      showHelp: (
+        <Button
+          key="showHelp"
+          style={styles.headerButton}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.SHOWED_HELP}
+          label="Header button"
+          onClick={() => {
+            updateUser({
+              showHelp: true,
+            });
+          }}
+        >{MALLA_TEXT.help}</Button>
+      ),
+      signOutButton: (
+        <Button
+          key="signOutButton"
+          style={styles.signInOrOutButton}
+          onClick={signOut}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.SIGN_OUT}
+          label="Header button"
+        >{MALLA_TEXT.signOut}</Button>
+      ),
+      myProjects: (
+        <Button
+          key="myProjects"
+          style={{...styles.homePageHeaderButton, ...styles.headerSecondaryButton}}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
+          label="Header button"
+          onClick={() => {
+            navigateToScreen();
+          }}
+        >My workspace</Button>
+      ),
+      userName: (
+        <span
+          key="userName"
+          style={styles.userName}
+        >{user.name}</span>
+      ),
+      feedback: (
+        <Button
+          key="feedback"
+          style={styles.headerButton}
+          category={EVENTS.CATEGORIES.UI_INTERACTION}
+          action={EVENTS.ACTIONS.CLICKED.FEEDBACK}
+          label="Header button"
+          title={MALLA_TEXT.feedbackTooltip}
+          onClick={() => {
+            showModal(MODALS.FEEDBACK);
+          }}
+        >
+          <Icon
+            color={COLORS.WHITE}
+            icon={ICONS.BUBBLE}
+            size={22}
+          />
+        </Button>
+      ),
+    };
+
+    const atHome = location && location.pathname === '/';
+    const signedIn = user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
+
+    const actionItemElements = [];
+    let homeLink = null;
+
+    if (atHome) {
+      styles.header.backgroundColor = 'transparent';
+      styles.header.height = DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME;
+
+      if (signedIn) {
+        actionItemElements.push(actionItems.myProjects);
+        actionItemElements.push(actionItems.signOutButton);
+      } else {
+        actionItemElements.push(actionItems.signInButton);
+        actionItemElements.push(actionItems.signUpButton);
+      }
+    } else {
+      if (signedIn) {
+        actionItemElements.push(actionItems.userName);
+
+        if (!user.showHelp) {
+          actionItemElements.push(actionItems.showHelp);
+        }
+        actionItemElements.push(actionItems.signOutButton);
+        actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height}/>);
+
+        actionItemElements.push(actionItems.feedback);
+      }
+
+      homeLink = (
+        <h1 style={styles.title}>
+          <Link to="/">{MALLA_TEXT.title}</Link>
+        </h1>
+      );
+    }
+
+    return (
+      <header style={styles.header}>
+        <div style={styles.headerContent}>
+          <div>
+            {homeLink}
+          </div>
+
+          <div style={styles.actionItems}>
+            {actionItemElements}
+          </div>
         </div>
-      </div>
-    </header>
-  );
-};
+      </header>
+    );
+  }
+}
 
 Header.propTypes = {
   // state

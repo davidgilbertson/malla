@@ -1,6 +1,7 @@
 import React from 'react';
-const {PropTypes} = React;
+const {Component, PropTypes} = React;
 import Radium from 'radium';
+import isEqual from 'lodash/isEqual';
 
 import {
   makeArray,
@@ -8,31 +9,43 @@ import {
 
 import Box from './Box/Box.jsx';
 
-const BoxList = props => {
-  // TODO (davidg): filter for boxes in this project/screen only
+class BoxList extends Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      !isEqual(nextProps.boxes, this.props.boxes) ||
+      !isEqual(nextProps.currentTool, this.props.currentTool) ||
+      !isEqual(nextProps.currentScreenKey, this.props.currentScreenKey) ||
+      !isEqual(nextProps.activeBox, this.props.activeBox)
+    );
+  }
 
-  const boxComponents = makeArray(props.boxes)
-    .filter(box => box && !box.deleted && box.screenKeys[props.currentScreenKey])
-    .map(box => {
-      return (
-        <Box
-          key={box._key}
-          id={box._key}
-          box={box}
-          boxActions={props.boxActions}
-          currentTool={props.currentTool}
-          activeBox={props.activeBox}
-          showModal={props.showModal}
-        />
-      );
-    });
+  render() {
+    // TODO (davidg): filter for boxes in this project/screen only
+    const {props} = this;
 
-  return (
-    <div>
-      {boxComponents}
-    </div>
-  )
-};
+    const boxComponents = makeArray(props.boxes)
+      .filter(box => box && !box.deleted && box.screenKeys[props.currentScreenKey])
+      .map(box => {
+        return (
+          <Box
+            key={box._key}
+            id={box._key}
+            box={box}
+            boxActions={props.boxActions}
+            currentTool={props.currentTool}
+            activeBox={props.activeBox}
+            showModal={props.showModal}
+          />
+        );
+      });
+
+    return (
+      <div>
+        {boxComponents}
+      </div>
+    );
+  }
+}
 
 BoxList.propTypes = {
   // state
