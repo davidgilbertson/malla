@@ -243,7 +243,7 @@ class BoxDetails extends Component {
         backgroundColor: disableLockButton ? COLORS.GRAY : COLORS.PRIMARY,
         cursor: disableLockButton ? 'default' : 'pointer',
         color: COLORS.WHITE,
-        padding: 9,
+        padding: '9px 0',
         marginLeft: 10,
       },
       idError: {
@@ -375,13 +375,15 @@ class BoxDetails extends Component {
       },
       previewButton: {
         color: COLORS.WHITE,
-        padding: 10,
+        padding: '0 10px',
         marginTop: 10,
         textTransform: 'uppercase',
+        width: DIMENSIONS.SPACE_L * 2,
+      },
+      previewButtonGuts: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: DIMENSIONS.SPACE_L * 2,
       },
       previewButtonText: {
         marginLeft: 10,
@@ -405,20 +407,23 @@ class BoxDetails extends Component {
               peekFormatted: false,
             });
           }}
-          onMouseOver={() => {
+          onMouseEnter={() => {
             this.setState({peekFormatted: true});
           }}
-          onMouseOut={() => {
+          onMouseOut={e => {
+            if (e.currentTarget.contains(e.relatedTarget)) return;
             this.setState({peekFormatted: false});
           }}
         >
-          <Icon
-            icon={ICONS.EYE}
-            size={22}
-            color={COLORS.WHITE}
-          />
+          <span style={styles.previewButtonGuts}>
+            <Icon
+              icon={ICONS.EYE}
+              size={22}
+              color={COLORS.WHITE}
+            />
 
-          Preview
+            Preview
+          </span>
         </button>
 
         <a

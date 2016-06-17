@@ -62,6 +62,7 @@ const baseStyles = {
   textArea: {
     border: 0,
     outline: 0,
+    backgroundColor: 'transparent', // stop it overlapping the border in firefox
     resize: 'none',
     ...css.shadow('inset'),
   },
