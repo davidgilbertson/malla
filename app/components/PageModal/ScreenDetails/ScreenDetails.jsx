@@ -1,5 +1,5 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 
 import PageModalWrapper from '../PageModalWrapper.jsx';
 
@@ -38,111 +38,102 @@ const styles = {
   },
 };
 
-class ScreenDetails extends Component {
-  constructor(props) {
-    super(props);
+const ScreenDetails = props => {
+  let nameEl;
+  let descriptionEl;
 
-    this.upsertScreen = this.upsertScreen.bind(this);
-    this.deleteScreen = this.deleteScreen.bind(this);
-  }
-
-  upsertScreen() {
-    if (this.nameEl.value) {
-      if (this.props.mode === 'add') {
-        this.props.addScreen({
-          name: this.nameEl.value,
-          description: this.descriptionEl.value,
+  const upsertScreen = () => {
+    if (nameEl.value) {
+      if (props.mode === 'add') {
+        props.addScreen({
+          name: nameEl.value,
+          description: descriptionEl.value,
         });
       } else {
-        this.props.updateScreen(this.props.currentScreenKey, {
-          name: this.nameEl.value,
-          description: this.descriptionEl.value,
+        props.updateScreen(props.currentScreenKey, {
+          name: nameEl.value,
+          description: descriptionEl.value,
         });
       }
     }
 
-    this.props.hideModal();
-  }
+    props.hideModal();
+  };
 
-  deleteScreen() {
+  const deleteScreen = () => {
     let sure = true;
 
-    const boxCount = makeArray(this.props.boxes)
-      .filter(box => box.type !== BOX_TYPES.LABEL && box.screenKeys[this.props.currentScreenKey])
+    const boxCount = makeArray(props.boxes)
+      .filter(box => box.type !== BOX_TYPES.LABEL && box.screenKeys[props.currentScreenKey])
       .length;
 
     if (boxCount > 0) {
-      const screen = this.props.screens[this.props.currentScreenKey];
+      const screen = props.screens[props.currentScreenKey];
       let msg = `Are you sure you want to delete the screen '${screen.name}'?`;
       msg += `\nThis will also delete the ${boxCount} text item${boxCount === 1 ? '' : 's'} on the screen.`;
       sure = window.confirm(msg);
     }
 
     if (sure) {
-      this.props.removeScreen(this.props.currentScreenKey);
-      this.props.hideModal();
+      props.removeScreen(props.currentScreenKey);
+      props.hideModal();
     }
-  }
+  };
 
-  componentDidMount() {
-    this.nameEl.focus();
-  }
+  let screen;
+  let deleteButton = null;
 
-  render() {
-    let screen;
-    let deleteButton = null;
+  if (props.mode === 'add') {
+    screen = {
+      name: '',
+      description: '',
+    };
+  } else {
+    screen = props.screens[props.currentScreenKey];
 
-    if (this.props.mode === 'add') {
-      screen = {
-        name: '',
-        description: '',
-      };
-    } else {
-      screen = this.props.screens[this.props.currentScreenKey];
-
-      deleteButton = Object.keys(this.props.screens).length > 1
-        ? (
-          <div style={styles.deleteRow}>
-            <button
-              onClick={this.deleteScreen}
-              tabIndex="-1"
-            >
-              Delete this screen
-            </button>
-          </div>
-        ) : null;
-    }
-
-    return (
-      <PageModalWrapper
-        {...this.props}
-        title={this.props.mode === 'add' ? 'Add a screen' : 'Edit screen'}
-        width={DIMENSIONS.SPACE_L * 7}
-        showOk={true}
-        okText={'Save'}
-        onOk={this.upsertScreen}
-      >
-        <div>
-          <input
-            ref={el => this.nameEl = el}
-            defaultValue={screen.name}
-            style={styles.nameInput}
-          />
+    deleteButton = Object.keys(props.screens).length > 1
+      ? (
+        <div style={styles.deleteRow}>
+          <button
+            onClick={deleteScreen}
+            tabIndex="-1"
+          >
+            Delete this screen
+          </button>
         </div>
-
-        <div>
-          <textarea
-            ref={el => this.descriptionEl = el}
-            defaultValue={screen.description}
-            style={styles.descInput}
-          />
-        </div>
-
-        {deleteButton}
-      </PageModalWrapper>
-    );
+      ) : null;
   }
-}
+
+  return (
+    <PageModalWrapper
+      {...props}
+      title={props.mode === 'add' ? 'Add a screen' : 'Edit screen'}
+      width={DIMENSIONS.SPACE_L * 7}
+      showOk={true}
+      okText={'Save'}
+      onOk={upsertScreen}
+    >
+      <div>
+        <input
+          ref={el => nameEl = el}
+          defaultValue={screen.name}
+          style={styles.nameInput}
+          autoFocus={true}
+        />
+      </div>
+
+      <div>
+        <textarea
+          ref={el => descriptionEl = el}
+          defaultValue={screen.description}
+          style={styles.descInput}
+        />
+      </div>
+
+      {deleteButton}
+    </PageModalWrapper>
+  );
+};
 
 ScreenDetails.propTypes = {
   // props

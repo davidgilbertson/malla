@@ -1,5 +1,5 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 
 import PageModalWrapper from '../PageModalWrapper.jsx';
 
@@ -9,34 +9,30 @@ const style = {
   padding: '3px 5px',
 };
 
-class FeedbackModal extends Component {
-  componentDidMount() {
-    this.feedbackEl.focus();
-  }
-  
-  render() {
-    return (
-      <PageModalWrapper
-        {...this.props}
-        title={'Send feedback'}
-        showOk={true}
-        okText={'Send'}
-        width={400}
-        onOk={() => {
-          if (this.feedbackEl.value) {
-            this.props.sendFeedback(this.feedbackEl.value);
-          }
-        }}
-      >
-        <textarea
-          ref={el => this.feedbackEl = el}
-          style={style}
-          placeholder="What could we do better, what do you love?"
-        />
-      </PageModalWrapper>
-    );
-  }
-}
+const FeedbackModal = props => {
+  let feedbackEl;
+  return (
+    <PageModalWrapper
+      {...props}
+      title={'Send feedback'}
+      showOk={true}
+      okText={'Send'}
+      width={400}
+      onOk={() => {
+        if (feedbackEl.value) {
+          props.sendFeedback(feedbackEl.value);
+        }
+      }}
+    >
+      <textarea
+        ref={el => feedbackEl = el}
+        autoFocus={true}
+        style={style}
+        placeholder="What could we do better, what do you love?"
+      />
+    </PageModalWrapper>
+  );
+};
 
 FeedbackModal.propTypes = {
   sendFeedback: PropTypes.func.isRequired,

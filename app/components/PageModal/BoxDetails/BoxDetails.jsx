@@ -169,10 +169,6 @@ class BoxDetails extends Component {
     }
   }
 
-  componentDidMount() {
-    this.textEl.focus();
-  }
-
   renderDeveloperOptions() {
     const box = this.props.boxes[this.props.activeBox.id];
 
@@ -497,6 +493,7 @@ class BoxDetails extends Component {
             value={this.state.text}
             onChange={this.onTextBoxChange}
             style={styles.textInput}
+            autoFocus={true}
           />
 
           <MarkedDownText
