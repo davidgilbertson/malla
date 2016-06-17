@@ -4,6 +4,7 @@ const {Component, PropTypes} = React;
 import MarkedDownText from '../../MarkedDownText/MarkedDownText.jsx';
 import Icon from '../../Icon/Icon.jsx';
 import PageModalWrapper from '../PageModalWrapper.jsx';
+import LimitedTextArea from '../../LimitedTextArea/LimitedTextArea.jsx';
 
 import {
   ANIMATION_DURATION,
@@ -106,20 +107,12 @@ class BoxDetails extends Component {
     this.setState({id: currentId});
   }
 
-  onTextBoxChange(e) {
-    const {value} = e.target;
-
-    this.setState({text: value});
-
-    if (this.state.textTooLong) {
-      if (value.length <= this.state.lengthLimit) {
-        this.setState({textTooLong: false});
-      }
-    } else {
-      if (this.state.limitLength && value.length > this.state.lengthLimit) {
-        this.setState({textTooLong: true});
-      }
-    }
+  onTextBoxChange({value, tooLong, tooLongMessage}) {
+    this.setState({
+      text: value,
+      textTooLong: tooLong,
+      tooLongMessage: tooLongMessage,
+    });
   }
 
   lockId() {
@@ -191,15 +184,15 @@ class BoxDetails extends Component {
     const styles = {
       developerOptionsWrapper: {
         background: COLORS.OFF_WHITE,
-        padding: '20px 20px 0px',
-        margin: '30px -24px 0',
+        padding: `${DIMENSIONS.SPACE_S}px ${DIMENSIONS.SPACE_S}px 0px`,
+        margin: `${DIMENSIONS.SPACE_S}px -${DIMENSIONS.SPACE_S}px -${DIMENSIONS.SPACE_S}px`,
         boxShadow: 'inset 0 0 3px 0px rgba(0, 0, 0, 0.2)',
         overflowY: 'auto', // lazy, easier than proper responsive
       },
       title: {
         fontSize: 17,
         textAlign: 'center',
-        paddingBottom: 10,
+        paddingBottom: 17,
         fontWeight: 400,
       },
       optionRow: {
@@ -228,6 +221,11 @@ class BoxDetails extends Component {
         opacity: this.state.limitLength ? 1 : 0,
         transition: `opacity ${ANIMATION_DURATION}ms`,
       },
+      lengthLimitWarning: {
+        color: COLORS.ERROR,
+        fontWeight: 700,
+        marginLeft: 20,
+      },
       checkbox: {
         transform: 'scale(1.3333)',
         marginRight: 20,
@@ -245,7 +243,7 @@ class BoxDetails extends Component {
         backgroundColor: disableLockButton ? COLORS.GRAY : COLORS.PRIMARY,
         cursor: disableLockButton ? 'default' : 'pointer',
         color: COLORS.WHITE,
-        padding: 10,
+        padding: 9,
         marginLeft: 10,
       },
       idError: {
@@ -320,6 +318,7 @@ class BoxDetails extends Component {
           />
 
           <span style={styles.lengthLimitDesc}>characters</span>
+          <span style={styles.lengthLimitWarning}>{this.state.tooLongMessage}</span>
         </div>
 
         <div style={styles.optionRow}>
@@ -488,13 +487,14 @@ class BoxDetails extends Component {
         okDisabled={!this.state.isValidOverall || this.state.textTooLong}
       >
         <div style={styles.textWrapper}>
-          <textarea
+          <LimitedTextArea
             ref={el => this.textEl = el}
             value={this.state.text}
             onChange={this.onTextBoxChange}
             style={styles.textInput}
             autoFocus={true}
-          />
+            maxLength={this.state.limitLength ? this.state.lengthLimit : undefined}
+            />
 
           <MarkedDownText
             style={{

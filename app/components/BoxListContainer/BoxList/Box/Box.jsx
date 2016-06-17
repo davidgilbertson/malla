@@ -1,10 +1,11 @@
 import React from 'react';
 const {Component, PropTypes} = React;
-import Radium from 'radium';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 
 import MarkedDownText from '../../../MarkedDownText/MarkedDownText.jsx';
 import DropModal from '../../../DropModal/DropModal.jsx';
+import LimitedTextArea from '../../../LimitedTextArea/LimitedTextArea.jsx';
 import Draggable from './Draggable.jsx';
 
 import {
@@ -38,6 +39,7 @@ const baseStyles = {
     position: 'absolute',
     left: '50%',
     bottom: -15,
+    transition: `bottom ${ANIMATION_DURATION}ms`,
   },
   deleteButton: {
     position: 'absolute',
@@ -71,12 +73,13 @@ const baseStyles = {
 class Box extends Component {
   constructor(props) {
     super(props);
-    this.onTextAreaChange = this.onTextAreaChange.bind(this);
 
-    const {box} = this.props;
+    this.onTextAreaChange = this.onTextAreaChange.bind(this);
+    this.renderLimitChip = this.renderLimitChip.bind(this);
+    this.onTextLimited = this.onTextLimited.bind(this);
 
     this.state = {
-      textTooLong: box.limitLength && box.text.length > box.lengthLimit,
+      textWasLimited: false,
     }
   }
 
@@ -84,23 +87,56 @@ class Box extends Component {
     return id === activeBox.id && activeBox.mode === BOX_MODES.TYPING;
   }
 
-  onTextAreaChange(e) {
-    const text = e.target.value;
-    const html = markdownToHtml(text);
-
-    const {box} = this.props;
-
-    this.setState({
-      textTooLong: box.limitLength && text.length > box.lengthLimit,
-    });
-    // TODO (davidg): this should be shared with the BoxDetails.jsx so I'm not doing it in two places
-    // e.g. RichTextEditor and it outputs {raw, html} onChange
+  onTextAreaChange({value}) {
     this.props.boxActions.update(
       this.props.id,
       {
-        text,
-        html,
+        text: value,
+        html: markdownToHtml(value),
       },
+    );
+  }
+
+  onTextLimited() {
+    // LimitedTextArea has limited text entry, tell the user why
+    this.setState({textWasLimited: true});
+  }
+
+  renderLimitChip() {
+    const limit = this.props.box.lengthLimit;
+
+    const styles = {
+      panel: {
+        position: 'absolute',
+        width: 200,
+        left: '50%',
+        top: 'calc(100% + 10px)',
+        transform: 'translateX(-50%)',
+        height: this.state.textWasLimited ? 30 : 0,
+        background: COLORS.ERROR,
+        overflow: 'hidden',
+        textAlign: 'center',
+        transition: `height ${ANIMATION_DURATION}ms`,
+        ...css.shadow('small'),
+      },
+      body: {
+        display: 'inline-block',
+        paddingTop: 4,
+        fontSize: 16,
+        color: COLORS.WHITE,
+        fontFamily: FONT_FAMILIES.SANS_SERIF,
+      }
+    };
+
+    return (
+      <div
+        style={styles.panel}
+        onClick={() => this.props.showModal(MODALS.EDIT_BOX)}
+      >
+        <span style={styles.body}>
+          {`Limited to ${limit} character${limit === 1 ? '' : 's'}`}
+        </span>
+      </div>
     );
   }
 
@@ -109,32 +145,53 @@ class Box extends Component {
     const isNowInTypingMode = this.isInTypingMode(this.props);
 
     if (wasNotInTypingMode && isNowInTypingMode) {
-      this.textAreaEl.focus();
+      this.textAreaComp.focus();
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state !== nextState) return true;
 
-    const textAreaNotFocused = document.activeElement !== this.textAreaEl;
-    const leavingTypingMode = !this.isInTypingMode(nextProps);
+    const userWasTyping = this.isInTypingMode(this.props);
+    const userIsTyping = this.isInTypingMode(nextProps);
     // don't update the component while the textarea is focused (messes with the cursor)
-    return textAreaNotFocused || leavingTypingMode;
+    if (userWasTyping && userIsTyping) {
+      return false;
+    }
+
+    return (
+      nextProps.id !== this.props.id ||
+      !isEqual(nextProps.box, this.props.box) ||
+      !isEqual(nextProps.activeBox, this.props.activeBox)
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const iAmTyping = document.activeElement === this.textAreaEl;
+    const userWasTyping = this.isInTypingMode(this.props);
+    const userWillBeTyping = this.isInTypingMode(nextProps);
     const thereIsNewText = nextProps.box.text !== this.props.box.text;
 
-    if (thereIsNewText && !iAmTyping) {
-      this.textAreaEl.value = nextProps.box.text;
+    // text updated from another user
+    if (thereIsNewText && !userWasTyping) {
+      this.textAreaComp.setValue(nextProps.box.text);
+    }
+
+    // when entering typing mode, make sure it is set correctly
+    // in the case that another user changed it
+    if (!userWasTyping && userWillBeTyping) {
+      this.textAreaComp.setValue(nextProps.box.text);
+    }
+
+    // hide the 'text is limited' message
+    if (userWasTyping && !userWillBeTyping) {
+      this.setState({textWasLimited: false});
     }
   }
 
   componentDidMount() {
     // a box will mount in typing mode when it's just been added
     if (this.isInTypingMode(this.props)) {
-      this.textAreaEl.focus();
+      this.textAreaComp.focus();
     }
   }
 
@@ -147,13 +204,12 @@ class Box extends Component {
     if (isInTypingMode) {
       styles.draggable.borderWidth = 1;
       styles.draggable.borderStyle = 'solid';
-      styles.draggable.borderColor = this.state.textTooLong ? COLORS.ERROR : COLORS.PRIMARY;
+      styles.draggable.borderColor = COLORS.PRIMARY;
 
       styles.textArea.opacity = 1;
       styles.displayText.pointerEvents = 'none';
     } else {
       styles.displayText.opacity = 1;
-
     }
 
     if (activeBox.id === id) {
@@ -172,6 +228,10 @@ class Box extends Component {
 
       styles.textArea.padding = 4;
       styles.displayText.padding = 4;
+    }
+
+    if (this.state.textWasLimited) {
+      styles.boxActions.bottom = -55;
     }
 
     return (
@@ -206,12 +266,17 @@ class Box extends Component {
             />
           </div>
 
-          <textarea
-            ref={el => this.textAreaEl = el}
+          <LimitedTextArea
+            ref={comp => this.textAreaComp = comp}
             style={{...styles.textBox, ...styles.textArea}}
             defaultValue={box.text}
             onChange={this.onTextAreaChange}
+            maxLength={box.limitLength ? box.lengthLimit : 0}
+            restrictInput={true}
+            onTextLimited={this.onTextLimited}
           />
+
+          {this.renderLimitChip()}
 
           <MarkedDownText
             style={{...styles.textBox, ...styles.displayText}}
@@ -224,14 +289,14 @@ class Box extends Component {
 }
 
 Box.propTypes = {
-  // state
+  // props
   activeBox: PropTypes.object.isRequired,
   box: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
 
-  // actions
+  // methods
   boxActions: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired,
 };
 
-export default Radium(Box);
+export default Box;

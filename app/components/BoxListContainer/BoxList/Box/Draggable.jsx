@@ -237,19 +237,6 @@ class Draggable extends Component {
     if (newProps.height !== this.props.height) this.setState({height: newProps.height});
   }
 
-  shouldComponentUpdate(newProps, nextState) {
-    if (this.state !== nextState) return true;
-
-    return (
-      newProps.left !== this.props.left ||
-      newProps.top !== this.props.top ||
-      newProps.width !== this.props.width ||
-      newProps.height !== this.props.height ||
-      newProps.disableDragging !== this.props.disableDragging ||
-      !isEqual(newProps.style, this.props.style)
-    );
-  }
-
   render() {
     const showHandles = (this.state.isHovered || this.state.isResizing) && !this.props.disableDragging;
     const bringToFront = this.state.isHovered || this.state.isDragging || this.state.isResizing || this.props.disableDragging;
