@@ -1,6 +1,5 @@
 import React from 'react';
 const {Component, PropTypes} = React;
-import isEqual from 'lodash/isEqual';
 
 import {
   css,
