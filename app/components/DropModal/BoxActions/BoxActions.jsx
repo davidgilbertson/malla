@@ -1,6 +1,7 @@
 import React from 'react';
 const {PropTypes} = React;
 
+import DropModalWrapper from '../DropModalWrapper.jsx';
 import Icon from '../../Icon/Icon.jsx';
 import Button from '../../Button/Button.jsx';
 
@@ -13,8 +14,7 @@ import {
 
 const BoxActions = props => {
   const styles = {
-    back: {
-      ...props.styles.back,
+    modal: {
       width: 80,
       padding: '5px 5px 7px',
       display: 'flex',
@@ -46,9 +46,10 @@ const BoxActions = props => {
   };
 
   return (
-    <div style={styles.back}>
-      {props.triangle}
-
+    <DropModalWrapper
+      {...props}
+      modalStyle={styles.modal}
+    >
       <Button
         style={styles.iconButton}
         onClick={maybeDeleteBox}
@@ -71,17 +72,15 @@ const BoxActions = props => {
           size={20}
         />
       </Button>
-    </div>
+    </DropModalWrapper>
   )
 };
 
 BoxActions.propTypes = {
   // props
-  box: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  styles: PropTypes.object.isRequired,
-  triangle: PropTypes.object.isRequired,
-  
+  box: PropTypes.object.isRequired,
+
   // methods
   showModal: PropTypes.func.isRequired,
   boxActions: PropTypes.object.isRequired,

@@ -53,7 +53,7 @@ const currentDropModal = (state = DROP_MODALS.NONE, action) => {
       return action.dropModal;
 
     default :
-      return DROP_MODALS.NONE;
+      return state;
   }
 };
 

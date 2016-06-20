@@ -144,6 +144,12 @@ export function showModal(modal) {
   });
 }
 
+export function hideModal() {
+  store.dispatch({
+    type: ACTIONS.HIDE_MODAL,
+  });
+}
+
 export function showDropModal(dropModal) {
   store.dispatch({
     type: ACTIONS.SHOW_DROP_MODAL,
@@ -151,9 +157,10 @@ export function showDropModal(dropModal) {
   });
 }
 
-export function hideModal() {
+export function hideDropModal() {
   store.dispatch({
-    type: ACTIONS.HIDE_MODAL,
+    type: ACTIONS.SHOW_DROP_MODAL,
+    dropModal: null,
   });
 }
 

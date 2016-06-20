@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 
 import MarkedDownText from '../../../MarkedDownText/MarkedDownText.jsx';
-import DropModal from '../../../DropModal/DropModal.jsx';
+import BoxActions from '../../../DropModal/BoxActions/BoxActions.jsx';
 import LimitedTextArea from '../../../LimitedTextArea/LimitedTextArea.jsx';
 import Draggable from './Draggable.jsx';
 
@@ -33,13 +33,6 @@ const baseStyles = {
     fontFamily: FONT_FAMILIES.SERIF,
     fontSize: 15,
     transition: `border ${ANIMATION_DURATION}ms`,
-  },
-  boxActions: {
-    display: 'none', // made visible when there's an active box
-    position: 'absolute',
-    left: '50%',
-    bottom: -15,
-    transition: `bottom ${ANIMATION_DURATION}ms`,
   },
   deleteButton: {
     position: 'absolute',
@@ -141,6 +134,28 @@ class Box extends Component {
     );
   }
 
+  renderBoxActionsDropModal() {
+    if (this.props.activeBox.id !== this.props.id) return null;
+
+    const styles = {
+      position: 'absolute',
+      left: '50%',
+      bottom: this.state.textWasLimited ? -55 : -15,
+      transition: `bottom ${ANIMATION_DURATION}ms`,
+    };
+
+    return (
+      <div style={styles}>
+        <BoxActions
+          id={this.props.id}
+          box={this.props.box}
+          boxActions={this.props.boxActions}
+          showModal={this.props.showModal}
+        />
+      </div>
+    );
+  }
+
   componentDidUpdate(prevProps) {
     const wasNotInTypingMode = !this.isInTypingMode(prevProps);
     const isNowInTypingMode = this.isInTypingMode(this.props);
@@ -213,10 +228,6 @@ class Box extends Component {
       styles.displayText.opacity = 1;
     }
 
-    if (activeBox.id === id) {
-      styles.boxActions.display = 'block';
-    }
-
     if (box.type === BOX_TYPES.LABEL) {
       styles.draggable = {
         ...styles.draggable,
@@ -229,10 +240,6 @@ class Box extends Component {
 
       styles.textArea.padding = 4;
       styles.displayText.padding = 4;
-    }
-
-    if (this.state.textWasLimited) {
-      styles.boxActions.bottom = -55;
     }
 
     return (
@@ -257,15 +264,7 @@ class Box extends Component {
             showModal(MODALS.EDIT_BOX);
           }}
         >
-          <div style={styles.boxActions}>
-            <DropModal
-              currentDropModal={DROP_MODALS.BOX_ACTIONS}
-              id={id}
-              box={box}
-              boxActions={boxActions}
-              showModal={showModal}
-            />
-          </div>
+          {this.renderBoxActionsDropModal()}
 
           <LimitedTextArea
             ref={comp => this.textAreaComp = comp}

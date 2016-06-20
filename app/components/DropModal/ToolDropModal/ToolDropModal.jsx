@@ -1,9 +1,10 @@
 import React from 'react';
 const {PropTypes} = React;
 
+import DropModalWrapper from '../DropModalWrapper.jsx';
+
 import {
   ELEMENT_IDS,
-  DIMENSIONS,
   DROP_MODALS,
 } from '../../../constants.js';
 
@@ -21,32 +22,19 @@ const ToolDropModal = props => {
     anchorElId = ELEMENT_IDS.LABEL_TOOL;
   }
 
-  const coordinates = props.getCoordinates(anchorElId);
-
-  const styles = {
-    back: {
-      ...props.styles.back,
-      ...coordinates,
-      width: DIMENSIONS.SPACE_L * 4,
-    }
-  };
-
   return (
-    <div style={styles.back}>
-      {props.triangle}
+    <DropModalWrapper
+      {...props}
+      centerOnElementId={anchorElId}
+    >
       {body}
-    </div>
+    </DropModalWrapper>
   )
 };
 
 ToolDropModal.propTypes = {
   // props
   currentDropModal: PropTypes.string.isRequired,
-  styles: PropTypes.object.isRequired,
-  triangle: PropTypes.object,
-
-  // methods
-  getCoordinates: PropTypes.func.isRequired,
 };
 
 export default ToolDropModal;

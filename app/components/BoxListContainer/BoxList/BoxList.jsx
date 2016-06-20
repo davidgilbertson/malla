@@ -20,7 +20,6 @@ class BoxList extends Component {
   }
 
   render() {
-    // TODO (davidg): filter for boxes in this project/screen only
     const {props} = this;
 
     const boxComponents = makeArray(props.boxes)
@@ -28,13 +27,10 @@ class BoxList extends Component {
       .map(box => {
         return (
           <Box
+            {...props}
             key={box._key}
             id={box._key}
             box={box}
-            boxActions={props.boxActions}
-            currentTool={props.currentTool}
-            activeBox={props.activeBox}
-            showModal={props.showModal}
           />
         );
       });
@@ -48,15 +44,11 @@ class BoxList extends Component {
 }
 
 BoxList.propTypes = {
-  // state
-  boxes: PropTypes.object.isRequired,
-  currentTool: PropTypes.string.isRequired,
-  currentScreenKey: PropTypes.string.isRequired,
+  // props
   activeBox: PropTypes.object.isRequired,
-
-  // actions
-  boxActions: PropTypes.object.isRequired,
-  showModal: PropTypes.func.isRequired,
+  boxes: PropTypes.object.isRequired,
+  currentScreenKey: PropTypes.string.isRequired,
+  currentTool: PropTypes.string.isRequired,
 };
 
 export default Radium(BoxList);

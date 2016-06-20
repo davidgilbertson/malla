@@ -1,6 +1,7 @@
 import React from 'react';
 const {PropTypes} = React;
 
+import DropModalWrapper from '../DropModalWrapper.jsx';
 import Button from '../../Button/Button.jsx';
 import Icon from '../../Icon/Icon.jsx';
 
@@ -17,13 +18,9 @@ import {
 } from '../../../utils';
 
 const ScreenSelector = props => {
-  const coordinates = props.getCoordinates(ELEMENT_IDS.SCREEN_SELECTOR_BUTTON);
-
   const styles = {
     back: {
-      ...props.styles.back,
       padding: 0,
-      ...coordinates,
     },
     title: {
       height: DIMENSIONS.SPACE_L,
@@ -83,6 +80,7 @@ const ScreenSelector = props => {
             style={styles.listItemName}
             title={screen.description}
             onClick={() => {
+              props.hideDropModal();
               props.navigateToScreen(screen._key);
             }}
           >
@@ -93,6 +91,7 @@ const ScreenSelector = props => {
             style={styles.listItemGear}
             title="Edit this screen"
             onClick={() => {
+              props.hideDropModal();
               props.navigateToScreen(screen._key);
               props.showModal(MODALS.EDIT_SCREEN);
             }}
@@ -109,9 +108,12 @@ const ScreenSelector = props => {
     });
 
   return (
-    <div style={styles.back}>
-      {props.triangle}
-
+    <DropModalWrapper
+      {...props}
+      modalStyle={styles.back}
+      centerOnElementId={ELEMENT_IDS.SCREEN_SELECTOR_BUTTON}
+      hideOnAnyClick={true}
+    >
       <h2 style={styles.title}>Screens</h2>
 
       {screens}
@@ -124,20 +126,20 @@ const ScreenSelector = props => {
       >
         Add a new screen
       </Button>
-    </div>
+    </DropModalWrapper>
   );
 };
 
 ScreenSelector.propTypes = {
-  // state
-  styles: PropTypes.object,
+  // props
   currentScreenKey: PropTypes.string.isRequired,
   screens: PropTypes.object,
   projects: PropTypes.object,
 
-  // actions
+  // functions
   navigateToScreen: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
+  hideDropModal: PropTypes.func.isRequired,
 };
 
 export default ScreenSelector;

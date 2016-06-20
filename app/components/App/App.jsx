@@ -7,7 +7,7 @@ import {
 } from '../../constants.js';
 import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
 import PageModalConductor from '../PageModal/PageModalConductor.jsx';
-import DropModalConnector from '../DropModal/DropModalConnector.jsx';
+import DropModalConductor from '../DropModal/DropModalConductor.jsx';
 
 const styles = {
   css: {
@@ -127,8 +127,8 @@ const App = (props) => (
 
     {props.children}
 
+    <DropModalConductor />
     <PageModalConductor />
-    <DropModalConnector />
   </StyleRoot>
 );
 
