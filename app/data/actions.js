@@ -18,6 +18,7 @@ import {
 } from '../constants.js';
 
 import {
+  getCurrentProjectAndScreen,
   getUrlForScreenKey,
   makeArray,
 } from '../utils';
@@ -25,8 +26,33 @@ import {
 const onClient = typeof window !== 'undefined';
 
 /*  --  PROJECTS  --  */
+export function addProject(project) {
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.ADDED_PROJECT,
+  });
+
+  const {newScreenKey} = firebaseActions.addProject(project);
+
+  const url = getUrlForScreenKey(store, newScreenKey);
+
+  // update the URL.
+  // routes.js will dispatch navigateToScreen() when the URL changes
+  browserHistory.push(url);
+}
+
 export function updateProject(key, val) {
   firebaseActions.updateProject({key, val});
+}
+
+export function removeProject(key) {
+  tracker.sendEvent({
+    category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
+    action: tracker.EVENTS.ACTIONS.REMOVED_PROJECT,
+  });
+  
+  firebaseActions.removeProject(key);
+  navigateToProject(); // sending no key will go to the first project
 }
 
 /*  --  SCREENS  --  */
@@ -63,12 +89,46 @@ export function removeScreen(key) {
   navigateToScreen(); // sending no key will go to the first screen
 }
 
+export function navigateToProject(key) {
+  let projectKey = key;
+
+  if (!key) {
+    const firstProject = makeArray(store.getState().projects)
+      .find(project => project && !project.deleted);
+
+    if (!firstProject) {
+      console.warn('Looks like there are no projects at all. Going home');
+
+      firebaseActions.updateUser({
+        lastUrl: null,
+      });
+
+      browserHistory.push('/');
+      return;
+    }
+
+    projectKey = firstProject._key;
+  }
+
+  const firstScreenInProject = makeArray(store.getState().screens)
+    .find(screen => screen && screen.projectKey === projectKey && !screen.deleted);
+
+  const url = getUrlForScreenKey(store, firstScreenInProject._key);
+
+  firebaseActions.updateUser({
+    lastUrl: url,
+  });
+
+  browserHistory.push(url);
+}
+
 export function navigateToScreen(key) {
   let keyToSelect = key;
 
   if (!key) {
+    const {currentProject} = getCurrentProjectAndScreen();
     const firstScreen = makeArray(store.getState().screens)
-      .find(screen => screen && !screen.deleted);
+      .find(screen => screen && !screen.deleted && screen.projectKey === currentProject.key);
 
     if (!firstScreen) {
       console.warn('Looks like there are no screens at all. Going home');

@@ -45,15 +45,21 @@ const ScreenHeader = props => {
       flexFlow: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      height: DIMENSIONS.SPACE_L,
+      flex: `0 0 ${DIMENSIONS.SPACE_L}px`,
       backgroundColor: COLORS.OFF_WHITE,
       padding: '0 12px',
       ...css.shadow('small'),
       zIndex: Z_INDEXES.SCREEN_HEADER,
     },
+    projectOrScreenButtons: {
+      maxWidth: '50%',
+      maxHeight: 50, // two lines of text
+      overflow: 'hidden',
+    },
     projectOrScreenButton: {
       whiteSpace: 'nowrap',
       overflow: 'hidden',
+      outline: 0,
     },
     toolButtons: {
       display: 'flex',
@@ -81,9 +87,10 @@ const ScreenHeader = props => {
       },
     },
     apiButton: {
+      height: DIMENSIONS.SPACE_M,
       backgroundColor: COLORS.PRIMARY,
       color: COLORS.WHITE,
-      padding: '8px 12px',
+      padding: '0 12px',
     },
   };
 
@@ -105,7 +112,7 @@ const ScreenHeader = props => {
         backgroundColor: COLORS.ACCENT,
         color: COLORS.WHITE,
         border: `1px solid ${COLORS.ACCENT}`,
-      }
+      };
     }
 
     return (
@@ -130,24 +137,22 @@ const ScreenHeader = props => {
             icon={tool.icon}
           />
         </span>
-        <span style={styles.toolButtonText}>
-          {tool.name}
-        </span>
+
+        <span style={styles.toolButtonText}>{tool.name}</span>
       </button>
     );
   });
 
   return (
     <div style={styles.header}>
-      <div>
+      <div style={styles.projectOrScreenButtons}>
         <Button
+          style={styles.projectOrScreenButton}
           id={ELEMENT_IDS.PROJECT_SELECTOR_BUTTON}
-          onClick={() => {}}
-        >
-          {currentProject.name}
-        </Button>
-
-        <span> / </span>
+          onClick={() => {
+            props.showDropModal(DROP_MODALS.PROJECT_SELECTOR);
+          }}
+        >{currentProject.name} ▼</Button>
 
         <Button
           style={styles.projectOrScreenButton}
@@ -155,9 +160,7 @@ const ScreenHeader = props => {
           onClick={() => {
             props.showDropModal(DROP_MODALS.SCREEN_SELECTOR);
           }}
-        >
-          {currentScreen.name} ▼
-        </Button>
+        >{currentScreen.name} ▼</Button>
       </div>
 
       <div style={styles.toolButtons}>

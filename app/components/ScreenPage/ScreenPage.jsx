@@ -24,22 +24,13 @@ const mapDispatchToProps = () => {
 
         actions.setActiveBox(newBoxId, BOX_MODES.TYPING);
       },
-      setActiveBox: (id, mode) => {
-        actions.setActiveBox(id, mode);
-      },
+      setActiveBox: actions.setActiveBox,
     },
-    showModal: modal => {
-      actions.showModal(modal);
-    },
-    showDropModal: dropModal => {
-      actions.showDropModal(dropModal);
-    },
-    selectTool: tool => {
-      actions.selectTool(tool);
-    },
-    navigateToScreen: key => {
-      actions.navigateToScreen(key);
-    },
+    showModal: actions.showModal,
+    showDropModal: actions.showDropModal,
+    selectTool: actions.selectTool,
+    navigateToScreen: actions.navigateToScreen,
+    navigateToProject: actions.navigateToProject,
   };
 };
 

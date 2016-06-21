@@ -8,6 +8,7 @@ import ExportDataModal from './ExportDataModal/ExportDataModal.jsx';
 import SignInModal from './SignInModal/SignInModal.jsx';
 import FeedbackModal from './FeedbackModal/FeedbackModal.jsx';
 import ScreenDetails from './ScreenDetails/ScreenDetails.jsx';
+import ProjectDetails from './ProjectDetails/ProjectDetails.jsx';
 import BoxDetails from './BoxDetails/BoxDetails.jsx';
 
 import {
@@ -38,6 +39,16 @@ const PageModalConductor = props => {
 
     case MODALS.EDIT_SCREEN :
       ModalBody = ScreenDetails;
+      extraProps.mode = 'edit';
+      break;
+
+    case MODALS.ADD_PROJECT :
+      ModalBody = ProjectDetails;
+      extraProps.mode = 'add';
+      break;
+
+    case MODALS.EDIT_PROJECT :
+      ModalBody = ProjectDetails;
       extraProps.mode = 'edit';
       break;
 

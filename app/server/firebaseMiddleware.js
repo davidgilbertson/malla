@@ -30,7 +30,11 @@ export default function(req, res) {
     .orderByChild(`projectKey`)
     .equalTo(projectId)
     .once('value', boxSnapshot => {
-      const json = getBoxJson(boxSnapshot.val(), format);
+      const json = getBoxJson({
+        boxes: boxSnapshot.val(),
+        format,
+        projectKey: projectId,
+      });
 
       res.header('Access-Control-Allow-Origin', '*');
       res.json(json);

@@ -47,6 +47,7 @@ export const EVENTS = {
     TIME_TO_TYPE_IN_FIRST_BOX: 'Time to type in first box',
     BOUGHT_BOXES: 'Bought boxes',
     ADDED_PROJECT: 'Added project',
+    REMOVED_PROJECT: 'Removed project',
     ADDED_SCREEN: 'Added screen',
     REMOVED_SCREEN: 'Removed screen',
     ADDED_BOX: 'Added box',

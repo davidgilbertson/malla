@@ -81,6 +81,8 @@ export const MODALS = {
   FEEDBACK: 'FEEDBACK',
   ADD_SCREEN: 'ADD_SCREEN',
   EDIT_SCREEN: 'EDIT_SCREEN',
+  ADD_PROJECT: 'ADD_PROJECT',
+  EDIT_PROJECT: 'EDIT_PROJECT',
   EDIT_BOX: 'EDIT_BOX',
 };
 
@@ -100,6 +102,7 @@ export const TOOLS = {
 export const DROP_MODALS = {
   NONE: 'NONE',
   SCREEN_SELECTOR: 'SCREEN_SELECTOR',
+  PROJECT_SELECTOR: 'PROJECT_SELECTOR',
   TEXT: TEXT,
   LABEL: LABEL,
   BOX_ACTIONS: 'BOX_ACTIONS',
@@ -108,6 +111,13 @@ export const DROP_MODALS = {
 export const BOX_TYPES = {
   TEXT: TEXT,
   LABEL: LABEL,
+};
+
+export const ITEM_TYPES = { // the major items in the app/database
+  BOX: 'BOX',
+  SCREEN: 'SCREEN',
+  PROJECT: 'PROJECT',
+  USER: 'USER',
 };
 
 export const GRID_SIZE = 10;
@@ -127,7 +137,7 @@ export const BREAKPOINT_SIZES = {
 };
 
 export const BREAKPOINTS = {
-  PHONE_ONLY: `@media (max-width: ${BREAKPOINT_SIZES.TABLET_PORTRAIT}px)`,
+  PHONE_ONLY: `@media (max-width: ${BREAKPOINT_SIZES.TABLET_PORTRAIT - 1}px)`,
   TABLET_PORTRAIT: `@media (min-width: ${BREAKPOINT_SIZES.TABLET_PORTRAIT}px)`,
   TABLET_LANDSCAPE: `@media (min-width: ${BREAKPOINT_SIZES.TABLET_LANDSCAPE}px)`,
   LAPTOP: `@media (min-width: ${BREAKPOINT_SIZES.LAPTOP}px)`,

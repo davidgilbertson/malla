@@ -74,7 +74,11 @@ class ExportDataModal extends Component {
     const {boxes, currentScreenKey, screens} = this.props;
 
     const currentProjectKey = screens[currentScreenKey].projectKey;
-    const exportData = getBoxJson(boxes, this.state.apiTextFormat);
+    const exportData = getBoxJson({
+      boxes,
+      format: this.state.apiTextFormat,
+      projectKey: currentProjectKey,
+    });
 
     const queryParams = this.state.apiTextFormat !== API_TEXT_FORMATS.HTML
       ? `?format=${this.state.apiTextFormat}`

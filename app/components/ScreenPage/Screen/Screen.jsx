@@ -1,7 +1,6 @@
 import React from 'react';
 const {Component, PropTypes} = React;
 import Radium from 'radium';
-import {browserHistory, Link} from 'react-router';
 import isEqual from 'lodash/isEqual';
 
 import BoxListContainer from '../../BoxListContainer/BoxListContainer.jsx';
@@ -11,13 +10,12 @@ import ScreenHeader from '../ScreenHeader/ScreenHeader.jsx';
 
 import {
   css,
-  snap,
+  getEventDims,
 } from '../../../utils';
 
 import {
   BOX_TYPES,
   BREAKPOINTS,
-  CLICK_LENGTH_MS,
   COLORS,
   DIMENSIONS,
   GRID_SIZE,
@@ -48,6 +46,7 @@ const styles = {
     overflow: 'auto',
     backgroundImage: 'url(/images/grid-dot-gray_20x20.gif)',
     backgroundSize: '10px 10px',
+    backgroundAttachment: 'local',
     cursor: 'crosshair',
     boxShadow: `inset 1px 1px ${COLORS.WHITE}, inset -2px -2px ${COLORS.WHITE}`, // covers dots near the edge
   },
@@ -77,18 +76,14 @@ class Screen extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.sendBox = this.sendBox.bind(this);
 
-    this.dragStartTime = null;
     this.isMoving = false;
     this.startX = 0;
     this.startY = 0;
     this.placeholderStyle = {
       display: 'none',
       border: '1px solid grey',
-      width: 100,
-      height: 100,
-      position: 'fixed',
-      top: 0,
-      left: 0,
+      position: 'absolute',
+      boxShadow: '0 0 0 1px white', // cover the dots 1px off the edge
     };
     this.shortTimer = null;
     this.longTimer = null;
@@ -103,19 +98,18 @@ class Screen extends Component {
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
 
     this.props.boxActions.setActiveBox(null); // deselect all boxes
-
     this.isMoving = true;
-    this.dragStartTime = performance.now();
     e.preventDefault();
 
-    const mouseDims = e.touches ? e.touches[0] : e;
-    this.startX = snap(mouseDims.pageX);
-    this.startY = snap(mouseDims.pageY);
+    const relativeDims = getEventDims(e, {snap: true, relative: true});
+    const pageDims = getEventDims(e, {snap: true, relative: false});
+    this.startX = relativeDims.x;
+    this.startY = relativeDims.y;
+    this.offsetX = pageDims.x - this.startX;
+    this.offsetY = pageDims.y - this.startY;
 
-    const x = snap(mouseDims.pageX);
-    const y = snap(mouseDims.pageY);
-
-    this.placeholderEl.style.transform = `translate(${x}px, ${y}px)`;
+    this.placeholderEl.style.left = `${this.startX}px`;
+    this.placeholderEl.style.top = `${this.startY}px`;
     this.placeholderEl.style.width = '0px';
     this.placeholderEl.style.height = '0px';
     this.placeholderEl.style.display = 'block';
@@ -129,23 +123,27 @@ class Screen extends Component {
   onDragMove(e) {
     if (!this.isMoving) return;
 
-    const mouseDims = e.touches ? e.touches[0] : e;
+    const mouseDims = getEventDims(e, {snap: true, relative: false});
 
-    this.placeholderEl.style.width = `${snap(mouseDims.pageX) - this.startX}px`;
-    this.placeholderEl.style.height = `${snap(mouseDims.pageY) - this.startY}px`;
+    this.placeholderEl.style.width = `${(mouseDims.x - this.offsetX) - this.startX}px`;
+    this.placeholderEl.style.height = `${(mouseDims.y - this.offsetY) - this.startY}px`;
   }
 
   onDragEnd() {
     this.isMoving = false;
 
-    const relativeDims = this.getRelativeDims(this.placeholderEl);
+    const boxDims = {
+      left: parseInt(this.placeholderEl.style.left),
+      top: parseInt(this.placeholderEl.style.top),
+      width: parseInt(this.placeholderEl.style.width),
+      height: parseInt(this.placeholderEl.style.height),
+    };
 
-    const moreThanGridWidth = relativeDims.width >= GRID_SIZE;
-    const moreThanGridHeight = relativeDims.height >= GRID_SIZE;
-    const moreThanAClick = performance.now() - this.dragStartTime > CLICK_LENGTH_MS;
+    const wideEnough = boxDims.width > GRID_SIZE * 2;
+    const highEnough = boxDims.height > GRID_SIZE * 2;
 
-    if (moreThanAClick && (moreThanGridWidth || moreThanGridHeight)) {
-      this.sendBox(relativeDims);
+    if (wideEnough && highEnough) {
+      this.sendBox(boxDims);
     }
 
     this.placeholderEl.style.display = 'none';
@@ -165,19 +163,6 @@ class Screen extends Component {
       ...dims,
       type,
     });
-
-  }
-
-  getRelativeDims(el) {
-    const childDims = el.getBoundingClientRect();
-    const parentDims = el.parentElement.getBoundingClientRect();
-
-    return {
-      top: snap(childDims.top - parentDims.top),
-      left: snap(childDims.left - parentDims.left),
-      width: snap(childDims.width),
-      height: snap(childDims.height),
-    };
   }
 
   componentDidMount() {

@@ -40,21 +40,24 @@ const styles = {
   },
 };
 
-const ScreenDetails = props => {
+const ProjectDetails = props => {
   let nameEl;
   let descriptionEl;
-  const {currentProject} = getCurrentProjectAndScreen();
 
-  const upsertScreen = () => {
+  const project = props.mode === 'add'
+    ? {val: {name: '', description: ''}}
+    : getCurrentProjectAndScreen().currentProject;
+  
+  const upsertProject = () => {
     if (nameEl.value) {
       if (props.mode === 'add') {
-        props.addScreen({
+        props.addProject({
           name: nameEl.value,
           slug: slug(nameEl.value),
           description: descriptionEl.value,
         });
       } else {
-        props.updateScreen(props.currentScreenKey, {
+        props.updateProject(project.key, {
           name: nameEl.value,
           slug: slug(nameEl.value),
           description: descriptionEl.value,
@@ -65,22 +68,33 @@ const ScreenDetails = props => {
     props.hideModal();
   };
 
-  const deleteScreen = () => {
+  const deleteProject = () => {
     let sure = true;
+    let msg = `Are you sure you want to delete '${project.val.name}'?`;
 
-    const boxCount = makeArray(props.boxes)
-      .filter(box => box.type !== BOX_TYPES.LABEL && box.screenKeys[props.currentScreenKey])
+    const screenCount = makeArray(props.screens)
+      .filter(screen => !screen.deleted && screen.projectKey === project.key)
       .length;
 
-    if (boxCount > 0) {
-      const screen = props.screens[props.currentScreenKey];
-      let msg = `Are you sure you want to delete the screen '${screen.name}'?`;
-      msg += `\nThis will also delete the ${boxCount} text item${boxCount === 1 ? '' : 's'} on the screen.`;
+    const boxCount = makeArray(props.boxes)
+      .filter(box => !box.deleted && box.type !== BOX_TYPES.LABEL && box.projectKey === project.key)
+      .length;
+
+    if (screenCount && boxCount) {
+      msg += `\nThis will also delete the ${screenCount} screen${screenCount === 1 ? '' : 's'} `;
+      msg += `and ${boxCount} text item${boxCount === 1 ? '' : 's'} in the project.`;
+    } else if (screenCount > 0) {
+      msg += `\nThis will also delete the ${screenCount} screen${screenCount === 1 ? '' : 's'} in it.`;
+    } else if (boxCount > 0) {
+      msg += `\nThis will also delete the ${boxCount} text item${boxCount === 1 ? '' : 's'} in it.`;
+    }
+
+    if (screenCount || boxCount) {
       sure = window.confirm(msg);
     }
 
     if (sure) {
-      props.removeScreen(props.currentScreenKey);
+      props.removeProject(project.key);
       props.hideModal();
     }
   };
@@ -88,40 +102,36 @@ const ScreenDetails = props => {
   const renderDeleteButton = () => {
     if (props.mode === 'add') return null;
 
-    const screensInProject = makeArray(props.screens)
-      .filter(screen => !screen.deleted && screen.projectKey === currentProject.key);
+    const projects = makeArray(props.projects)
+      .filter(project => !project.deleted);
 
-    if (screensInProject.length <= 1) return null;
+    if (projects.length <= 1) return null;
 
     return (
       <div style={styles.deleteRow}>
         <button
-          onClick={deleteScreen}
+          onClick={deleteProject}
           tabIndex="-1"
         >
-          Delete this screen
+          Delete this project
         </button>
       </div>
     );
   };
 
-  const screen = props.mode === 'add'
-    ? {name: '', description: ''}
-    : props.screens[props.currentScreenKey];
-
   return (
     <PageModalWrapper
       {...props}
-      title={props.mode === 'add' ? 'Add a screen' : 'Edit screen'}
+      title={props.mode === 'add' ? 'Add a project' : 'Edit project'}
       width={DIMENSIONS.SPACE_L * 7}
       showOk={true}
       okText={'Save'}
-      onOk={upsertScreen}
+      onOk={upsertProject}
     >
       <div>
         <input
           ref={el => nameEl = el}
-          defaultValue={screen.name}
+          defaultValue={project.val.name}
           style={styles.nameInput}
           autoFocus={true}
         />
@@ -130,7 +140,7 @@ const ScreenDetails = props => {
       <div>
         <textarea
           ref={el => descriptionEl = el}
-          defaultValue={screen.description}
+          defaultValue={project.val.description}
           style={styles.descInput}
         />
       </div>
@@ -140,17 +150,18 @@ const ScreenDetails = props => {
   );
 };
 
-ScreenDetails.propTypes = {
+ProjectDetails.propTypes = {
   // props
   mode: PropTypes.oneOf(['add', 'edit']),
   currentScreenKey: PropTypes.string,
   screens: PropTypes.object,
+  projects: PropTypes.object,
   boxes: PropTypes.object,
 
   // methods
-  addScreen: PropTypes.func.isRequired,
-  updateScreen: PropTypes.func.isRequired,
-  removeScreen: PropTypes.func.isRequired,
+  addProject: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  removeProject: PropTypes.func.isRequired,
 };
 
-export default ScreenDetails;
+export default ProjectDetails;

@@ -24,21 +24,11 @@ const baseModalStyle = {
   ...css.shadow('small'),
 };
 
-const triangleStyle = {
-  position: 'absolute',
-  top: -18,
-  width: 20,
-  height: 20,
-  transform: 'translateX(-50%)',
-  fontSize: 20,
-  color: COLORS.GRAY_DARK,
-  left: '50%',
-};
-
 class DropModalWrapper extends Component {
   constructor(props) {
     super(props);
     this.onAnyClick = this.onAnyClick.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   onAnyClick(e) {
@@ -48,14 +38,22 @@ class DropModalWrapper extends Component {
     }
   }
 
+  onResize() {
+    this.forceUpdate();
+  }
+
   componentDidMount() {
+    window.addEventListener('resize', this.onResize, false);
+
     if (this.props.hideOnAnyClick) {
-      // 'mousedown' because 'click' would trigger immediately.
+      // 'mousedown' because 'click' would trigger immediately and close the modal when it opens
       window.addEventListener('mousedown', this.onAnyClick, false);
     }
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize, false);
+
     if (this.props.hideOnAnyClick) {
       window.removeEventListener('mousedown', this.onAnyClick, false);
     }
@@ -68,6 +66,17 @@ class DropModalWrapper extends Component {
       ...props.modalStyle,
     };
 
+    const triangleStyle = {
+      position: 'absolute',
+      top: -18,
+      width: 20,
+      height: 20,
+      transform: 'translateX(-50%)',
+      fontSize: 20,
+      color: COLORS.GRAY_DARK,
+      left: '50%',
+    };
+
     if (props.centerOnElementId) {
       const anchorEl = document.getElementById(props.centerOnElementId);
 
@@ -76,7 +85,17 @@ class DropModalWrapper extends Component {
       } else {
         const anchorDims = anchorEl.getBoundingClientRect();
 
-        modalStyle.left = Math.max(0, anchorDims.left + anchorDims.width / 2);
+        const minimumAllowedLeft = modalStyle.width / 2 + 10; // half the width plus a little gap off the side of the screen
+        const preliminaryLeft = anchorDims.left + anchorDims.width / 2;
+        let shiftRight = 0;
+
+        if (preliminaryLeft < minimumAllowedLeft) {
+          // if we need to shift the drop down right, adjust the triangle left so it stays aligned to the reference element
+          shiftRight = minimumAllowedLeft - preliminaryLeft;
+          triangleStyle.left = `${50 - (shiftRight / modalStyle.width) * 100}%`;
+        }
+
+        modalStyle.left = Math.max(minimumAllowedLeft, preliminaryLeft);
         modalStyle.top = anchorDims.top + anchorDims.height + 13;
       }
     }

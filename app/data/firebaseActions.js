@@ -204,8 +204,66 @@ export function signOut() {
 
 /*  --  PROJECTS  --  */
 
+export function addProject(project) {
+  const userKey = firebaseApp.auth().currentUser.uid;
+  const newProjectKey = db.child('data/projects').push().key;
+  const newScreenKey = db.child('data/screens').push().key;
+
+  project.slug = slug(project.name);
+  project.screenKeys = {
+    [newScreenKey]: true,
+  };
+
+  const newScreen = {
+    name: 'Main screen',
+    slug: 'main-screen',
+    description: '',
+    projectKey: newProjectKey,
+  };
+
+  const newData = {
+    [`users/${userKey}/projectKeys/${newProjectKey}`]: true,
+    [`users/${userKey}/screenKeys/${newScreenKey}`]: true,
+    [`data/projects/${newProjectKey}`]: project,
+    [`data/screens/${newScreenKey}`]: newScreen,
+  };
+
+  db.update(newData);
+
+  return {newScreenKey};
+}
+
 export function updateProject({key, val}) {
   db.child('data/projects').child(key).update(val);
+}
+
+export function removeProject(projectKey) {
+  const deleteDate = new Date().toISOString();
+
+  db.child('data/projects').child(projectKey).once('value', projectSnapshot => {
+    const project = projectSnapshot.val();
+
+    if (!project) return console.warn(`No project with projectKey '${projectKey}' exists`);
+
+    const updateData = {
+      [`data/projects/${projectKey}/deleted`]: deleteDate,
+    };
+
+    if (project.screenKeys) {
+      Object.keys(project.screenKeys).forEach(screenKey => {
+        updateData[`data/screens/${screenKey}/deleted`] = deleteDate;
+      });
+    }
+
+    // When the feature of box linking is in, deleting a project should not delete the boxes on it.
+    if (project.boxKeys) {
+      Object.keys(project.boxKeys).forEach(boxKey => {
+        updateData[`data/boxes/${boxKey}/deleted`] = deleteDate;
+      });
+    }
+
+    db.update(updateData);
+  });
 }
 
 

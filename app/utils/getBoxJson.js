@@ -7,9 +7,9 @@ import {
   makeArray,
 } from '../utils';
 
-export function getBoxJson(boxList, format) {
-  return makeArray(boxList)
-    .filter(box => (!!box && !box.deleted && box.type !== BOX_TYPES.LABEL))
+export function getBoxJson({boxes, format, projectKey}) {
+  return makeArray(boxes)
+    .filter(box => (!!box && !box.deleted && box.type !== BOX_TYPES.LABEL && box.projectKey === projectKey))
     .reduce((result, box) => {
       let value;
 

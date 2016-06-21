@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 
 import {
   DROP_MODALS,
+  ITEM_TYPES,
 } from '../../constants.js';
 import * as actions from '../../data/actions.js';
 
 import ToolDropModal from './ToolDropModal/ToolDropModal.jsx';
-import ScreenSelector from './ScreenSelector/ScreenSelector.jsx';
+import ScreenOrProjectSelector from './ScreenOrProjectSelector/ScreenOrProjectSelector.jsx';
 import BoxActions from './BoxActions/BoxActions.jsx';
 
 const DropModalConductor = props => {
@@ -17,8 +18,11 @@ const DropModalConductor = props => {
     case DROP_MODALS.LABEL:
       return <ToolDropModal {...props}/>;
 
+    case DROP_MODALS.PROJECT_SELECTOR:
+      return <ScreenOrProjectSelector {...props} itemType={ITEM_TYPES.PROJECT}/>;
+    
     case DROP_MODALS.SCREEN_SELECTOR:
-      return <ScreenSelector {...props}/>;
+      return <ScreenOrProjectSelector {...props} itemType={ITEM_TYPES.SCREEN}/>;
 
     case DROP_MODALS.BOX_ACTIONS:
       return <BoxActions {...props}/>;
