@@ -24,16 +24,14 @@ class BoxList extends Component {
 
     const boxComponents = makeArray(props.boxes)
       .filter(box => box && !box.deleted && box.screenKeys[props.currentScreenKey])
-      .map(box => {
-        return (
-          <Box
-            {...props}
-            key={box._key}
-            id={box._key}
-            box={box}
-          />
-        );
-      });
+      .map(box => (
+        <Box
+          {...props}
+          key={box._key}
+          id={box._key}
+          box={box}
+        />
+      ));
 
     return (
       <div>

@@ -37,10 +37,10 @@ const baseStyles = {
     alignItems: 'center',
     color: COLORS.WHITE,
     height: DIMENSIONS.SPACE_L,
-    padding: `0 8px`,
+    padding: '0 8px',
     [BREAKPOINTS.TABLET_LANDSCAPE]: {
       padding: `0 ${DIMENSIONS.SPACE_M}px`,
-    }
+    },
   },
   title: {
     fontSize: 35,
@@ -233,7 +233,7 @@ class Header extends React.Component {
           actionItemElements.push(actionItems.showHelp);
         }
         actionItemElements.push(actionItems.signOutButton);
-        actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height}/>);
+        actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height} />);
 
         actionItemElements.push(actionItems.feedback);
       }

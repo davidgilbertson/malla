@@ -15,7 +15,7 @@ const FeedbackModal = props => {
     <PageModalWrapper
       {...props}
       title={'Send feedback'}
-      showOk={true}
+      showOk
       okText={'Send'}
       width={400}
       onOk={() => {
@@ -26,7 +26,7 @@ const FeedbackModal = props => {
     >
       <textarea
         ref={el => feedbackEl = el}
-        autoFocus={true}
+        autoFocus
         style={style}
         placeholder="What could we do better, what do you love?"
       />

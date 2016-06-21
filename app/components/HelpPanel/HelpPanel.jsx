@@ -123,19 +123,13 @@ HelpPanel.propTypes = {
   updateUser: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-  };
-};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-const mapDispatchToProps = () => {
-  return {
-    updateUser: newProps => {
-      actions.updateUser(newProps);
-    },
-  };
-};
+const mapDispatchToProps = () => ({
+  updateUser: actions.updateUser,
+});
 
 HelpPanel = Radium(HelpPanel);
 HelpPanel = connect(mapStateToProps, mapDispatchToProps)(HelpPanel);

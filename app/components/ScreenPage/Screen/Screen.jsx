@@ -38,7 +38,7 @@ const styles = {
       left: DIMENSIONS.SPACE_M,
       right: DIMENSIONS.SPACE_M,
       ...css.shadow('large'),
-    }
+    },
   },
   canvas: {
     flex: '0 1 100%',
@@ -91,7 +91,35 @@ class Screen extends Component {
     this.state = {
       waitedABit: false, // waiting for the store to load
       waitedALot: false, // waiting for the store to load some more
-    }
+    };
+  }
+
+  componentDidMount() {
+    // give the store time to set the user status before rendering the login prompt
+    this.shortTimer = setTimeout(() => {
+      this.setState({waitedABit: true});
+    }, 500);
+
+    this.longTimer = setTimeout(() => {
+      this.setState({waitedALot: true});
+    }, 5000);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState !== this.state) return true;
+
+    return (
+      !isEqual(nextProps.user, this.props.user) ||
+      !isEqual(nextProps.currentTool, this.props.currentTool) ||
+      !isEqual(nextProps.currentScreenKey, this.props.currentScreenKey) ||
+      !isEqual(nextProps.screens, this.props.screens) ||
+      !isEqual(nextProps.projects, this.props.projects)
+    );
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.shortTimer);
+    clearTimeout(this.longTimer);
   }
 
   onDragStart(e) {
@@ -133,10 +161,10 @@ class Screen extends Component {
     this.isMoving = false;
 
     const boxDims = {
-      left: parseInt(this.placeholderEl.style.left),
-      top: parseInt(this.placeholderEl.style.top),
-      width: parseInt(this.placeholderEl.style.width),
-      height: parseInt(this.placeholderEl.style.height),
+      left: parseInt(this.placeholderEl.style.left, 10),
+      top: parseInt(this.placeholderEl.style.top, 10),
+      width: parseInt(this.placeholderEl.style.width, 10),
+      height: parseInt(this.placeholderEl.style.height, 10),
     };
 
     const wideEnough = boxDims.width > GRID_SIZE * 2;
@@ -163,34 +191,6 @@ class Screen extends Component {
       ...dims,
       type,
     });
-  }
-
-  componentDidMount() {
-    // give the store time to set the user status before rendering the login prompt
-    this.shortTimer = setTimeout(() => {
-      this.setState({waitedABit: true});
-    }, 500);
-
-    this.longTimer = setTimeout(() => {
-      this.setState({waitedALot: true});
-    }, 5000);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.shortTimer);
-    clearTimeout(this.longTimer);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextState !== this.state) return true;
-
-    return (
-      !isEqual(nextProps.user, this.props.user) ||
-      !isEqual(nextProps.currentTool, this.props.currentTool) ||
-      !isEqual(nextProps.currentScreenKey, this.props.currentScreenKey) ||
-      !isEqual(nextProps.screens, this.props.screens) ||
-      !isEqual(nextProps.projects, this.props.projects)
-    );
   }
 
   render() {
@@ -245,15 +245,15 @@ class Screen extends Component {
 
     return (
       <div style={styles.workspace}>
-        <ScreenHeader {...this.props}/>
-        
+        <ScreenHeader {...this.props} />
+
         <div
           style={styles.canvas}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
         >
           <BoxListContainer />
-  
+
           <div
             ref={el => this.placeholderEl = el}
             style={this.placeholderStyle}

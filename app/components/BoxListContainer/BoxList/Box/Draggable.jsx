@@ -35,9 +35,9 @@ class Draggable extends Component {
     this.resizing = this.resizing.bind(this);
     this.resizeEnd = this.resizeEnd.bind(this);
 
-    this.startDrag = this.startDrag.bind(this);
-    this.onDrag = this.onDrag.bind(this);
-    this.endDrag = this.endDrag.bind(this);
+    this.dragStart = this.dragStart.bind(this);
+    this.dragMove = this.dragMove.bind(this);
+    this.dragEnd = this.dragEnd.bind(this);
 
     this.state = {
       isDragging: false,
@@ -54,6 +54,15 @@ class Draggable extends Component {
     this.didMove = false;
   }
 
+  componentWillReceiveProps(newProps) {
+    // if something else updates the position, update the box
+    // setStates will be batched
+    if (newProps.left !== this.props.left) this.setState({left: newProps.left});
+    if (newProps.top !== this.props.top) this.setState({top: newProps.top});
+    if (newProps.width !== this.props.width) this.setState({width: newProps.width});
+    if (newProps.height !== this.props.height) this.setState({height: newProps.height});
+  }
+
   onMouseOver() {
     this.setState({isHovered: true});
   }
@@ -63,8 +72,56 @@ class Draggable extends Component {
     this.setState({isHovered: false});
   }
 
-  resizeTop(e) {
-    this.resizeStart(e, RESIZE.TOP);
+  dragStart(e) {
+    this.props.onMouseDown(e);
+    if (this.props.disableDragging) return;
+    this.setState({isDragging: true});
+
+    const {x, y} = getEventDims(e, {snap: true});
+
+    this.startX = x;
+    this.startY = y;
+
+    this.offsetX = e.currentTarget.offsetLeft;
+    this.offsetY = e.currentTarget.offsetTop;
+
+    window.addEventListener('mousemove', this.dragMove);
+    window.addEventListener('mouseup', this.dragEnd);
+  }
+
+  dragMove(e) {
+    e.preventDefault();
+    const {x, y} = getEventDims(e, {snap: true});
+
+    const hasMovedXEnough = Math.abs(x - this.state.left) >= GRID_SIZE;
+    const hasMovedYEnough = Math.abs(y - this.state.top) >= GRID_SIZE;
+
+    if (!hasMovedXEnough && !hasMovedYEnough) return;
+
+    this.didMove = true;
+
+    const left = Math.max(0, x - this.startX + this.offsetX);
+    const top = Math.max(0, y - this.startY + this.offsetY);
+
+    this.setState({left, top});
+  }
+
+  dragEnd() {
+    this.setState({isDragging: false});
+
+    if (this.didMove) {
+      this.didMove = false;
+
+      this.props.onUpdate({
+        left: this.state.left,
+        top: this.state.top,
+      });
+    } else {
+      this.props.onClick();
+    }
+
+    window.removeEventListener('mousemove', this.dragMove);
+    window.removeEventListener('mouseup', this.dragEnd);
   }
 
   resizeBottom(e) {
@@ -100,7 +157,7 @@ class Draggable extends Component {
   resizing(e) {
     e.preventDefault();
     const {x, y} = getEventDims(e, {snap: true});
-    let newDims = {};
+    const newDims = {};
 
     const MIN_SIZE = GRID_SIZE * 2;
 
@@ -175,70 +232,21 @@ class Draggable extends Component {
     window.removeEventListener('mouseup', this.resizeEnd);
   }
 
-  startDrag(e) {
-    this.props.onMouseDown(e);
-    if (this.props.disableDragging) return;
-    this.setState({isDragging: true});
-
-    const {x, y} = getEventDims(e, {snap: true});
-
-    this.startX = x;
-    this.startY = y;
-
-    this.offsetX = e.currentTarget.offsetLeft;
-    this.offsetY = e.currentTarget.offsetTop;
-
-    window.addEventListener('mousemove', this.onDrag);
-    window.addEventListener('mouseup', this.endDrag);
-  }
-
-  onDrag(e) {
-    e.preventDefault();
-    const {x, y} = getEventDims(e, {snap: true});
-
-    const hasMovedXEnough = Math.abs(x - this.state.left) >= GRID_SIZE;
-    const hasMovedYEnough = Math.abs(y - this.state.top) >= GRID_SIZE;
-    
-    if (!hasMovedXEnough && !hasMovedYEnough) return;
-
-    this.didMove = true;
-
-    const left = Math.max(0, x - this.startX + this.offsetX);
-    const top = Math.max(0, y - this.startY + this.offsetY);
-
-    this.setState({left, top});
-  }
-
-  endDrag() {
-    this.setState({isDragging: false});
-
-    if (this.didMove) {
-      this.didMove = false;
-
-      this.props.onUpdate({
-        left: this.state.left,
-        top: this.state.top,
-      });
-    } else {
-      this.props.onClick();
-    }
-
-    window.removeEventListener('mousemove', this.onDrag);
-    window.removeEventListener('mouseup', this.endDrag);
-  }
-
-  componentWillReceiveProps(newProps) {
-    // if something else updates the position, update the box
-    // setStates will be batched
-    if (newProps.left !== this.props.left) this.setState({left: newProps.left});
-    if (newProps.top !== this.props.top) this.setState({top: newProps.top});
-    if (newProps.width !== this.props.width) this.setState({width: newProps.width});
-    if (newProps.height !== this.props.height) this.setState({height: newProps.height});
+  resizeTop(e) {
+    this.resizeStart(e, RESIZE.TOP);
   }
 
   render() {
     const showHandles = (this.state.isHovered || this.state.isResizing) && !this.props.disableDragging;
     const bringToFront = this.state.isHovered || this.state.isDragging || this.state.isResizing || this.props.disableDragging;
+
+    let draggableZIndex = null;
+
+    if (this.props.disableDragging) {
+      draggableZIndex = Z_INDEXES.MOVING_BOX + 1;
+    } else if (bringToFront) {
+      draggableZIndex = Z_INDEXES.MOVING_BOX;
+    }
 
     const styles = {
       draggable: {
@@ -248,7 +256,7 @@ class Draggable extends Component {
         width: this.state.width,
         height: this.state.height,
         cursor: 'pointer',
-        zIndex: this.props.disableDragging ? Z_INDEXES.MOVING_BOX + 1 : bringToFront ? Z_INDEXES.MOVING_BOX : null,
+        zIndex: draggableZIndex,
       },
       handle: {
         position: 'absolute',
@@ -258,9 +266,9 @@ class Draggable extends Component {
         transform: 'translate(-50%, -50%)',
         borderRadius: '50%',
         ...css.shadow('medium'),
-        opacity: showHandles ? .8 : 0,
+        opacity: showHandles ? 0.8 : 0,
         pointerEvents: showHandles ? null : 'none',
-        transition: showHandles ? `opacity 700ms 300ms` : `opacity 400ms`,
+        transition: showHandles ? 'opacity 700ms 300ms' : 'opacity 400ms',
         zIndex: Z_INDEXES.MOVING_BOX + 1, // always above so as they fade away...
       },
       handleTop: {
@@ -288,7 +296,7 @@ class Draggable extends Component {
     return (
       <div
         style={{...styles.draggable, ...this.props.style}}
-        onMouseDown={this.startDrag}
+        onMouseDown={this.dragStart}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         onDoubleClick={this.props.onDoubleClick}
@@ -323,6 +331,10 @@ Draggable.propTypes = {
   height: PropTypes.number.isRequired,
   disableDragging: PropTypes.bool.isRequired,
   style: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.array,
+  ]).isRequired,
 
   // methods
   onUpdate: PropTypes.func.isRequired,

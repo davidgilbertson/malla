@@ -53,7 +53,7 @@ class BoxDetails extends Component {
       idIsValidFormat: true,
       isValidOverall: true,
       showFormatted: false,
-      textTooLong: textTooLong,
+      textTooLong,
       text: box.text,
       id: box.label,
       limitLength: box.limitLength || false,
@@ -65,7 +65,6 @@ class BoxDetails extends Component {
 
   onIdChange(e) {
     const currentId = e.target.value;
-    let idIsAvailable;
     let idIsNotEmpty = true;
     let idIsValidFormat = true;
 
@@ -84,7 +83,7 @@ class BoxDetails extends Component {
         return (boxIsInCurrentProject && boxHasSameLabelAsInput && boxIsNotTheBoxBeingEdited);
       });
 
-    idIsAvailable = !boxesWithSameId.length;
+    const idIsAvailable = !boxesWithSameId.length;
 
     if (this.state.idIsAvailable !== idIsAvailable) {
       this.setState({idIsAvailable});
@@ -111,7 +110,7 @@ class BoxDetails extends Component {
     this.setState({
       text: value,
       textTooLong: tooLong,
-      tooLongMessage: tooLongMessage,
+      tooLongMessage,
     });
   }
 
@@ -257,7 +256,7 @@ class BoxDetails extends Component {
 
     const toggleLimitLength = () => {
       const newProps = {
-        limitLength: !this.state.limitLength
+        limitLength: !this.state.limitLength,
       };
 
       // if turning the limit on and there's no value yet,
@@ -291,7 +290,7 @@ class BoxDetails extends Component {
     };
 
     const togglePlainTextOnly = () => {
-      this.setState({plainTextOnly: !this.state.plainTextOnly})
+      this.setState({plainTextOnly: !this.state.plainTextOnly});
     };
 
     return (
@@ -442,7 +441,7 @@ class BoxDetails extends Component {
       console.warn('The edit box modal is trying to show but there is no active box');
       return null;
     }
-    
+
     const box = this.props.boxes[this.props.activeBox.id];
 
     if (!box) {
@@ -486,7 +485,7 @@ class BoxDetails extends Component {
         {...this.props}
         title={'Edit text item'}
         width={DIMENSIONS.SPACE_L * 11}
-        showOk={true}
+        showOk
         okText={'Save'}
         onOk={this.updateBox}
         okDisabled={!this.state.isValidOverall || this.state.textTooLong}
@@ -497,9 +496,9 @@ class BoxDetails extends Component {
             value={this.state.text}
             onChange={this.onTextBoxChange}
             style={styles.textInput}
-            autoFocus={true}
+            autoFocus
             maxLength={this.state.limitLength ? this.state.lengthLimit : undefined}
-            />
+          />
 
           <MarkedDownText
             style={{

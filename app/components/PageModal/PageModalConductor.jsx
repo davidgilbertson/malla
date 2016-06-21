@@ -17,7 +17,7 @@ import {
 
 const PageModalConductor = props => {
   let ModalBody;
-  let extraProps = {};
+  const extraProps = {};
 
   switch (props.currentModal) {
     case MODALS.EXPORT_DATA :

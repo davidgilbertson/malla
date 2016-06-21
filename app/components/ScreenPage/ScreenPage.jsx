@@ -6,32 +6,28 @@ import {
   BOX_MODES,
 } from '../../constants.js';
 
-const mapStateToProps = state  => {
-  return {
-    user: state.user,
-    currentTool: state.currentTool,
-    currentScreenKey: state.currentScreenKey,
-    screens: state.screens,
-    projects: state.projects,
-  };
-};
+const mapStateToProps = state => ({
+  user: state.user,
+  currentTool: state.currentTool,
+  currentScreenKey: state.currentScreenKey,
+  screens: state.screens,
+  projects: state.projects,
+});
 
-const mapDispatchToProps = () => {
-  return {
-    boxActions: {
-      add: box => {
-        const newBoxId = actions.addBox(box);
+const mapDispatchToProps = () => ({
+  boxActions: {
+    add: box => {
+      const newBoxId = actions.addBox(box);
 
-        actions.setActiveBox(newBoxId, BOX_MODES.TYPING);
-      },
-      setActiveBox: actions.setActiveBox,
+      actions.setActiveBox(newBoxId, BOX_MODES.TYPING);
     },
-    showModal: actions.showModal,
-    showDropModal: actions.showDropModal,
-    selectTool: actions.selectTool,
-    navigateToScreen: actions.navigateToScreen,
-    navigateToProject: actions.navigateToProject,
-  };
-};
+    setActiveBox: actions.setActiveBox,
+  },
+  showModal: actions.showModal,
+  showDropModal: actions.showDropModal,
+  selectTool: actions.selectTool,
+  navigateToScreen: actions.navigateToScreen,
+  navigateToProject: actions.navigateToProject,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Screen);

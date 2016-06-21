@@ -4,18 +4,17 @@ const {Component, PropTypes} = React;
 class LimitedTextArea extends Component {
   constructor(props) {
     super(props);
-    
+
     this.focus = this.focus.bind(this);
     this.setValue = this.setValue.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-  
-  focus() {
-    this.textAreaEl.focus();
-  }
-  
-  setValue(value) {
-    this.textAreaEl.value = value;
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.maxLength !== this.props.maxLength) {
+      // re-trigger the messages if the max-length changes
+      this.onChange();
+    }
   }
 
   onChange() {
@@ -25,7 +24,7 @@ class LimitedTextArea extends Component {
       tooLong: false,
       tooLongMessage: '',
     };
-    
+
     if (this.props.restrictInput) {
       // don't use the native maxLength attribute because we want to announce when we limit it
       if (this.props.maxLength && value.length > this.props.maxLength) {
@@ -38,21 +37,22 @@ class LimitedTextArea extends Component {
     } else {
       // for boxes that aren't restricted
       const lengthDelta = value.length - this.props.maxLength;
-  
+
       if (this.props.maxLength && lengthDelta > 0) {
         onChangePayload.tooLong = true;
         onChangePayload.tooLongMessage = `Too long by ${lengthDelta} character${lengthDelta === 1 ? '' : 's'}`;
       }
     }
-    
+
     this.props.onChange(onChangePayload);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.maxLength !== this.props.maxLength) {
-      // re-trigger the messages if the max-length changes
-      this.onChange();
-    }
+  setValue(value) {
+    this.textAreaEl.value = value;
+  }
+
+  focus() {
+    this.textAreaEl.focus();
   }
 
   render() {

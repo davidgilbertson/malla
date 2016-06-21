@@ -11,7 +11,7 @@ import {
 
 import {
   css,
-} from '../../utils'
+} from '../../utils';
 
 const Panel = props => {
   const styles = {
@@ -76,25 +76,23 @@ const Panel = props => {
 
   const actions = props.showOk
     ? (
-      <div style={styles.actions}>
-        <Button
-          style={styles.okButton}
-          onClick={onOk}
-          disabled={props.okDisabled}
-        >
-          {props.okText}
-        </Button>
-      </div>
+    <div style={styles.actions}>
+      <Button
+        style={styles.okButton}
+        onClick={onOk}
+        disabled={props.okDisabled}
+      >
+        {props.okText}
+      </Button>
+    </div>
     ) : null;
 
   const closeButton = props.showClose
     ? (
-      <Button
-        style={styles.close}
-        onClick={props.hideModal}
-      >
-        Close
-      </Button>
+    <Button
+      style={styles.close}
+      onClick={props.hideModal}
+    >Close</Button>
     ) : null;
 
   return (
@@ -145,7 +143,7 @@ Panel.defaultProps = {
   okText: 'OK',
   okDisabled: false,
   width: 400,
-  onOk: () => {}
+  onOk: () => {},
 };
 
 export default Radium(Panel);

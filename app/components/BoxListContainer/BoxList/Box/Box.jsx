@@ -18,7 +18,6 @@ import {
   BOX_MODES,
   BOX_TYPES,
   COLORS,
-  DROP_MODALS,
   FONT_FAMILIES,
   MODALS,
   TEXT_PADDING,
@@ -74,11 +73,67 @@ class Box extends Component {
 
     this.state = {
       textWasLimited: false,
+    };
+  }
+
+  componentDidMount() {
+    // a box will mount in typing mode when it's just been added
+    if (this.isInTypingMode(this.props)) {
+      this.textAreaComp.focus();
     }
   }
 
-  isInTypingMode({activeBox, id}) {
-    return id === activeBox.id && activeBox.mode === BOX_MODES.TYPING;
+  componentWillReceiveProps(nextProps) {
+    const userWasTyping = this.isInTypingMode(this.props);
+    const userWillBeTyping = this.isInTypingMode(nextProps);
+    const thereIsNewText = nextProps.box.text !== this.props.box.text;
+
+    // text updated from another user
+    if (thereIsNewText && !userWasTyping) {
+      this.textAreaComp.setValue(nextProps.box.text);
+    }
+
+    // when entering typing mode, make sure it is set correctly
+    // in the case that another user changed it
+    if (!userWasTyping && userWillBeTyping) {
+      this.textAreaComp.setValue(nextProps.box.text);
+    }
+
+    // hide the 'text is limited' message
+    if (userWasTyping && !userWillBeTyping) {
+      this.setState({textWasLimited: false});
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state !== nextState) return true;
+
+    const userWasTyping = this.isInTypingMode(this.props);
+    const userIsTyping = this.isInTypingMode(nextProps);
+    // don't update the component while the textarea is focused (messes with the cursor)
+    if (userWasTyping && userIsTyping) {
+      return false;
+    }
+
+    return (
+      nextProps.id !== this.props.id ||
+      !isEqual(nextProps.box, this.props.box) ||
+      !isEqual(nextProps.activeBox, this.props.activeBox)
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    const wasNotInTypingMode = !this.isInTypingMode(prevProps);
+    const isNowInTypingMode = this.isInTypingMode(this.props);
+
+    if (wasNotInTypingMode && isNowInTypingMode) {
+      this.textAreaComp.focus();
+    }
+  }
+
+  onTextLimited() {
+    // LimitedTextArea has limited text entry, tell the user why
+    this.setState({textWasLimited: true});
   }
 
   onTextAreaChange({value}) {
@@ -91,9 +146,30 @@ class Box extends Component {
     );
   }
 
-  onTextLimited() {
-    // LimitedTextArea has limited text entry, tell the user why
-    this.setState({textWasLimited: true});
+  isInTypingMode({activeBox, id}) {
+    return id === activeBox.id && activeBox.mode === BOX_MODES.TYPING;
+  }
+
+  renderBoxActionsDropModal() {
+    if (this.props.activeBox.id !== this.props.id) return null;
+
+    const styles = {
+      position: 'absolute',
+      left: '50%',
+      bottom: this.state.textWasLimited ? -55 : -15,
+      transition: `bottom ${ANIMATION_DURATION}ms`,
+    };
+
+    return (
+      <div style={styles}>
+        <BoxActions
+          id={this.props.id}
+          box={this.props.box}
+          boxActions={this.props.boxActions}
+          showModal={this.props.showModal}
+        />
+      </div>
+    );
   }
 
   renderLimitChip() {
@@ -119,7 +195,7 @@ class Box extends Component {
         fontSize: 16,
         color: COLORS.WHITE,
         fontFamily: FONT_FAMILIES.SANS_SERIF,
-      }
+      },
     };
 
     return (
@@ -132,83 +208,6 @@ class Box extends Component {
         </span>
       </div>
     );
-  }
-
-  renderBoxActionsDropModal() {
-    if (this.props.activeBox.id !== this.props.id) return null;
-
-    const styles = {
-      position: 'absolute',
-      left: '50%',
-      bottom: this.state.textWasLimited ? -55 : -15,
-      transition: `bottom ${ANIMATION_DURATION}ms`,
-    };
-
-    return (
-      <div style={styles}>
-        <BoxActions
-          id={this.props.id}
-          box={this.props.box}
-          boxActions={this.props.boxActions}
-          showModal={this.props.showModal}
-        />
-      </div>
-    );
-  }
-
-  componentDidUpdate(prevProps) {
-    const wasNotInTypingMode = !this.isInTypingMode(prevProps);
-    const isNowInTypingMode = this.isInTypingMode(this.props);
-
-    if (wasNotInTypingMode && isNowInTypingMode) {
-      this.textAreaComp.focus();
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state !== nextState) return true;
-
-    const userWasTyping = this.isInTypingMode(this.props);
-    const userIsTyping = this.isInTypingMode(nextProps);
-    // don't update the component while the textarea is focused (messes with the cursor)
-    if (userWasTyping && userIsTyping) {
-      return false;
-    }
-
-    return (
-      nextProps.id !== this.props.id ||
-      !isEqual(nextProps.box, this.props.box) ||
-      !isEqual(nextProps.activeBox, this.props.activeBox)
-    );
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const userWasTyping = this.isInTypingMode(this.props);
-    const userWillBeTyping = this.isInTypingMode(nextProps);
-    const thereIsNewText = nextProps.box.text !== this.props.box.text;
-
-    // text updated from another user
-    if (thereIsNewText && !userWasTyping) {
-      this.textAreaComp.setValue(nextProps.box.text);
-    }
-
-    // when entering typing mode, make sure it is set correctly
-    // in the case that another user changed it
-    if (!userWasTyping && userWillBeTyping) {
-      this.textAreaComp.setValue(nextProps.box.text);
-    }
-
-    // hide the 'text is limited' message
-    if (userWasTyping && !userWillBeTyping) {
-      this.setState({textWasLimited: false});
-    }
-  }
-
-  componentDidMount() {
-    // a box will mount in typing mode when it's just been added
-    if (this.isInTypingMode(this.props)) {
-      this.textAreaComp.focus();
-    }
   }
 
   render() {
@@ -243,46 +242,46 @@ class Box extends Component {
     }
 
     return (
-        <Draggable
-          style={styles.draggable}
-          left={box.left}
-          top={box.top}
-          width={box.width}
-          height={box.height}
-          disableDragging={isInTypingMode}
-          onUpdate={newState => boxActions.update(id, newState)}
-          onMouseDown={e => {
-            if (e.currentTarget.contains(e.target)) return; // don't reset when clicking on tools
-            boxActions.setActiveBox(null);
-          }}
-          onClick={() => boxActions.setActiveBox(id, BOX_MODES.TYPING)}
-          onDoubleClick={() => {
-            if (!activeBox.id) {
-              // if the user double clicks the HANDLE, the the activeBox will not have been set yet.
-              boxActions.setActiveBox(id, BOX_MODES.TYPING);
-            }
-            showModal(MODALS.EDIT_BOX);
-          }}
-        >
-          {this.renderBoxActionsDropModal()}
+      <Draggable
+        style={styles.draggable}
+        left={box.left}
+        top={box.top}
+        width={box.width}
+        height={box.height}
+        disableDragging={isInTypingMode}
+        onUpdate={newState => boxActions.update(id, newState)}
+        onMouseDown={e => {
+          if (e.currentTarget.contains(e.target)) return; // don't reset when clicking on tools
+          boxActions.setActiveBox(null);
+        }}
+        onClick={() => boxActions.setActiveBox(id, BOX_MODES.TYPING)}
+        onDoubleClick={() => {
+          if (!activeBox.id) {
+            // if the user double clicks the HANDLE, the the activeBox will not have been set yet.
+            boxActions.setActiveBox(id, BOX_MODES.TYPING);
+          }
+          showModal(MODALS.EDIT_BOX);
+        }}
+      >
+        {this.renderBoxActionsDropModal()}
 
-          <LimitedTextArea
-            ref={comp => this.textAreaComp = comp}
-            style={{...styles.textBox, ...styles.textArea}}
-            defaultValue={box.text}
-            onChange={this.onTextAreaChange}
-            maxLength={box.limitLength ? box.lengthLimit : 0}
-            restrictInput={true}
-            onTextLimited={this.onTextLimited}
-          />
+        <LimitedTextArea
+          ref={comp => this.textAreaComp = comp}
+          style={{...styles.textBox, ...styles.textArea}}
+          defaultValue={box.text}
+          onChange={this.onTextAreaChange}
+          maxLength={box.limitLength ? box.lengthLimit : 0}
+          onTextLimited={this.onTextLimited}
+          restrictInput
+        />
 
-          {this.renderLimitChip()}
+        {this.renderLimitChip()}
 
-          <MarkedDownText
-            style={{...styles.textBox, ...styles.displayText}}
-            markdown={box.text}
-            doNotParseMarkdown={box.plainTextOnly}
-          />
+        <MarkedDownText
+          style={{...styles.textBox, ...styles.displayText}}
+          markdown={box.text}
+          doNotParseMarkdown={box.plainTextOnly}
+        />
       </Draggable>
     );
   }

@@ -47,7 +47,7 @@ const ProjectDetails = props => {
   const project = props.mode === 'add'
     ? {val: {name: '', description: ''}}
     : getCurrentProjectAndScreen().currentProject;
-  
+
   const upsertProject = () => {
     if (nameEl.value) {
       if (props.mode === 'add') {
@@ -102,8 +102,7 @@ const ProjectDetails = props => {
   const renderDeleteButton = () => {
     if (props.mode === 'add') return null;
 
-    const projects = makeArray(props.projects)
-      .filter(project => !project.deleted);
+    const projects = makeArray(props.projects).filter(item => !item.deleted);
 
     if (projects.length <= 1) return null;
 
@@ -124,7 +123,7 @@ const ProjectDetails = props => {
       {...props}
       title={props.mode === 'add' ? 'Add a project' : 'Edit project'}
       width={DIMENSIONS.SPACE_L * 7}
-      showOk={true}
+      showOk
       okText={'Save'}
       onOk={upsertProject}
     >
@@ -133,7 +132,7 @@ const ProjectDetails = props => {
           ref={el => nameEl = el}
           defaultValue={project.val.name}
           style={styles.nameInput}
-          autoFocus={true}
+          autoFocus
         />
       </div>
 
@@ -162,6 +161,7 @@ ProjectDetails.propTypes = {
   addProject: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
   removeProject: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 export default ProjectDetails;

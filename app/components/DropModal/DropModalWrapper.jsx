@@ -31,17 +31,6 @@ class DropModalWrapper extends Component {
     this.onResize = this.onResize.bind(this);
   }
 
-  onAnyClick(e) {
-    // if a click occurs outside this modal
-    if (!this.el.contains(e.target)) {
-      this.props.hideDropModal();
-    }
-  }
-
-  onResize() {
-    this.forceUpdate();
-  }
-
   componentDidMount() {
     window.addEventListener('resize', this.onResize, false);
 
@@ -57,6 +46,17 @@ class DropModalWrapper extends Component {
     if (this.props.hideOnAnyClick) {
       window.removeEventListener('mousedown', this.onAnyClick, false);
     }
+  }
+
+  onAnyClick(e) {
+    // if a click occurs outside this modal
+    if (!this.el.contains(e.target)) {
+      this.props.hideDropModal();
+    }
+  }
+
+  onResize() {
+    this.forceUpdate();
   }
 
   render() {

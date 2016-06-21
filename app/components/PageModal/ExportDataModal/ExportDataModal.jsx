@@ -71,7 +71,7 @@ class ExportDataModal extends Component {
     const {currentScreenKey, screens, updateProject} = this.props;
 
     const currentProjectKey = screens[currentScreenKey].projectKey;
-    
+
     updateProject(currentProjectKey, {
       apiTextFormat: this.state.apiTextFormat,
     });
@@ -105,13 +105,13 @@ class ExportDataModal extends Component {
       <PageModalWrapper
         {...this.props}
         title="API access"
-        showOk={true}
+        showOk
         onOk={this.onOk}
         width={DIMENSIONS.SPACE_L * 20}
       >
         <p style={styles.projectNote}>This API endpoint will return text for all screens in the <strong>{currentProject.val.name}</strong> project.</p>
 
-        <hr/>
+        <hr />
 
         <p>How would you like the text to be formatted?</p>
 

@@ -114,7 +114,7 @@ const ScreenDetails = props => {
       {...props}
       title={props.mode === 'add' ? 'Add a screen' : 'Edit screen'}
       width={DIMENSIONS.SPACE_L * 7}
-      showOk={true}
+      showOk
       okText={'Save'}
       onOk={upsertScreen}
     >
@@ -123,7 +123,7 @@ const ScreenDetails = props => {
           ref={el => nameEl = el}
           defaultValue={screen.name}
           style={styles.nameInput}
-          autoFocus={true}
+          autoFocus
         />
       </div>
 
@@ -151,6 +151,7 @@ ScreenDetails.propTypes = {
   addScreen: PropTypes.func.isRequired,
   updateScreen: PropTypes.func.isRequired,
   removeScreen: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 export default ScreenDetails;

@@ -85,6 +85,8 @@ const SignInModal = props => {
 
 SignInModal.propTypes = {
   hideModal: PropTypes.func.isRequired,
+  setInteraction: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired,
 };
 
 export default SignInModal;

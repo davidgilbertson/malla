@@ -61,7 +61,7 @@ const BoxActions = props => {
           size={20}
         />
       </Button>
-      
+
       <Button
         style={styles.iconButton}
         onClick={editBox}
@@ -73,7 +73,7 @@ const BoxActions = props => {
         />
       </Button>
     </DropModalWrapper>
-  )
+  );
 };
 
 BoxActions.propTypes = {

@@ -108,55 +108,53 @@ const ScreenOrProjectSelector = props => {
       backgroundColor: COLORS.WHITE,
       color: COLORS.GRAY_DARK,
       fontWeight: 400,
-    }
+    },
   };
-  
-  const renderList = () => {
-    return options.itemArray
-      .filter(item => !item.deleted)
-      .map(item => {
-        const style = {...styles.listItem};
 
-        if (item._key === options.currentKey) {
-          style.backgroundColor = COLORS.PRIMARY;
-          style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
-          style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
-        }
+  const renderList = () => options.itemArray
+    .filter(item => !item.deleted)
+    .map(item => {
+      const style = {...styles.listItem};
 
-        return (
-          <div
-            key={item._key}
-            style={style}
-            onClick={props.hideDropModal}
+      if (item._key === options.currentKey) {
+        style.backgroundColor = COLORS.PRIMARY;
+        style.borderBottom = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+        style.borderTop = `1px solid ${COLORS.PRIMARY_LIGHT}`;
+      }
+
+      return (
+        <div
+          key={item._key}
+          style={style}
+          onClick={props.hideDropModal}
+        >
+          <button
+            style={styles.listItemName}
+            title={item.description}
+            onClick={() => options.onSelect(item._key)}
+          >{item.name}</button>
+
+          <button
+            style={styles.listItemGear}
+            title={options.title}
+            onClick={() => options.onEdit(item._key)}
           >
-            <button
-              style={styles.listItemName}
-              title={item.description}
-              onClick={() => options.onSelect(item._key)}
-            >{item.name}</button>
-
-            <button
-              style={styles.listItemGear}
-              title={options.title}
-              onClick={() => options.onEdit(item._key)}
-            >
-              <Icon
-                icon={ICONS.GEAR}
-                size={20}
-                color={styles.listItemGear.color}
-              />
-            </button>
-          </div>
-        );
-      });
-  };
+            <Icon
+              icon={ICONS.GEAR}
+              size={20}
+              color={styles.listItemGear.color}
+            />
+          </button>
+        </div>
+      );
+    });
 
   return (
     <DropModalWrapper
       {...props}
       modalStyle={styles.back}
       centerOnElementId={options.dropModalElementId}
-      hideOnAnyClick={true}
+      hideOnAnyClick
     >
       <h2 style={styles.title}>{options.listTitle}</h2>
 

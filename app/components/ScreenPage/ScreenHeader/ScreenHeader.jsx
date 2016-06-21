@@ -35,7 +35,7 @@ const tools = [
     name: 'Labels',
     icon: ICONS.LABEL,
     code: TOOLS.LABEL,
-  }
+  },
 ];
 
 const ScreenHeader = props => {
@@ -103,7 +103,7 @@ const ScreenHeader = props => {
 
   const currentProject = props.projects[currentScreen.projectKey];
 
-  const renderToolButtons = tools => tools.map(tool => {
+  const renderToolButtons = () => tools.map(tool => {
     let style = styles.toolButton;
 
     if (tool.code === props.currentTool) {
@@ -164,7 +164,7 @@ const ScreenHeader = props => {
       </div>
 
       <div style={styles.toolButtons}>
-        {renderToolButtons(tools)}
+        {renderToolButtons()}
       </div>
 
       <div>

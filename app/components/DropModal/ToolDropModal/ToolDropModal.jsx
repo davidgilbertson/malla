@@ -29,7 +29,7 @@ const ToolDropModal = props => {
     >
       {body}
     </DropModalWrapper>
-  )
+  );
 };
 
 ToolDropModal.propTypes = {

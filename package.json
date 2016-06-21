@@ -76,7 +76,7 @@
     "dev": "nodemon startDevMode.js  --ignore *.json",
     "deploy": "npm run build && gcloud preview app deploy",
     "heroku-postbuild": "npm run build",
-    "lint": "eslint ./app --color"
+    "lint": "eslint ./app --color --ext .jsx,.js"
   },
   "version": "0.0.1"
 }

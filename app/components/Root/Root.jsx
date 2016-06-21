@@ -6,17 +6,17 @@ import {StyleRoot} from 'radium';
 import routes from '../../routes.js';
 import store from '../../data/store.js';
 
-export default (props) => {
+const Root = props => {
   let routeWrapper;
   let radiumConfig;
-    
+
   if (typeof window !== 'undefined') {
     routeWrapper = <Router routes={routes} history={browserHistory} />;
   } else {
     routeWrapper = <RouterContext {...props} />;
-    radiumConfig = props.radiumConfig
+    radiumConfig = props.radiumConfig;
   }
-  
+
   return (
     <Provider store={store}>
       <StyleRoot radiumConfig={radiumConfig}>
@@ -25,3 +25,9 @@ export default (props) => {
     </Provider>
     );
 };
+
+Root.propTypes = {
+  radiumConfig: React.PropTypes.object,
+};
+
+export default Root;

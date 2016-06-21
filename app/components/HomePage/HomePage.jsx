@@ -10,11 +10,9 @@ import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
-  FONT_FAMILIES,
   INTERACTIONS,
   MODALS,
   SIGN_IN_STATUSES,
-  WORDS,
 } from '../../constants.js';
 
 import {
@@ -154,10 +152,6 @@ const styles = {
 };
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentWillReceiveProps(nextProps) {
     // If we are on the home page and a user signs in, then navigate them to the last URL they were at
     const userInitiatedSignIn = this.props.interaction === INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE;
@@ -242,22 +236,16 @@ HomePage.propTypes = {
 
 HomePage = Radium(HomePage);
 
-const bindStateToProps = state => {
-  return {
-    user: state.user,
-    projects: state.projects,
-    screens: state.screens,
-    interaction: state.interaction,
-  };
-};
+const bindStateToProps = state => ({
+  user: state.user,
+  projects: state.projects,
+  screens: state.screens,
+  interaction: state.interaction,
+});
 
-const bindDispatchToProps = () => {
-  return {
-    showModal: modal => {
-      actions.showModal(modal);
-    },
-  };
-};
+const bindDispatchToProps = () => ({
+  showModal: actions.showModal,
+});
 
 HomePage = connect(bindStateToProps, bindDispatchToProps)(HomePage);
 

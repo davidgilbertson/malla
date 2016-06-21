@@ -1,4 +1,5 @@
 import React from 'react';
+const {PropTypes} = React;
 import Radium, {Style, StyleRoot} from 'radium';
 
 import {
@@ -111,7 +112,7 @@ const styles = {
     },
     strong: {
       fontWeight: 700,
-    }
+    },
   },
 };
 
@@ -122,7 +123,7 @@ const App = (props) => (
       scopeSelector=".markdown-content"
       rules={styles.markdown}
     />
-    
+
     <HeaderContainer {...props} />
 
     {props.children}
@@ -131,5 +132,11 @@ const App = (props) => (
     <PageModalConductor />
   </StyleRoot>
 );
+
+App.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+  ]).isRequired,
+};
 
 export default Radium(App);
