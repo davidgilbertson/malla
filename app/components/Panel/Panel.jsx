@@ -53,7 +53,7 @@ const Panel = props => {
     },
     body: {
       flex: '1 1 auto',
-      padding: DIMENSIONS.SPACE_S,
+      padding: `${DIMENSIONS.SPACE_S}px ${DIMENSIONS.SPACE_S}px 0`,
       overflow: 'auto',
     },
     actions: {

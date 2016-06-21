@@ -11,38 +11,45 @@ import {
 } from '../../../constants.js';
 
 import {
-  css,
   getBoxJson,
   getCurrentProjectAndScreen,
 } from '../../../utils';
 
 const styles = {
-  codePreview: {
-    marginTop: 20,
-    lineHeight: 1.6,
-    fontSize: 14,
-    fontFamily: FONT_FAMILIES.MONOSPACE,
-    color: COLORS.GRAY_DARK,
-    ...css.inputStyle,
-    overflow: 'auto',
+  projectNote: {
+    marginBottom: 22,
+    textAlign: 'center',
+  },
+  formatOptions: {
+    marginTop: 10,
+  },
+  formatOptionLabel: {
+    display: 'block',
+    fontSize: 15,
+    marginTop: 5,
+    cursor: 'pointer',
   },
   apiUrlWrapper: {
-    marginTop: 20,
+    marginTop: 30,
   },
   apiUrl: {
     color: COLORS.ACCENT,
     fontWeight: 400,
   },
-  note: {
+  previewLabel: {
+    marginTop: 40,
+    textAlign: 'center',
+  },
+  codePreview: {
+    margin: '4px 0 0',
+    padding: 10,
+    lineHeight: 1.6,
     fontSize: 14,
-  },
-  formatOptions: {
-    marginTop: 20,
-  },
-  formatOptionLabel: {
-    display: 'block',
-    marginTop: 5,
-    cursor: 'pointer',
+    fontFamily: FONT_FAMILIES.MONOSPACE,
+    backgroundColor: COLORS.OFF_WHITE,
+    color: COLORS.GRAY,
+    border: `1px solid ${COLORS.GRAY_LIGHT}`,
+    overflow: 'auto',
   },
 };
 
@@ -71,20 +78,20 @@ class ExportDataModal extends Component {
   }
 
   render() {
-    const {boxes, currentScreenKey, screens} = this.props;
+    const {boxes} = this.props;
+    const {currentProject} = getCurrentProjectAndScreen();
 
-    const currentProjectKey = screens[currentScreenKey].projectKey;
     const exportData = getBoxJson({
       boxes,
       format: this.state.apiTextFormat,
-      projectKey: currentProjectKey,
+      projectKey: currentProject.key,
     });
 
     const queryParams = this.state.apiTextFormat !== API_TEXT_FORMATS.HTML
       ? `?format=${this.state.apiTextFormat}`
       : ''; // html is the default
 
-    const apiUrl = `${location.origin}/api/${currentProjectKey}.json${queryParams}`;
+    const apiUrl = `${location.origin}/api/${currentProject.key}.json${queryParams}`;
 
     const apiLink = (
       <a
@@ -97,12 +104,16 @@ class ExportDataModal extends Component {
     return (
       <PageModalWrapper
         {...this.props}
-        title={'API access'}
+        title="API access"
         showOk={true}
         onOk={this.onOk}
         width={DIMENSIONS.SPACE_L * 20}
       >
-        <h2>How would you like the text to be formatted?</h2>
+        <p style={styles.projectNote}>This API endpoint will return text for all screens in the <strong>{currentProject.val.name}</strong> project.</p>
+
+        <hr/>
+
+        <p>How would you like the text to be formatted?</p>
 
         <div style={styles.formatOptions}>
           <label style={styles.formatOptionLabel}>
@@ -126,13 +137,13 @@ class ExportDataModal extends Component {
           </label>
         </div>
 
-        <p style={styles.apiUrlWrapper}>To access this data via API, go to {apiLink}</p>
+        <p style={styles.apiUrlWrapper}>Your API endpoint is: {apiLink}</p>
+
+        <p style={styles.previewLabel}>Preview</p>
 
         <pre style={styles.codePreview}>
           {JSON.stringify(exportData, null, 2)}
         </pre>
-
-        <p style={styles.note}>The API will return text for all screens in the current project.</p>
       </PageModalWrapper>
     );
   }

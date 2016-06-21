@@ -15,13 +15,12 @@ const styles = {
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: DIMENSIONS.SPACE_S,
+    marginBottom: DIMENSIONS.SPACE_S,
   },
   button: {
     width: '100%',
     color: COLORS.WHITE,
-    marginTop: 16,
-    marginBottom: 16,
+    marginBottom: DIMENSIONS.SPACE_S,
     height: DIMENSIONS.SPACE_L,
   },
   facebookButton: {
@@ -45,7 +44,7 @@ const SignInModal = props => {
   return (
     <PageModalWrapper
       {...props}
-      title={'Sign in'}
+      title="Sign in"
       width={DIMENSIONS.SPACE_L * 6}
       showOk={false}
     >
