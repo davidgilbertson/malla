@@ -1,7 +1,7 @@
 global.fetch = require('isomorphic-fetch');
 
 global.MALLA_CONSTANTS = {
-  APP_VERSION: 8,
+  APP_VERSION: 9,
   FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
   FIREBASE_URL: process.env.FIREBASE_URL,
