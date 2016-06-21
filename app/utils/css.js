@@ -73,18 +73,17 @@ export function background(rules) {
 export function shadow(style = 'medium') {
   switch (style) {
     case 'small' :
-      return {boxShadow: `0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.2),0 1px 5px 0 rgba(0,0,0,0.12)`};
-    
+      return {boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.2),0 1px 5px 0 rgba(0,0,0,0.12)'};
+
     case 'medium' :
-      return {boxShadow: `0 2px 15px rgba(0,0,0,0.30)`};
-    
+      return {boxShadow: '0 2px 15px rgba(0,0,0,0.30)'};
+
     case 'large' :
-      return {boxShadow: `0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15)`};
-    
-    
+      return {boxShadow: '0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15)'};
+
     case 'inset' :
-      return {boxShadow: `inset 1px 1px 5px rgba(0, 0, 0, 0.05)`};
-    
+      return {boxShadow: 'inset 1px 1px 5px rgba(0, 0, 0, 0.05)'};
+
     default :
       return {};
   }
@@ -113,13 +112,13 @@ export function showForPhoneOnly() {
     [BREAKPOINTS.TABLET_PORTRAIT]: {
       display: 'none',
     },
-  }
+  };
 }
 
 export function showForTabletPortraitUp() {
   return {
     [BREAKPOINTS.PHONE_ONLY]: {
       display: 'none',
-    }
-  }
+    },
+  };
 }

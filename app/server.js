@@ -19,7 +19,6 @@ import {renderToString} from 'react-dom/server';
 import express from 'express';
 import compression from 'compression';
 import {match} from 'react-router';
-import {StyleRoot} from 'radium';
 
 require('./utils/normalizeNodeAndBrowser.js');
 
@@ -32,7 +31,7 @@ import {
 import routes from './routes.js';
 import store from './data/store.js';
 import Root from './components/Root/Root.jsx';
-import * as thirdPartyScripts from './server/thirdPartyScripts.js'
+import * as thirdPartyScripts from './server/thirdPartyScripts.js';
 import * as mallaText from './data/loadMallaText.js';
 
 const app = express();
@@ -46,7 +45,7 @@ const fileNames = require('../build/stats/fileNames.json');
 
 function getHtml(req, props, MALLA_TEXT) {
   global.MALLA_TEXT = MALLA_TEXT;
-  
+
   let mallaScriptSrc;
 
   if (process.env.NODE_ENV === 'development') {
@@ -111,20 +110,19 @@ app.get('/api/:projectId.*json', firebaseMiddleware);
 app.use(cacher.checkForCache);
 
 app.get('*', (req, res) => {
-  match({routes: routes, location: req.url}, (err, redirect, props) => {
+  match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       res.status(500).send(err.message);
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search);
     } else if (props) {
-
       mallaText
         .getText()
-        .then(mallaText => {
-          const responsePayload = getHtml(req, props, mallaText);
+        .then(data => {
+          const responsePayload = getHtml(req, props, data);
           cacher.save(req.url, responsePayload);
           res.send(responsePayload);
-        })
+        });
     } else {
       res.status(404).send('Not Found');
     }

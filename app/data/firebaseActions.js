@@ -26,7 +26,7 @@ function normalizeProviderData(rawUser) {
 function createUser(providerUser) {
   const {uid} = providerUser;
   const user = normalizeProviderData(providerUser);
-  
+
   const newProjectKey = db.child('data/projects').push().key;
   const newScreenKey = db.child('data/screens').push().key;
   const newBoxKey = db.child('data/boxes').push().key;
@@ -47,7 +47,7 @@ function createUser(providerUser) {
     },
     boxKeys: {
       [newBoxKey]: true,
-    }
+    },
   };
 
   const newProject = {
@@ -97,7 +97,7 @@ function createUser(providerUser) {
   };
 
   db.update(newData);
-  
+
   return newUser;
 }
 
@@ -173,7 +173,7 @@ function createOrUpdateUser({user, isNewUser, existingUser}) {
 
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.SYSTEM,
-    action: action,
+    action,
   });
 
   return Promise.resolve(user);
@@ -188,13 +188,11 @@ function checkIfUserExists(user) {
     .child('users')
     .child(user.uid)
     .once('value')
-    .then(dataSnapshot => {
-      return Promise.resolve({
-        user,
-        isNewUser: !dataSnapshot.exists(),
-        existingUser: dataSnapshot.exists() && dataSnapshot.val(),
-      });
-    });
+    .then(dataSnapshot => Promise.resolve({
+      user,
+      isNewUser: !dataSnapshot.exists(),
+      existingUser: dataSnapshot.exists() && dataSnapshot.val(),
+    }));
 }
 
 export function signOut() {
@@ -209,9 +207,12 @@ export function addProject(project) {
   const newProjectKey = db.child('data/projects').push().key;
   const newScreenKey = db.child('data/screens').push().key;
 
-  project.slug = slug(project.name);
-  project.screenKeys = {
-    [newScreenKey]: true,
+  const newProject = {
+    ...project,
+    slug: slug(project.name),
+    screenKeys: {
+      [newScreenKey]: true,
+    },
   };
 
   const newScreen = {
@@ -224,7 +225,7 @@ export function addProject(project) {
   const newData = {
     [`users/${userKey}/projectKeys/${newProjectKey}`]: true,
     [`users/${userKey}/screenKeys/${newScreenKey}`]: true,
-    [`data/projects/${newProjectKey}`]: project,
+    [`data/projects/${newProjectKey}`]: newProject,
     [`data/screens/${newScreenKey}`]: newScreen,
   };
 
@@ -243,7 +244,10 @@ export function removeProject(projectKey) {
   db.child('data/projects').child(projectKey).once('value', projectSnapshot => {
     const project = projectSnapshot.val();
 
-    if (!project) return console.warn(`No project with projectKey '${projectKey}' exists`);
+    if (!project) {
+      console.warn(`No project with projectKey '${projectKey}' exists`);
+      return;
+    }
 
     const updateData = {
       [`data/projects/${projectKey}/deleted`]: deleteDate,
@@ -274,24 +278,27 @@ export function addScreen(screen, currentProjectKey) {
   const newScreenKey = db.child('data/screens').push().key;
   const newBoxKey = db.child('data/boxes').push().key;
 
-  screen.projectKey = currentProjectKey;
-  screen.slug = slug(screen.name);
-  screen.boxKeys = {
-    [newBoxKey]: true,
+  const newScreen = {
+    ...screen,
+    projectKey: currentProjectKey,
+    slug: slug(screen.name),
+    boxKeys: {
+      [newBoxKey]: true,
+    },
   };
 
   const newBox = {
     height: 40,
-    label: `${screen.slug}-label`,
+    label: `${newScreen.slug}-label`,
     type: BOX_TYPES.LABEL,
     left: 20,
-    text: screen.name,
+    text: newScreen.name,
     top: 20,
     width: 500,
     projectKey: currentProjectKey,
     screenKeys: {
       [newScreenKey]: true,
-    }
+    },
   };
 
   const newData = {
@@ -299,7 +306,7 @@ export function addScreen(screen, currentProjectKey) {
     [`users/${userKey}/boxKeys/${newBoxKey}`]: true,
     [`data/projects/${currentProjectKey}/screenKeys/${newScreenKey}`]: true,
     [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
-    [`data/screens/${newScreenKey}`]: screen,
+    [`data/screens/${newScreenKey}`]: newScreen,
     [`data/boxes/${newBoxKey}`]: newBox,
   };
 
@@ -307,7 +314,7 @@ export function addScreen(screen, currentProjectKey) {
 
   return {
     key: newScreenKey,
-    val: screen,
+    val: newScreen,
   };
 }
 
@@ -321,7 +328,10 @@ export function removeScreen(screenKey) {
   db.child('data/screens').child(screenKey).once('value', screenSnapshot => {
     const screen = screenSnapshot.val();
 
-    if (!screen) return console.warn(`No screen with screenKey '${screenKey}' exists`);
+    if (!screen) {
+      console.warn(`No screen with screenKey '${screenKey}' exists`);
+      return;
+    }
 
     const updateData = {
       [`data/screens/${screenKey}/deleted`]: deleteDate,
@@ -349,24 +359,27 @@ export function addBox(box) {
 
   const newBoxKey = db.child('data/boxes').push().key;
 
-  box.projectKey = currentProjectKey;
-  box.screenKeys = {
-    [currentScreenKey]: true,
+  const newBox = {
+    ...box,
+    projectKey: currentProjectKey,
+    screenKeys: {
+      [currentScreenKey]: true,
+    },
   };
 
   const newData = {
     [`users/${uid}/boxKeys/${newBoxKey}`]: true,
     [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
     [`data/screens/${currentScreenKey}/boxKeys/${newBoxKey}`]: true,
-    [`data/boxes/${newBoxKey}`]: box,
+    [`data/boxes/${newBoxKey}`]: newBox,
   };
 
-  if (!box.label) {
+  if (!newBox.label) {
     const project = state.projects[currentProjectKey];
     const lastBoxLabelId = (project.lastBoxLabelId || 0) + 1;
 
-    box.label = `label${lastBoxLabelId}`;
-    newData[`data/projects/${currentProjectKey}/lastBoxLabelId`] = lastBoxLabelId + 1;
+    newBox.label = `label${lastBoxLabelId}`;
+    newData[`data/projects/${currentProjectKey}/lastBoxLabelId`] = lastBoxLabelId;
   }
 
   db.update(newData);

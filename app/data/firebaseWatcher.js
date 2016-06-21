@@ -111,7 +111,7 @@ export default {
     getApp().auth().onAuthStateChanged(user => {
       if (user && !isSignedIn) { // user has just signed in
         isSignedIn = true;
-        
+
         firebaseActions.handleSignIn(user).then(startListening);
       }
 
@@ -127,5 +127,5 @@ export default {
         }, LS_WRITE_DELAY + 50);
       }
     });
-  }
+  },
 };

@@ -11,7 +11,6 @@ import {browserHistory} from 'react-router';
 import store from './store.js';
 import * as firebaseActions from './firebaseActions.js';
 import * as tracker from '../tracker.js';
-const mockBoxes = require('./mockBoxes.json');
 
 import {
   ACTIONS,
@@ -50,7 +49,7 @@ export function removeProject(key) {
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.REMOVED_PROJECT,
   });
-  
+
   firebaseActions.removeProject(key);
   navigateToProject(); // sending no key will go to the first project
 }

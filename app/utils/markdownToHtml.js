@@ -16,6 +16,6 @@ export function markdownToHtml(markdown) {
   if (testDom.childElementCount === 1 && testDom.children[0].nodeName.toLowerCase() === 'p') {
     html = testDom.children[0].innerHTML;
   }
-  
+
   return html;
 }

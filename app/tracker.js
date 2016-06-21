@@ -18,7 +18,7 @@ export const EVENTS = {
     SIGNED_OUT: 'Signed out', // a database thing
     DATA_LOAD_TIME: 'Data load time',
     SENT_FEEDBACK: 'Sent feedback',
-    
+
     // UI interaction
     OPENED_MODAL: 'Opened modal',
     PLAYED_VIDEO: 'Played video',
@@ -40,7 +40,7 @@ export const EVENTS = {
       SIGN_UP: 'Clicked "Sign up"',
       SIGN_OUT: 'Clicked "Sign out"',
     },
-    
+
     // Data interaction
     TIME_TO_ADD_FIRST_BOX: 'Time to add first box',
     TIME_TO_MOVE_FIRST_BOX: 'Time to move first box',
@@ -97,10 +97,12 @@ export function sendEvent(options) {
   });
 
   if (options.action === EVENTS.ACTIONS.SIGNED_UP) {
+    /* eslint-disable camelcase */
     if (typeof goog_report_conversion !== 'undefined') {
       goog_report_conversion();
     } else {
       console.warn('Sign up successful but goog_report_conversion() was not available');
     }
+    /* eslint-enable camelcase */
   }
 }

@@ -39,7 +39,7 @@ export function linkedIn() {
   // docs: https://developer.linkedin.com/docs/share-on-linkedin
   if (typeof window === 'undefined') return;
 
-  const linkedInUrl = `https://www.linkedin.com/shareArticle`;
+  const linkedInUrl = 'https://www.linkedin.com/shareArticle';
   const url = encodeURIComponent('http://www.malla.io');
   const title = encodeURIComponent(WORDS.MALLA);
   const summary = encodeURIComponent(WORDS.SLOGAN);

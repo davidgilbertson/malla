@@ -1,4 +1,4 @@
-let responseCache = {};
+const responseCache = {};
 
 const EXPIRES = 5000;
 
@@ -6,6 +6,8 @@ function getCacheName(url) {
   if (url === '/') return 'home';
 
   if (url.startsWith('/s/')) return 'screen';
+
+  return null;
 }
 
 function load(url) {
@@ -24,7 +26,7 @@ export const cacher = {
     }, EXPIRES);
   },
 
-  checkForCache: function(req, res, next) {
+  checkForCache(req, res, next) {
     const cachedResponse = load(req.url);
 
     if (cachedResponse) {

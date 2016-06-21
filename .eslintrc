@@ -11,7 +11,11 @@
     // "no-shadow": 0,
     "no-console": 0,
     "no-return-assign": 0,
+    "no-underscore-dangle": 0,
     "no-unused-expressions": 0,
+    "no-use-before-define": 0,
+    "max-len": 0,
+    "space-before-function-paren": 0,
     // "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
     // "react/sort-comp": 0,
     // "react/jsx-boolean-value": 0,
@@ -29,6 +33,8 @@
     "firebase": true,
     "MALLA_CONSTANTS": true,
     "MALLA_TEXT": true,
-    "FB": true
+    "FB": true,
+    "ga": true,
+    "goog_report_conversion": true
   }
 }

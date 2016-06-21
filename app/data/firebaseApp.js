@@ -9,12 +9,12 @@ export function init() {
     databaseURL: MALLA_CONSTANTS.FIREBASE_URL,
     storageBucket: MALLA_CONSTANTS.FIREBASE_STORAGE_BUCKET,
   });
-  
+
   firebaseApp = firebase;
-  
+
   return firebaseApp;
 }
-  
+
 export function getApp() {
   return firebaseApp || init();
 }

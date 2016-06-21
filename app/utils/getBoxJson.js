@@ -1,7 +1,7 @@
 import {
   API_TEXT_FORMATS,
   BOX_TYPES,
-} from '../constants.js'
+} from '../constants.js';
 
 import {
   makeArray,
@@ -19,8 +19,9 @@ export function getBoxJson({boxes, format, projectKey}) {
         value = box.text;
       }
 
-      result[box.label] = value;
-      
-      return result;
+      return {
+        ...result,
+        [box.label]: value,
+      };
     }, {});
 }

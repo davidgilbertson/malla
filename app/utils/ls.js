@@ -10,12 +10,12 @@ export const ls = {
       localStorage.setItem(LS_STORE_NAMESPACE, JSON.stringify(data));
     }
   },
-  
+
   load(key = LS_STORE_NAMESPACE) {
     return JSON.parse(localStorage.getItem(key));
   },
-  
+
   empty() {
     this.save();
-  }
+  },
 };

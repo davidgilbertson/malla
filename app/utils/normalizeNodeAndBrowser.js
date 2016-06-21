@@ -10,7 +10,7 @@ if (typeof window === 'undefined') {
 
   if (typeof performance === 'undefined') {
     global.performance = {
-      now: now,
+      now,
     };
   }
 } else {

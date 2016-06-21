@@ -94,8 +94,8 @@ const TEXT = 'TEXT';
 const LABEL = 'LABEL';
 
 export const TOOLS = {
-  TEXT: TEXT,
-  LABEL: LABEL,
+  TEXT,
+  LABEL,
   MOVE: 'MOVE',
 };
 
@@ -103,14 +103,14 @@ export const DROP_MODALS = {
   NONE: 'NONE',
   SCREEN_SELECTOR: 'SCREEN_SELECTOR',
   PROJECT_SELECTOR: 'PROJECT_SELECTOR',
-  TEXT: TEXT,
-  LABEL: LABEL,
+  TEXT,
+  LABEL,
   BOX_ACTIONS: 'BOX_ACTIONS',
 };
 
 export const BOX_TYPES = {
-  TEXT: TEXT,
-  LABEL: LABEL,
+  TEXT,
+  LABEL,
 };
 
 export const ITEM_TYPES = { // the major items in the app/database
@@ -188,8 +188,8 @@ export const ELEMENT_IDS = {
 export const FONT_FAMILIES = {
   CURSIVE: 'Handlee, cursive',
   MONOSPACE: 'Courier New, courier, monospace',
-  SANS_SERIF: `'Open Sans', sans-serif`,
-  SERIF: `'Roboto Slab', serif`,
+  SANS_SERIF: '"Open Sans", sans-serif',
+  SERIF: '"Roboto Slab", serif',
 };
 
 export const Z_INDEXES = {

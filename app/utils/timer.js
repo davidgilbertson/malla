@@ -3,7 +3,7 @@ import now from 'performance-now';
 
 export function start(str) {
   startTime = now();
-  str && console.info('starting', str)
+  str && console.info('starting', str);
 }
 
 export function log(name, keepRunning) {

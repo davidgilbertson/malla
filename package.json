@@ -75,7 +75,8 @@
     "build": "node build/buildForProd.js",
     "dev": "nodemon startDevMode.js  --ignore *.json",
     "deploy": "npm run build && gcloud preview app deploy",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "lint": "eslint ./app --color"
   },
   "version": "0.0.1"
 }

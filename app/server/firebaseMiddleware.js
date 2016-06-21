@@ -27,7 +27,7 @@ export default function(req, res) {
 
   db
     .child('data/boxes')
-    .orderByChild(`projectKey`)
+    .orderByChild('projectKey')
     .equalTo(projectId)
     .once('value', boxSnapshot => {
       const json = getBoxJson({
