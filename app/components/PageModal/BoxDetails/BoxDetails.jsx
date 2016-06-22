@@ -4,7 +4,8 @@ const {Component, PropTypes} = React;
 import MarkedDownText from '../../MarkedDownText/MarkedDownText.jsx';
 import Icon from '../../Icon/Icon.jsx';
 import PageModalWrapper from '../PageModalWrapper.jsx';
-import LimitedTextArea from '../../LimitedTextArea/LimitedTextArea.jsx';
+import TextArea from '../../TextArea/TextArea.jsx';
+import Input from '../../Input/Input.jsx';
 
 import {
   ANIMATION_DURATION,
@@ -26,13 +27,15 @@ class BoxDetails extends Component {
   constructor(props) {
     super(props);
 
-    this.updateBox = this.updateBox.bind(this);
+    this.updateBoxAndClose = this.updateBoxAndClose.bind(this);
     this.deleteBox = this.deleteBox.bind(this);
     this.onIdChange = this.onIdChange.bind(this);
     this.onTextBoxChange = this.onTextBoxChange.bind(this);
     this.renderDeveloperOptions = this.renderDeveloperOptions.bind(this);
     this.renderFormatWrapper = this.renderFormatWrapper.bind(this);
     this.lockId = this.lockId.bind(this);
+    this.isValid = this.isValid.bind(this);
+    this.checkLength = this.checkLength.bind(this);
 
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     this.currentProjectKey = currentScreen.projectKey;
@@ -51,7 +54,6 @@ class BoxDetails extends Component {
       idIsAvailable: true,
       idIsNotEmpty: true,
       idIsValidFormat: true,
-      isValidOverall: true,
       showFormatted: false,
       textTooLong,
       text: box.text,
@@ -63,8 +65,7 @@ class BoxDetails extends Component {
     };
   }
 
-  onIdChange(e) {
-    const currentId = e.target.value;
+  onIdChange(currentId) {
     let idIsNotEmpty = true;
     let idIsValidFormat = true;
 
@@ -97,21 +98,26 @@ class BoxDetails extends Component {
       this.setState({idIsValidFormat});
     }
 
-    const isValidOverall = idIsAvailable && idIsNotEmpty && idIsValidFormat;
-
-    if (this.state.isValidOverall !== isValidOverall) {
-      this.setState({isValidOverall});
-    }
-
     this.setState({id: currentId});
   }
 
-  onTextBoxChange({value, tooLong, tooLongMessage}) {
-    this.setState({
-      text: value,
-      textTooLong: tooLong,
-      tooLongMessage,
-    });
+  onTextBoxChange(text) {
+    this.setState({text}, this.checkLength);
+  }
+
+  checkLength() {
+    // called when either the text or the length limit change
+    let textTooLong = false;
+    let tooLongMessage = '';
+
+    const lengthDelta = this.state.text.length - this.state.lengthLimit;
+
+    if (this.state.limitLength && lengthDelta > 0) {
+      textTooLong = true;
+      tooLongMessage = `Too long by ${lengthDelta} character${lengthDelta === 1 ? '' : 's'}`;
+    }
+
+    this.setState({textTooLong, tooLongMessage});
   }
 
   lockId() {
@@ -120,28 +126,40 @@ class BoxDetails extends Component {
     if (sure) this.setState({lockId: true});
   }
 
-  updateBox() {
-    const idIsValid = this.state.idIsNotEmpty && this.state.idIsAvailable;
+  isValid() {
     const box = this.props.boxes[this.props.activeBox.id];
-    const isLabel = box.type === BOX_TYPES.LABEL;
 
-    if (isLabel || idIsValid) {
-      const newProps = {
-        text: this.state.text,
-        limitLength: this.state.limitLength,
-        lengthLimit: this.state.lengthLimit,
-        plainTextOnly: this.state.plainTextOnly,
-        lockId: this.state.lockId,
-        html: markdownToHtml(this.state.text),
-      };
-
-      if (!isLabel) {
-        newProps.label = this.state.id;
-      }
-
-      this.props.updateBox(this.props.activeBox.id, newProps);
+    if (box.type === BOX_TYPES.LABEL) {
+      return true;
     }
 
+    return (
+      !this.state.textTooLong
+      && this.state.idIsNotEmpty
+      && this.state.idIsAvailable
+      && this.state.idIsValidFormat
+    );
+  }
+
+  updateBoxAndClose() {
+    if (!this.isValid()) return;
+
+    const box = this.props.boxes[this.props.activeBox.id];
+
+    const newProps = {
+      text: this.state.text,
+      limitLength: this.state.limitLength,
+      lengthLimit: this.state.lengthLimit,
+      plainTextOnly: this.state.plainTextOnly,
+      lockId: this.state.lockId,
+      html: markdownToHtml(this.state.text),
+    };
+
+    if (box.type !== BOX_TYPES.LABEL) {
+      newProps.label = this.state.id;
+    }
+
+    this.props.updateBox(this.props.activeBox.id, newProps);
     this.props.setActiveBox(null);
     this.props.hideModal();
   }
@@ -183,8 +201,8 @@ class BoxDetails extends Component {
     const styles = {
       developerOptionsWrapper: {
         background: COLORS.OFF_WHITE,
-        padding: `${DIMENSIONS.SPACE_S}px ${DIMENSIONS.SPACE_S}px 0px`,
-        margin: `${DIMENSIONS.SPACE_S}px -${DIMENSIONS.SPACE_S}px -${DIMENSIONS.SPACE_S}px`,
+        padding: `${DIMENSIONS.SPACE_S}px ${DIMENSIONS.SPACE_S}px 0`,
+        margin: `${DIMENSIONS.SPACE_S}px -${DIMENSIONS.SPACE_S}px 0`,
         boxShadow: 'inset 0 0 3px 0px rgba(0, 0, 0, 0.2)',
         overflowY: 'auto', // lazy, easier than proper responsive
       },
@@ -260,33 +278,19 @@ class BoxDetails extends Component {
       };
 
       // if turning the limit on and there's no value yet,
-      // set a default to the current text length limit
-      if (newProps.limitLength) {
-        if (!this.state.lengthLimit) {
-          newProps.lengthLimit = this.state.text.length || 20;
-        } else {
-          newProps.textTooLong = this.state.text.length > this.state.lengthLimit;
-        }
-      } else { // if turning it off
-        newProps.textTooLong = false;
+      // set a default to the current text length
+      if (newProps.limitLength && !this.state.lengthLimit) {
+        newProps.lengthLimit = this.state.text.length || 20;
       }
 
-      this.setState(newProps);
+      this.setState(newProps, this.checkLength);
     };
 
-    const handleLengthLimitChange = e => {
-      const {value} = e.target;
-      const lengthLimit = isFinite(value) ? Number(value) : 0;
-
-      const newProps = {lengthLimit};
-
-      // make sure the 'limitLength' is set appropriately
-      newProps.limitLength = !!lengthLimit;
-
-      // mark the text as too long or not
-      newProps.textTooLong = lengthLimit && this.state.text.length > lengthLimit;
-
-      this.setState(newProps);
+    const handleLengthLimitChange = lengthLimit => {
+      this.setState({
+        lengthLimit,
+        limitLength: !!lengthLimit,
+      }, this.checkLength);
     };
 
     const togglePlainTextOnly = () => {
@@ -308,12 +312,13 @@ class BoxDetails extends Component {
             onChange={toggleLimitLength}
           />
 
-          <input
+          <Input
             style={{...styles.numberInput, ...styles.lengthLimitInput}}
             type="number"
             min="0"
             value={this.state.lengthLimit}
             onChange={handleLengthLimitChange}
+            onEnter={this.updateBoxAndClose}
           />
 
           <span style={styles.lengthLimitDesc}>characters</span>
@@ -340,7 +345,7 @@ class BoxDetails extends Component {
         <div style={styles.optionRow}>
           <label htmlFor="text-box-id-input" style={styles.optionName}>Unique ID</label>
 
-          <input
+          <Input
             id="text-box-id-input"
             defaultValue={box.label}
             disabled={this.state.lockId}
@@ -348,6 +353,7 @@ class BoxDetails extends Component {
             style={styles.idInput}
             spellCheck={false}
             onChange={this.onIdChange}
+            onEnter={this.updateBoxAndClose}
           />
 
           <button
@@ -487,16 +493,17 @@ class BoxDetails extends Component {
         width={DIMENSIONS.SPACE_L * 11}
         showOk
         okText={'Save'}
-        onOk={this.updateBox}
-        okDisabled={!this.state.isValidOverall || this.state.textTooLong}
+        onOk={this.updateBoxAndClose}
+        okDisabled={!this.isValid()}
       >
         <div style={styles.textWrapper}>
-          <LimitedTextArea
-            ref={el => this.textEl = el}
+          <TextArea
             value={this.state.text}
             onChange={this.onTextBoxChange}
+            onCtrlEnter={this.updateBoxAndClose}
             style={styles.textInput}
             autoFocus
+            limit
             maxLength={this.state.limitLength ? this.state.lengthLimit : undefined}
           />
 

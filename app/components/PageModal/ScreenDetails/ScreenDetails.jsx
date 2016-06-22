@@ -3,6 +3,8 @@ const {PropTypes} = React;
 import slug from 'speakingurl';
 
 import PageModalWrapper from '../PageModalWrapper.jsx';
+import Input from '../../Input/Input.jsx';
+import TextArea from '../../TextArea/TextArea.jsx';
 
 import {
   BOX_TYPES,
@@ -41,23 +43,26 @@ const styles = {
 };
 
 const ScreenDetails = props => {
-  let nameEl;
-  let descriptionEl;
+  let nameComp;
+  let descriptionComp;
   const {currentProject} = getCurrentProjectAndScreen();
 
-  const upsertScreen = () => {
-    if (nameEl.value) {
+  const upsertScreenAndClose = () => {
+    const name = nameComp.getValue();
+    const description = descriptionComp.getValue();
+
+    if (name) {
       if (props.mode === 'add') {
         props.addScreen({
-          name: nameEl.value,
-          slug: slug(nameEl.value),
-          description: descriptionEl.value,
+          name,
+          slug: slug(name),
+          description,
         });
       } else {
         props.updateScreen(props.currentScreenKey, {
-          name: nameEl.value,
-          slug: slug(nameEl.value),
-          description: descriptionEl.value,
+          name,
+          slug: slug(name),
+          description,
         });
       }
     }
@@ -116,22 +121,24 @@ const ScreenDetails = props => {
       width={DIMENSIONS.SPACE_L * 7}
       showOk
       okText={'Save'}
-      onOk={upsertScreen}
+      onOk={upsertScreenAndClose}
     >
       <div>
-        <input
-          ref={el => nameEl = el}
+        <Input
+          ref={comp => nameComp = comp}
           defaultValue={screen.name}
           style={styles.nameInput}
+          onEnter={upsertScreenAndClose}
           autoFocus
         />
       </div>
 
       <div>
-        <textarea
-          ref={el => descriptionEl = el}
+        <TextArea
+          ref={comp => descriptionComp = comp}
           defaultValue={screen.description}
           style={styles.descInput}
+          onCtrlEnter={upsertScreenAndClose}
         />
       </div>
 

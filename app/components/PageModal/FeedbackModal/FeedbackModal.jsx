@@ -2,6 +2,7 @@ import React from 'react';
 const {PropTypes} = React;
 
 import PageModalWrapper from '../PageModalWrapper.jsx';
+import TextArea from '../../TextArea/TextArea.jsx';
 
 const style = {
   width: '100%',
@@ -10,7 +11,18 @@ const style = {
 };
 
 const FeedbackModal = props => {
-  let feedbackEl;
+  let feedbackComp;
+
+  const sendFeedback = () => {
+    const feedback = feedbackComp.getValue();
+
+    if (feedback) {
+      props.sendFeedback(feedback);
+    }
+
+    props.hideModal();
+  };
+
   return (
     <PageModalWrapper
       {...props}
@@ -18,17 +30,14 @@ const FeedbackModal = props => {
       showOk
       okText={'Send'}
       width={400}
-      onOk={() => {
-        if (feedbackEl.value) {
-          props.sendFeedback(feedbackEl.value);
-        }
-      }}
+      onOk={sendFeedback}
     >
-      <textarea
-        ref={el => feedbackEl = el}
+      <TextArea
+        ref={comp => feedbackComp = comp}
         autoFocus
         style={style}
         placeholder="What could we do better, what do you love?"
+        onCtrlEnter={sendFeedback}
       />
     </PageModalWrapper>
   );
@@ -36,6 +45,7 @@ const FeedbackModal = props => {
 
 FeedbackModal.propTypes = {
   sendFeedback: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 export default FeedbackModal;

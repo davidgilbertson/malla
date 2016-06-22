@@ -76,6 +76,8 @@ class Draggable extends Component {
     this.props.onMouseDown(e);
     if (this.props.disableDragging) return;
     this.setState({isDragging: true});
+    
+    e.preventDefault();
 
     const {x, y} = getEventDims(e, {snap: true});
 
@@ -90,7 +92,6 @@ class Draggable extends Component {
   }
 
   dragMove(e) {
-    e.preventDefault();
     const {x, y} = getEventDims(e, {snap: true});
 
     const hasMovedXEnough = Math.abs(x - this.state.left) >= GRID_SIZE;
@@ -138,6 +139,7 @@ class Draggable extends Component {
 
   resizeStart(e, direction) {
     e.stopPropagation(); // block the movement handler
+    e.preventDefault(); // block selecting text on drag
 
     const {x, y} = getEventDims(e, {snap: true});
     this.startX = x;
@@ -155,7 +157,6 @@ class Draggable extends Component {
   }
 
   resizing(e) {
-    e.preventDefault();
     const {x, y} = getEventDims(e, {snap: true});
     const newDims = {};
 

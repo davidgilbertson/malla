@@ -3,6 +3,8 @@ const {PropTypes} = React;
 import slug from 'speakingurl';
 
 import PageModalWrapper from '../PageModalWrapper.jsx';
+import Input from '../../Input/Input.jsx';
+import TextArea from '../../TextArea/TextArea.jsx';
 
 import {
   BOX_TYPES,
@@ -41,26 +43,29 @@ const styles = {
 };
 
 const ProjectDetails = props => {
-  let nameEl;
-  let descriptionEl;
+  let nameComp;
+  let descriptionComp;
 
   const project = props.mode === 'add'
     ? {val: {name: '', description: ''}}
     : getCurrentProjectAndScreen().currentProject;
 
-  const upsertProject = () => {
-    if (nameEl.value) {
+  const upsertProjectAndClose = () => {
+    const name = nameComp.getValue();
+    const description = descriptionComp.getValue();
+
+    if (name) {
       if (props.mode === 'add') {
         props.addProject({
-          name: nameEl.value,
-          slug: slug(nameEl.value),
-          description: descriptionEl.value,
+          name,
+          slug: slug(name),
+          description,
         });
       } else {
         props.updateProject(project.key, {
-          name: nameEl.value,
-          slug: slug(nameEl.value),
-          description: descriptionEl.value,
+          name,
+          slug: slug(name),
+          description,
         });
       }
     }
@@ -125,22 +130,24 @@ const ProjectDetails = props => {
       width={DIMENSIONS.SPACE_L * 7}
       showOk
       okText={'Save'}
-      onOk={upsertProject}
+      onOk={upsertProjectAndClose}
     >
       <div>
-        <input
-          ref={el => nameEl = el}
+        <Input
+          ref={comp => nameComp = comp}
           defaultValue={project.val.name}
           style={styles.nameInput}
+          onEnter={upsertProjectAndClose}
           autoFocus
         />
       </div>
 
       <div>
-        <textarea
-          ref={el => descriptionEl = el}
+        <TextArea
+          ref={comp => descriptionComp = comp}
           defaultValue={project.val.description}
           style={styles.descInput}
+          onCtrlEnter={upsertProjectAndClose}
         />
       </div>
 

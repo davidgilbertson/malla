@@ -4,6 +4,7 @@ const {Component, PropTypes} = React;
 import {
   COLORS,
   DIMENSIONS,
+  KEYS,
   Z_INDEXES,
 } from '../../constants.js';
 
@@ -29,10 +30,12 @@ class DropModalWrapper extends Component {
     super(props);
     this.onAnyClick = this.onAnyClick.bind(this);
     this.onResize = this.onResize.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize, false);
+    window.addEventListener('keyup', this.onKeyUp, false);
 
     if (this.props.hideOnAnyClick) {
       // 'mousedown' because 'click' would trigger immediately and close the modal when it opens
@@ -42,6 +45,7 @@ class DropModalWrapper extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize, false);
+    window.removeEventListener('keyup', this.onKeyUp, false);
 
     if (this.props.hideOnAnyClick) {
       window.removeEventListener('mousedown', this.onAnyClick, false);
@@ -51,6 +55,12 @@ class DropModalWrapper extends Component {
   onAnyClick(e) {
     // if a click occurs outside this modal
     if (!this.el.contains(e.target)) {
+      this.props.hideDropModal();
+    }
+  }
+
+  onKeyUp(e) {
+    if (e.keyCode === KEYS.ESC) {
       this.props.hideDropModal();
     }
   }

@@ -126,6 +126,7 @@ class Screen extends Component {
     if (e.target !== e.currentTarget) return; // only work with clicks originating on the canvas
 
     this.props.boxActions.setActiveBox(null); // deselect all boxes
+    document.activeElement && document.activeElement.blur(); // blurs the textarea (else Edge shows the cursor still)
     this.isMoving = true;
     e.preventDefault();
 

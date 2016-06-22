@@ -71,7 +71,7 @@ const Panel = props => {
 
   const onOk = () => {
     props.onOk();
-    props.hideModal();
+    props.hideModal(); // this may have already been called (e.g. in Feedback.jsx) but that's fine.
   };
 
   const actions = props.showOk

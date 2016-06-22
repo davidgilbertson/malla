@@ -1,10 +1,11 @@
 import React from 'react';
-const {PropTypes} = React;
+const {Component, PropTypes} = React;
 
 import Panel from '../Panel/Panel.jsx';
 
 import {
   COLORS,
+  KEYS,
   Z_INDEXES,
 } from '../../constants.js';
 
@@ -31,24 +32,51 @@ const styles = {
   },
 };
 
-const PageModalWrapper = props => {
-  const handleBackgroundClick = e => {
-    if (e.target !== e.currentTarget) return;
+class PageModalWrapper extends Component {
+  constructor(props) {
+    super(props);
 
-    props.hideModal();
-  };
+    this.onKeyUp = this.onKeyUp.bind(this);
+  }
 
-  return (
-    <div style={styles.back} onClick={handleBackgroundClick}>
-      <div style={styles.panelAboveSpacer}></div>
+  componentDidMount() {
+    // this needs to be a listener on the window
+    // rather than a listener on the div, because onKeyUp won't fire
+    // unless an input is focused
+    window.addEventListener('keyup', this.onKeyUp, false);
+  }
 
-      <Panel {...props}>{props.children}</Panel>
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.onKeyUp, false);
+  }
 
-      <div style={styles.panelBelowSpacer}></div>
-    </div>
+  onKeyUp(e) {
+    if (e.keyCode === KEYS.ESC) {
+      this.props.hideModal();
+    }
+  }
 
-  );
-};
+  render() {
+    const {props} = this;
+
+    const handleBackgroundClick = e => {
+      if (e.target !== e.currentTarget) return;
+
+      props.hideModal();
+    };
+
+    return (
+      <div style={styles.back} onClick={handleBackgroundClick}>
+        <div style={styles.panelAboveSpacer}></div>
+
+        <Panel {...props}>{props.children}</Panel>
+
+        <div style={styles.panelBelowSpacer}></div>
+      </div>
+
+    );
+  }
+}
 
 PageModalWrapper.propTypes = {
   // props

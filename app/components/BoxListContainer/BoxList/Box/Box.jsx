@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 
 import MarkedDownText from '../../../MarkedDownText/MarkedDownText.jsx';
 import BoxActions from '../../../DropModal/BoxActions/BoxActions.jsx';
-import LimitedTextArea from '../../../LimitedTextArea/LimitedTextArea.jsx';
+import TextArea from '../../../TextArea/TextArea.jsx';
 import Draggable from './Draggable.jsx';
 
 import {
@@ -70,6 +70,7 @@ class Box extends Component {
     this.onTextAreaChange = this.onTextAreaChange.bind(this);
     this.renderLimitChip = this.renderLimitChip.bind(this);
     this.onTextLimited = this.onTextLimited.bind(this);
+    this.exitTypingMode = this.exitTypingMode.bind(this);
 
     this.state = {
       textWasLimited: false,
@@ -132,11 +133,11 @@ class Box extends Component {
   }
 
   onTextLimited() {
-    // LimitedTextArea has limited text entry, tell the user why
+    // TextArea has limited text entry, tell the user why
     this.setState({textWasLimited: true});
   }
 
-  onTextAreaChange({value}) {
+  onTextAreaChange(value) {
     this.props.boxActions.update(
       this.props.id,
       {
@@ -148,6 +149,12 @@ class Box extends Component {
 
   isInTypingMode({activeBox, id}) {
     return id === activeBox.id && activeBox.mode === BOX_MODES.TYPING;
+  }
+
+  exitTypingMode() {
+    this.props.boxActions.setActiveBox(null);
+    // MS Edge will leave the textarea cursor showing if it isn't blurred.
+    document.activeElement && document.activeElement.blur();
   }
 
   renderBoxActionsDropModal() {
@@ -265,14 +272,16 @@ class Box extends Component {
       >
         {this.renderBoxActionsDropModal()}
 
-        <LimitedTextArea
+        <TextArea
           ref={comp => this.textAreaComp = comp}
           style={{...styles.textBox, ...styles.textArea}}
           defaultValue={box.text}
-          onChange={this.onTextAreaChange}
           maxLength={box.limitLength ? box.lengthLimit : 0}
-          onTextLimited={this.onTextLimited}
           restrictInput
+          onChange={this.onTextAreaChange}
+          onCtrlEnter={this.exitTypingMode}
+          onEsc={this.exitTypingMode}
+          onTextLimited={this.onTextLimited}
         />
 
         {this.renderLimitChip()}
