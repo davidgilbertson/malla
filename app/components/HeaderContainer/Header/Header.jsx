@@ -1,7 +1,7 @@
 import React from 'react';
 const {PropTypes} = React;
 import Radium from 'radium';
-import {Link} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 
@@ -113,7 +113,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const {user, updateUser, showModal, signOut, location, navigateToScreen} = this.props;
+    const {user, updateUser, showModal, signOut, location, navigateToProject} = this.props;
     const styles = cloneDeep(baseStyles);
 
     const actionItems = {
@@ -177,7 +177,11 @@ class Header extends React.Component {
           action={EVENTS.ACTIONS.CLICKED.MY_PROJECTS}
           label="Header button"
           onClick={() => {
-            navigateToScreen();
+            if (user.lastUrl) {
+              browserHistory.push(user.lastUrl);
+            } else {
+              navigateToProject();
+            }
           }}
         >My workspace</Button>
       ),
@@ -270,6 +274,7 @@ Header.propTypes = {
   updateUser: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   navigateToScreen: PropTypes.func.isRequired,
+  navigateToProject: PropTypes.func.isRequired,
 };
 
 export default Radium(Header);

@@ -10,6 +10,10 @@ import {
 export function getBoxJson({boxes, format, projectKey}) {
   return makeArray(boxes)
     .filter(box => (!!box && !box.deleted && box.type !== BOX_TYPES.LABEL && box.projectKey === projectKey))
+    .sort((a, b) => {
+      if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
+      return 1;
+    })
     .reduce((result, box) => {
       let value;
 

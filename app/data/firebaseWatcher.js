@@ -90,9 +90,9 @@ function onUserChange(userDataSnapshot) {
   }
 }
 
-function startListening(user) {
+function startListening(providerUser) {
   const db = getApp().database().ref();
-  const userRef = db.child('users').child(user.uid);
+  const userRef = db.child('users').child(providerUser.uid);
 
   TYPES.PROJECT.dbRef = db.child(TYPES.PROJECT.dbPath);
   TYPES.SCREEN.dbRef = db.child(TYPES.SCREEN.dbPath);
@@ -108,14 +108,14 @@ export default {
   bindToStore: (reduxStore) => {
     store = reduxStore;
 
-    getApp().auth().onAuthStateChanged(user => {
-      if (user && !isSignedIn) { // user has just signed in
+    getApp().auth().onAuthStateChanged(providerUser => {
+      if (providerUser && !isSignedIn) { // user has just signed in
         isSignedIn = true;
 
-        firebaseActions.handleSignIn(user).then(startListening);
+        firebaseActions.handleSignIn(providerUser).then(startListening);
       }
 
-      if (isSignedIn && !user) { // user is signing out
+      if (isSignedIn && !providerUser) { // user is signing out
         isSignedIn = false;
 
         store.dispatch({

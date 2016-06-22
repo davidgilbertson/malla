@@ -11,11 +11,11 @@ let reduxStore;
 
 /*  --  USERS  --  */
 
-function normalizeProviderData(rawUser) {
-  const providerData = rawUser.providerData[0] || {};
+function normalizeProviderUser(providerUser) {
+  const providerData = providerUser.providerData[0] || {};
 
   return {
-    uid: rawUser.uid,
+    uid: providerUser.uid,
     name: providerData.displayName || '',
     email: providerData.email || '',
     profileImageURL: providerData.profileImageURL || providerData.photoURL || '',
@@ -25,7 +25,7 @@ function normalizeProviderData(rawUser) {
 
 function createUser(providerUser) {
   const {uid} = providerUser;
-  const user = normalizeProviderData(providerUser);
+  const user = normalizeProviderUser(providerUser);
 
   const newProjectKey = db.child('data/projects').push().key;
   const newScreenKey = db.child('data/screens').push().key;
@@ -51,10 +51,10 @@ function createUser(providerUser) {
   };
 
   const newProject = {
-    name: 'Project 1',
+    name: 'My project',
     description: '',
     lastBoxLabelId: 1,
-    slug: 'project-1',
+    slug: 'my-project',
     screenKeys: {
       [newScreenKey]: true,
     },
@@ -64,9 +64,9 @@ function createUser(providerUser) {
   };
 
   const newScreen = {
-    name: 'Screen 1',
+    name: 'Main screen',
     description: '',
-    slug: 'screen-1',
+    slug: 'main-screen',
     projectKey: newProjectKey,
     boxKeys: {
       [newBoxKey]: true,
@@ -74,7 +74,7 @@ function createUser(providerUser) {
   };
 
   const newBox = {
-    label: 'title',
+    label: 'exampleTextItem',
     text: 'Your first text box. Click once to move or resize, click again to edit the text.',
     height: 50,
     left: 40,
@@ -87,7 +87,6 @@ function createUser(providerUser) {
   };
 
   newUser.lastUrl = `/s/${newScreenKey}/${newProject.slug}/${newScreen.slug}`;
-  newUser.mruScreenKey = newScreenKey;
 
   const newData = {
     [`users/${uid}`]: newUser,
@@ -143,32 +142,38 @@ export function updateUser(newProps) {
     .update(newProps);
 }
 
-function createOrUpdateUser({user, isNewUser, existingUser}) {
+export function logUserSignIn(providerUser) {
+  const mallaUser = normalizeProviderUser(providerUser);
+
+  const userRef = db.child('users').child(providerUser.uid);
+  const newSignInKey = userRef.child('signIns').push().key;
+  const now = new Date().toISOString();
+
+  const updatedUser = {
+    name: mallaUser.name,
+    email: mallaUser.email,
+    profileImageURL: mallaUser.profileImageURL,
+    lastSignIn: now,
+    [`signIns/${newSignInKey}`]: now,
+  };
+
+  userRef.update(updatedUser);
+}
+
+function createOrUpdateUser({providerUser, isNewUser, existingUser}) {
   let resultUser;
   let action;
 
   if (isNewUser) {
     action = tracker.EVENTS.ACTIONS.SIGNED_UP;
 
-    resultUser = createUser(user);
+    resultUser = createUser(providerUser);
   } else {
     action = tracker.EVENTS.ACTIONS.SIGNED_IN;
 
-    const newProps = {
-      lastSignIn: new Date().toISOString(),
-    };
-
-    if (!existingUser.mruScreenKey) {
-      if (!existingUser.screenKeys) {
-        console.warn('This user does not have any screenKeys. Something has gone wrong');
-      }
-      newProps.mruScreenKey = Object.keys(existingUser.screenKeys)[0];
-    }
-
-    updateUser(newProps);
+    logUserSignIn(providerUser);
 
     resultUser = existingUser;
-    // TODO (davidg): else update the record if profile pic or something changed?
   }
 
   tracker.setUserDetails(resultUser);
@@ -178,20 +183,20 @@ function createOrUpdateUser({user, isNewUser, existingUser}) {
     action,
   });
 
-  return Promise.resolve(user);
+  return Promise.resolve(providerUser);
 }
 
-export function handleSignIn(user) {
-  return checkIfUserExists(user).then(createOrUpdateUser);
+export function handleSignIn(providerUser) {
+  return checkIfUserExists(providerUser).then(createOrUpdateUser);
 }
 
-function checkIfUserExists(user) {
+function checkIfUserExists(providerUser) {
   return db
     .child('users')
-    .child(user.uid)
+    .child(providerUser.uid)
     .once('value')
     .then(dataSnapshot => Promise.resolve({
-      user,
+      providerUser,
       isNewUser: !dataSnapshot.exists(),
       existingUser: dataSnapshot.exists() && dataSnapshot.val(),
     }));

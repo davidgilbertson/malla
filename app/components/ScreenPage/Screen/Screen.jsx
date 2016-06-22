@@ -203,6 +203,7 @@ class Screen extends Component {
       return <div style={styles.workspace}></div>;
     }
 
+    // it's been a while and the user isn't signed in yet
     if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedALot) {
       return (
         <div style={styles.workspace}>
@@ -220,6 +221,7 @@ class Screen extends Component {
       );
     }
 
+    // the page is loaded but we're waiting for the user sign in with firebase to happen
     if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedABit) {
       return (
         <div style={styles.workspace}>
@@ -232,11 +234,13 @@ class Screen extends Component {
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     const noCurrentScreen = !currentScreen || currentScreen.deleted;
 
+    // data should have loaded by now, but there's nothing. Probably a bad URL
     if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedALot) {
-      this.props.navigateToScreen(); // navigate to the first screen
+      this.props.navigateToProject(); // navigate to the first project/screen
     }
 
-    if (thereAreNoScreens || noCurrentScreen && this.state.waitedABit) {
+    // data isn't loaded, waiting...
+    if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedABit) {
       return (
         <div style={styles.workspace}>
           <h1 style={styles.signInWords}>Loading...</h1>
@@ -286,6 +290,7 @@ Screen.propTypes = {
   showModal: PropTypes.func.isRequired,
   showDropModal: PropTypes.func.isRequired,
   navigateToScreen: PropTypes.func.isRequired,
+  navigateToProject: PropTypes.func.isRequired,
 };
 
 export default Radium(Screen);

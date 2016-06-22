@@ -14,6 +14,7 @@ const mapDispatchToProps = () => ({
   updateUser: actions.updateUser,
   signOut: actions.signOut,
   navigateToScreen: actions.navigateToScreen,
+  navigateToProject: actions.navigateToProject,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
