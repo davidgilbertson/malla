@@ -53,7 +53,9 @@ function makeUserDom(users) {
   headerRowEl.appendChild(makeEl('th', 'Boxes'));
   headerRowEl.appendChild(makeEl('th', 'Screens'));
   headerRowEl.appendChild(makeEl('th', 'Last sign in (local)'));
+  headerRowEl.appendChild(makeEl('th', 'Sign ins'));
   headerRowEl.appendChild(makeEl('th', 'Key'));
+  headerRowEl.appendChild(makeEl('th', 'Provider'));
   tableEl.appendChild(headerRowEl);
 
   users.forEach(user => {
@@ -62,7 +64,9 @@ function makeUserDom(users) {
     rowEl.appendChild(makeEl('td', user.boxCount));
     rowEl.appendChild(makeEl('td', user.screenCount));
     rowEl.appendChild(makeEl('td', new Date(user.lastSignIn).toLocaleString()));
+    rowEl.appendChild(makeEl('td', user.signIns ? Object.keys(user.signIns).length : 1));
     rowEl.appendChild(makeEl('td', user.key));
+    rowEl.appendChild(makeEl('td', user.provider));
 
     tableEl.appendChild(rowEl);
   });
