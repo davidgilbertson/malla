@@ -29,7 +29,9 @@ class TextArea extends Component {
   }
 
   onKeyUp(e) {
-    if (this.props.onCtrlEnter && e.ctrlKey && e.keyCode === KEYS.ENTER) {
+    const ctrlEnter = e.keyCode === KEYS.ENTER && (e.ctrlKey || e.metaKey); // meta === cmd on OSX
+
+    if (this.props.onCtrlEnter && ctrlEnter) {
       this.props.onCtrlEnter();
     }
 
