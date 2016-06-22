@@ -107,9 +107,11 @@ export function signIn(providerString) {
   switch (providerString) {
     case 'facebook':
       provider = new firebaseApp.auth.FacebookAuthProvider();
+      provider.addScope('email');
       break;
     case 'google':
       provider = new firebaseApp.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/userinfo.email');
       break;
     case 'twitter':
       provider = new firebaseApp.auth.TwitterAuthProvider();
