@@ -24,8 +24,10 @@ app.get('/users', (req, res) => {
     const users = userKeys.map(key => {
       const user = userList[key];
 
-      user.boxCount = user.boxKeys ? Object.keys(user.boxKeys).length : 0;
+      user.signInCount = user.signIns ? Object.keys(user.signIns).length : 1;
+      user.projectCount = user.projectKeys ? Object.keys(user.projectKeys).length : 0;
       user.screenCount = user.screenKeys ? Object.keys(user.screenKeys).length : 0;
+      user.boxCount = user.boxKeys ? Object.keys(user.boxKeys).length : 0;
       user.key = key;
 
       return user;
