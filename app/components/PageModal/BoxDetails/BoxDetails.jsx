@@ -461,6 +461,8 @@ class BoxDetails extends Component {
       textWrapper: {
         position: 'relative',
         height: DIMENSIONS.SPACE_L * 6,
+        maxHeight: window.innerHeight - 550, // roughly keep the other settings visible on smaller screens
+        minHeight: 100, // but not too small
       },
       textInput: {
         display: 'block', // normalize textarea and div
