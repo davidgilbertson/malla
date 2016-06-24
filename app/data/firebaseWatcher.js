@@ -2,11 +2,14 @@ import {
   ACTIONS,
   LS_WRITE_DELAY,
 } from '../constants.js';
+
 import {
   ls,
 } from '../utils';
+
 import {getApp} from './firebaseApp.js';
 import * as firebaseActions from './firebaseActions.js';
+import * as actions from './actions.js';
 
 let isSignedIn = false;
 let store;
@@ -82,8 +85,7 @@ const firebaseWatcher = new FirebaseWatcher();
 
 function onUserChange(userDataSnapshot) {
   if (userDataSnapshot.val()) {
-    store.dispatch({
-      type: ACTIONS.SIGN_IN_USER, // TODO (davidg): .UPSERT_USER ?
+    actions.signInUser({
       key: userDataSnapshot.key,
       val: userDataSnapshot.val(),
     });

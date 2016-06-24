@@ -1,5 +1,5 @@
-$.getJSON('http://www.malla.io/project/my-project/-KHsXeM-W6ZJmLE_HN5f.json', data => {
+$.getJSON('https://www.malla.io/api/-KKutKrEc6WI4rLE8j3D.json', data => {
   $('[data-malla]').each((i, el) => {
-    el.textContent = data[el.dataset.malla];
+    el.innerHTML = data[el.dataset.malla];
   });
 });

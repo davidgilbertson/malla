@@ -14,6 +14,7 @@ import * as tracker from '../tracker.js';
 
 import {
   ACTIONS,
+  INTERACTIONS,
 } from '../constants.js';
 
 import {
@@ -231,8 +232,27 @@ export function selectTool(tool) {
 }
 
 /*  --  USERS  --  */
-export function signIn(provider) {
+// triggered by the UI
+export function initiateSignIn(provider) {
   firebaseActions.signIn(provider);
+}
+
+// triggered by firebaseWatcher when the auth state changes and there's a user
+export function signInUser({key, val}) {
+  store.dispatch({
+    type: ACTIONS.SIGN_IN_USER,
+    key,
+    val,
+  });
+
+  const {interaction, user} = store.getState();
+  const waitingForSignIn = interaction === INTERACTIONS.USER_WAITING_TO_SIGN_IN;
+  const userHasLastUrl = !!user.lastUrl;
+
+  if (waitingForSignIn && userHasLastUrl) {
+    setInteraction(null);
+    browserHistory.push(user.lastUrl);
+  }
 }
 
 export function updateUser(newProps) {

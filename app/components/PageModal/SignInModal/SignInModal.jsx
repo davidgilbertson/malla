@@ -37,8 +37,8 @@ const styles = {
 const SignInModal = props => {
   const signIn = provider => {
     props.hideModal();
-    props.setInteraction(INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE);
-    props.signIn(provider);
+    props.setInteraction(INTERACTIONS.USER_WAITING_TO_SIGN_IN);
+    props.initiateSignIn(provider);
   };
 
   return (
@@ -86,7 +86,7 @@ const SignInModal = props => {
 SignInModal.propTypes = {
   hideModal: PropTypes.func.isRequired,
   setInteraction: PropTypes.func.isRequired,
-  signIn: PropTypes.func.isRequired,
+  initiateSignIn: PropTypes.func.isRequired,
 };
 
 export default SignInModal;

@@ -114,6 +114,21 @@ const styles = {
       fontWeight: 700,
     },
   },
+  docs: {
+    p: {
+      marginTop: 10,
+      lineHeight: 1.6,
+    },
+    a: {
+      color: COLORS.ACCENT,
+      textDecoration: 'underline',
+    },
+  },
+  homePage: {
+    a: {
+      borderBottom: `1px dotted ${COLORS.WHITE}`,
+    },
+  },
 };
 
 const App = (props) => (
@@ -122,6 +137,18 @@ const App = (props) => (
     <Style
       scopeSelector=".markdown-content"
       rules={styles.markdown}
+    />
+    <Style
+      scopeSelector=".malla-docs"
+      rules={styles.docs}
+    />
+    <Style
+      scopeSelector=".help-panel"
+      rules={styles.docs}
+    />
+    <Style
+      scopeSelector=".home-page"
+      rules={styles.homePage}
     />
 
     <HeaderContainer {...props} />

@@ -91,7 +91,7 @@ class HelpPanel extends Component {
         style={styles.panel}
         showClose={false}
       >
-        <div>
+        <div className="help-panel">
           <p>{MALLA_TEXT.helpPanelIntro}</p>
 
           <h2 style={styles.subtitle}>{MALLA_TEXT.helpPanelSubtitle}</h2>

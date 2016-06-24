@@ -76,7 +76,7 @@ class Draggable extends Component {
     this.props.onMouseDown(e);
     if (this.props.disableDragging) return;
     this.setState({isDragging: true});
-    
+
     e.preventDefault();
 
     const {x, y} = getEventDims(e, {snap: true});

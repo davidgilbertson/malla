@@ -1,8 +1,9 @@
 import React from 'react';
-const {Component, PropTypes} = React;
+const {PropTypes} = React;
 import Radium, {Style} from 'radium';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import {Link} from 'react-router';
+
 import Button from '../Button/Button.jsx';
 import * as actions from '../../data/actions.js';
 
@@ -10,9 +11,7 @@ import {
   BREAKPOINTS,
   COLORS,
   DIMENSIONS,
-  INTERACTIONS,
   MODALS,
-  SIGN_IN_STATUSES,
 } from '../../constants.js';
 
 import {
@@ -127,6 +126,11 @@ const styles = {
       margin: '80px auto 0',
     },
   },
+  gettingStartedLink: {
+    marginTop: DIMENSIONS.SPACE_L,
+    fontSize: 20,
+    textAlign: 'center',
+  },
   faqWrapper: {
     width: 320,
     margin: '80px auto 0',
@@ -151,77 +155,71 @@ const styles = {
   },
 };
 
-class HomePage extends Component {
-  componentWillReceiveProps(nextProps) {
-    // If we are on the home page and a user signs in, then navigate them to the last URL they were at
-    const userInitiatedSignIn = this.props.interaction === INTERACTIONS.SIGNING_IN_FROM_HOME_PAGE;
+let HomePage = props => (
+  <div
+    className="home-page"
+    style={styles.main}
+  >
+    <Style rules={styles.css} />
 
-    const justSignedIn = this.props.user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN
-      && nextProps.user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
+    <h1 style={styles.title}>{MALLA_TEXT.title}</h1>
 
-    if (userInitiatedSignIn && justSignedIn && nextProps.user.lastUrl) {
-      // TODO (davidg): reset the interaction to null
-      browserHistory.push(nextProps.user.lastUrl);
-    }
-  }
+    <div style={styles.subTitle}>{MALLA_TEXT.slogan}</div>
 
-  render() {
-    return (
-      <div style={styles.main}>
-        <Style rules={styles.css} />
+    <div style={styles.boxesWrapper}>
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>{MALLA_TEXT.box1Title}</h2>
 
-        <h1 style={styles.title}>{MALLA_TEXT.title}</h1>
-
-        <div style={styles.subTitle}>{MALLA_TEXT.slogan}</div>
-
-        <div style={styles.boxesWrapper}>
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>{MALLA_TEXT.box1Title}</h2>
-
-            <p style={styles.boxDescription}>{MALLA_TEXT.box1Desc}</p>
-          </div>
-
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>{MALLA_TEXT.box2Title}</h2>
-
-            <p style={styles.boxDescription}>{MALLA_TEXT.box2Desc}</p>
-          </div>
-
-          <div style={styles.box}>
-            <h2 style={styles.boxTitle}>{MALLA_TEXT.box3Title}</h2>
-
-            <p style={styles.boxDescription}>{MALLA_TEXT.box3Desc}</p>
-          </div>
-        </div>
-
-        <iframe style={styles.video} src="https://www.youtube.com/embed/aHzVmEWxek8?rel=0" frameBorder="0" allowFullScreen></iframe>
-
-        <Button
-          style={styles.bigSignUpButton}
-          category={EVENTS.CATEGORIES.UI_INTERACTION}
-          action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
-          label="Home page"
-          onClick={() => {
-            this.props.showModal(MODALS.SOCIAL_SIGN_IN);
-          }}
-        >
-          {MALLA_TEXT.signUpLong}
-        </Button>
-
-        <div style={styles.faqWrapper}>
-          <h2 style={styles.question}>{MALLA_TEXT.question1}</h2>
-          <p style={styles.answer}>{MALLA_TEXT.answer1}</p>
-
-          <h2 style={styles.question}>{MALLA_TEXT.question2}</h2>
-          <p style={styles.answer}>{MALLA_TEXT.answer2}</p>
-
-          <h2 style={styles.question}>{MALLA_TEXT.question3}</h2>
-          <p style={styles.answer}>{MALLA_TEXT.answer3}</p>
-        </div>
+        <p style={styles.boxDescription}>{MALLA_TEXT.box1Desc}</p>
       </div>
-    );
-  }
-}
+
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>{MALLA_TEXT.box2Title}</h2>
+
+        <p style={styles.boxDescription}>{MALLA_TEXT.box2Desc}</p>
+      </div>
+
+      <div style={styles.box}>
+        <h2 style={styles.boxTitle}>{MALLA_TEXT.box3Title}</h2>
+
+        <p style={styles.boxDescription}>{MALLA_TEXT.box3Desc}</p>
+      </div>
+    </div>
+
+    <iframe style={styles.video} src="https://www.youtube.com/embed/aHzVmEWxek8?rel=0" frameBorder="0" allowFullScreen></iframe>
+
+    <Button
+      style={styles.bigSignUpButton}
+      category={EVENTS.CATEGORIES.UI_INTERACTION}
+      action={EVENTS.ACTIONS.CLICKED.SIGN_UP}
+      label="Home page"
+      onClick={() => {
+        props.showModal(MODALS.SOCIAL_SIGN_IN);
+      }}
+    >
+      {MALLA_TEXT.signUpLong}
+    </Button>
+
+    <div style={styles.faqWrapper}>
+      <p style={styles.gettingStartedLink}>
+        <span>{MALLA_TEXT.homePageGettingStartedLink1} </span>
+
+        <Link to="/docs/getting-started">{MALLA_TEXT.homePageGettingStartedLink2}</Link>
+
+        <span> {MALLA_TEXT.homePageGettingStartedLink3}</span>
+      </p>
+
+      <h2 style={styles.question}>{MALLA_TEXT.question1}</h2>
+      <p style={styles.answer}>{MALLA_TEXT.answer1}</p>
+
+      <h2 style={styles.question}>{MALLA_TEXT.question2}</h2>
+      <p style={styles.answer}>{MALLA_TEXT.answer2}</p>
+
+      <h2 style={styles.question}>{MALLA_TEXT.question3}</h2>
+      <p style={styles.answer}>{MALLA_TEXT.answer3}</p>
+    </div>
+  </div>
+);
 
 HomePage.propTypes = {
   // state

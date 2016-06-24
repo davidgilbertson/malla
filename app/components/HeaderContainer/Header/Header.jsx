@@ -102,6 +102,9 @@ const baseStyles = {
       display: 'inline-block',
     },
   },
+  gettingStarted: {
+    marginRight: 20,
+  },
 };
 
 class Header extends React.Component {
@@ -185,6 +188,14 @@ class Header extends React.Component {
           }}
         >My workspace</Button>
       ),
+      gettingStarted: (
+        <span
+          key="gettingStarted"
+          style={styles.gettingStarted}
+        >
+          <Link to="/docs/getting-started">Getting started guide</Link>
+        </span>
+      ),
       userName: (
         <span
           key="userName"
@@ -213,6 +224,8 @@ class Header extends React.Component {
     };
 
     const atHome = location && location.pathname === '/';
+    const inTheGuide = location && location.pathname === '/docs/getting-started';
+    const inTheApp = location && location.pathname && location.pathname.startsWith('/s/');
     const signedIn = user.signInStatus === SIGN_IN_STATUSES.SIGNED_IN;
 
     const actionItemElements = [];
@@ -222,6 +235,17 @@ class Header extends React.Component {
       styles.header.backgroundColor = 'transparent';
       styles.header.height = DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME;
 
+      actionItemElements.push(
+        <span
+          key="gettingStarted"
+          style={styles.gettingStarted}
+        >
+          <Link to="/docs/getting-started">Getting started guide</Link>
+        </span>
+      );
+    }
+
+    if (atHome || inTheGuide) {
       if (signedIn) {
         actionItemElements.push(actionItems.myProjects);
         actionItemElements.push(actionItems.signOutButton);
@@ -229,19 +253,27 @@ class Header extends React.Component {
         actionItemElements.push(actionItems.signInButton);
         actionItemElements.push(actionItems.signUpButton);
       }
-    } else {
+    }
+
+    if (inTheApp) {
+      actionItemElements.push(
+        <span
+          key="gettingStarted"
+          style={styles.gettingStarted}
+        >
+          <Link to="/docs/getting-started">Help</Link>
+        </span>
+      );
+
       if (signedIn) {
         actionItemElements.push(actionItems.userName);
-
-        if (!user.showHelp) {
-          actionItemElements.push(actionItems.showHelp);
-        }
         actionItemElements.push(actionItems.signOutButton);
         actionItemElements.push(<SocialIcons key="socialButtons" buttonHeight={styles.headerButton.height} />);
-
         actionItemElements.push(actionItems.feedback);
       }
+    }
 
+    if (inTheApp || inTheGuide) {
       homeLink = (
         <h1 style={styles.title}>
           <Link to="/">{MALLA_TEXT.title}</Link>
