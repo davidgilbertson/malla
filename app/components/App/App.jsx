@@ -60,7 +60,7 @@ const styles = {
       border: 0,
       color: 'inherit',
       fontFamily: 'inherit',
-      fontWeight: 300,
+      fontWeight: 'inherit',
       fontSize: 'inherit',
       cursor: 'pointer',
       textTransform: 'uppercase',
