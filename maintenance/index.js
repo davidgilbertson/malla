@@ -62,25 +62,6 @@ if (argv.func === 'addOwners') {
     console.dir(updateData, {depth: 1, colors: true});
     localFirebaseDatabase.update(updateData);
   });
-// } else if (argv.func === 'convertProjectTrueToRole') {
-//   console.log('> Running "convertProjectTrueToRole()"');
-//
-//   localFirebaseDatabase.child('users').once('value').then(usersSnap => {
-//     const updateData = {};
-//     const users = usersSnap.val();
-//
-//     Object.keys(users).forEach(userKey => {
-//       const user = users[userKey];
-//       console.info(`Updating user ${user.name}`);
-//
-//       Object.keys(user.projectKeys || {}).forEach(projectKey => {
-//         updateData[`users/${userKey}/projectKeys/${projectKey}`] = ROLES.OWNER;
-//         console.info(`Updating project key ${projectKey} to ${ROLES.OWNER}`);
-//       });
-//     });
-//
-//     localFirebaseDatabase.update(updateData);
-//   });
 } else {
   console.info('You did not request any known function');
 }
