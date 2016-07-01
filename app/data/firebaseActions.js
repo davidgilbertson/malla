@@ -458,6 +458,7 @@ export function updateBox({key, val}) {
 export function removeBox(boxKey) {
   db.child('data/boxes').child(boxKey).update({
     deleted: new Date().toISOString(),
+    label: `deleted-${+new Date()}`,
   });
 }
 

@@ -80,8 +80,9 @@ class BoxDetails extends Component {
         const boxIsInCurrentProject = box.projectKey === this.currentProjectKey;
         const boxHasSameLabelAsInput = box.label === currentId;
         const boxIsNotTheBoxBeingEdited = box._key !== this.props.activeBox.id;
+        const boxIsNotDeleted = !box.deleted;
 
-        return (boxIsInCurrentProject && boxHasSameLabelAsInput && boxIsNotTheBoxBeingEdited);
+        return (boxIsInCurrentProject && boxHasSameLabelAsInput && boxIsNotTheBoxBeingEdited && boxIsNotDeleted);
       });
 
     const idIsAvailable = !boxesWithSameId.length;
