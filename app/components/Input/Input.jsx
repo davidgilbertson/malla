@@ -35,6 +35,10 @@ class Input extends Component {
     return this.getTypedValue(this.inputEl.value);
   }
 
+  setValue(value) {
+    this.inputEl.value = value || '';
+  }
+
   render() {
     const {props} = this;
 
@@ -50,9 +54,12 @@ class Input extends Component {
         style={props.style}
         min={props.min}
         onChange={this.onChange}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
         autoFocus={props.autoFocus}
         disabled={props.disabled}
         spellCheck={props.spellCheck}
+        placeholder={props.placeholder}
       />
     );
   }
@@ -76,6 +83,7 @@ Input.propTypes = {
   spellCheck: PropTypes.bool,
   style: PropTypes.object,
   min: PropTypes.string,
+  placeholder: PropTypes.string,
 
   // functions
   onEnter: PropTypes.func,
