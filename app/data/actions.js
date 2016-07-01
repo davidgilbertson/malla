@@ -15,6 +15,7 @@ import * as tracker from '../tracker.js';
 import {
   ACTIONS,
   INTERACTIONS,
+  MODALS,
 } from '../constants.js';
 
 import {
@@ -26,24 +27,32 @@ import {
 const onClient = typeof window !== 'undefined';
 
 /*  --  PROJECTS  --  */
-export function addProject(project) {
+// TODO (davidg): will I ever pass in a project?
+export function addProject(project, showProjectDetailsModal) {
   tracker.sendEvent({
     category: tracker.EVENTS.CATEGORIES.DATA_INTERACTION,
     action: tracker.EVENTS.ACTIONS.ADDED_PROJECT,
   });
 
-  const {newScreenKey} = firebaseActions.addProject(project);
+  const {newScreenKey} = firebaseActions.addProject();
 
   const url = getUrlForScreenKey(store, newScreenKey);
 
   // update the URL.
   // routes.js will dispatch navigateToScreen() when the URL changes
   browserHistory.push(url);
+
+  if (showProjectDetailsModal) {
+    showModal(MODALS.ADD_PROJECT);
+  }
 }
 
 export function updateProject(key, val) {
   firebaseActions.updateProject({key, val});
 }
+
+export const addUserToProject = firebaseActions.addUserToProject;
+export const removeUserFromProject = firebaseActions.removeUserFromProject;
 
 export function removeProject(key) {
   tracker.sendEvent({
@@ -97,13 +106,8 @@ export function navigateToProject(key) {
       .find(project => project && !project.deleted);
 
     if (!firstProject) {
-      console.warn('Looks like there are no projects at all. Going home');
-
-      firebaseActions.updateUser({
-        lastUrl: null,
-      });
-
-      browserHistory.push('/');
+      console.warn('Looks like there are no projects at all.');
+      addProject(); // this will redirect to the new project too
       return;
     }
 

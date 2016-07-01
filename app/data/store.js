@@ -22,6 +22,7 @@ if (onClient) {
     delete localStore.currentTool;
     delete localStore.currentDropModal;
     delete localStore.currentModal;
+    delete localStore.dataLoadStatus;
     localState = localStore;
   }
 }

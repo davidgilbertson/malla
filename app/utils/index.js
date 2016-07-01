@@ -13,5 +13,8 @@ export const getBoxJson = require('./getBoxJson.js').getBoxJson;
 export const timer = require('./timer.js');
 export const cacher = require('./cacher.js').cacher;
 export const makeArray = require('./makeArray.js').makeArray;
+export const fuzzySearch = require('./fuzzySearch.js').fuzzySearch;
+export const getPublicUserProps = require('./getPublicUserProps.js').getPublicUserProps;
+export const userOwnsProject = require('./userOwnsProject.js').userOwnsProject;
 
 /* eslint-enable global-require */

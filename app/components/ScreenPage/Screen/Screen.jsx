@@ -17,6 +17,7 @@ import {
   BOX_TYPES,
   BREAKPOINTS,
   COLORS,
+  DATA_LOAD_STATUSES,
   DIMENSIONS,
   GRID_SIZE,
   DROP_MODALS,
@@ -75,6 +76,7 @@ class Screen extends Component {
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.sendBox = this.sendBox.bind(this);
+    this.renderSignInMessage = this.renderSignInMessage.bind(this);
 
     this.isMoving = false;
     this.startX = 0;
@@ -112,6 +114,7 @@ class Screen extends Component {
       !isEqual(nextProps.user, this.props.user) ||
       !isEqual(nextProps.currentTool, this.props.currentTool) ||
       !isEqual(nextProps.currentScreenKey, this.props.currentScreenKey) ||
+      !isEqual(nextProps.dataLoadStatus, this.props.dataLoadStatus) ||
       !isEqual(nextProps.screens, this.props.screens) ||
       !isEqual(nextProps.projects, this.props.projects)
     );
@@ -194,58 +197,78 @@ class Screen extends Component {
     });
   }
 
-  render() {
-    const {user} = this.props;
+  renderLoading() {
+    return (
+      <div style={styles.workspace}>
+        <h1 style={styles.signInWords}>Loading...</h1>
+      </div>
+    );
+  }
 
+  renderBlank() {
+    return <div style={styles.workspace}></div>;
+  }
+
+  renderSignInMessage() {
+    return (
+      <div style={styles.workspace}>
+        <h1 style={styles.signInWords}>You must be signed in to see this page.</h1>
+
+        <Button
+          style={css.buttonStyle}
+          onClick={() => {
+            this.props.showModal(MODALS.SOCIAL_SIGN_IN);
+          }}
+        >
+          {MALLA_TEXT.signIn}
+        </Button>
+      </div>
+    );
+  }
+
+  render() {
+    const {dataLoadStatus, user} = this.props;
+
+    // I only ever want this blank coming back from the server
+    // else the 'loading' HTML comes up for a flash
     if (typeof window === 'undefined') {
-      // I only ever want this blank coming back from the server
-      // else the 'loading' HTML comes up for a flash
-      return <div style={styles.workspace}></div>;
+      return this.renderBlank();
     }
+
+    const userNotSignedIn = !user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN;
 
     // it's been a while and the user isn't signed in yet
-    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedALot) {
-      return (
-        <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>Something's not right. Try signing in.</h1>
-
-          <Button
-            style={css.buttonStyle}
-            onClick={() => {
-              this.props.showModal(MODALS.SOCIAL_SIGN_IN);
-            }}
-          >
-            {MALLA_TEXT.signIn}
-          </Button>
-        </div>
-      );
+    // e.g. user goes to a screen URL on a machine where not signed in
+    // TODO (davidg): is there a way to check if no user details are local (e.g. no cookie)
+    if (this.state.waitedALot && userNotSignedIn) {
+      return this.renderSignInMessage();
     }
 
-    // the page is loaded but we're waiting for the user sign in with firebase to happen
-    if (!user || user.signInStatus !== SIGN_IN_STATUSES.SIGNED_IN && this.state.waitedABit) {
-      return (
-        <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>Loading...</h1>
-        </div>
-      );
+    // Waiting for the user authentication with firebase to happen
+    if (this.state.waitedABit && userNotSignedIn) {
+      return this.renderLoading();
     }
 
     const thereAreNoScreens = !Object.keys(this.props.screens).length;
     const currentScreen = this.props.screens[this.props.currentScreenKey];
     const noCurrentScreen = !currentScreen || currentScreen.deleted;
+    const currentProject = !!currentScreen && this.props.projects[currentScreen.projectKey];
+    const noCurrentProject = !currentProject || currentProject.deleted;
+    const dataDoesNotExist = noCurrentProject || thereAreNoScreens || noCurrentScreen;
 
-    // data should have loaded by now, but there's nothing. Probably a bad URL
-    if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedALot) {
-      this.props.navigateToProject(); // navigate to the first project/screen
+    const firebaseDataFinishedLoading = dataLoadStatus === DATA_LOAD_STATUSES.COMPLETE;
+    const anyDataFinishedLoading = !!Object.keys(this.props.screens).length; // includes data from localStorage
+
+    // data has finished loading, but there's no screen. Probably a bad URL/removed project or screen
+    if (firebaseDataFinishedLoading && dataDoesNotExist) {
+      setTimeout(this.props.navigateToProject); // navigate to an available project/screen
+      return this.renderBlank();
     }
 
     // data isn't loaded, waiting...
-    if ((thereAreNoScreens || noCurrentScreen) && this.state.waitedABit) {
-      return (
-        <div style={styles.workspace}>
-          <h1 style={styles.signInWords}>Loading...</h1>
-        </div>
-      );
+    // this is about any data being available (local or firebase)
+    if (this.state.waitedABit && !anyDataFinishedLoading) {
+      return this.renderLoading();
     }
 
     return (
@@ -282,6 +305,7 @@ Screen.propTypes = {
   user: PropTypes.object.isRequired,
   currentTool: PropTypes.string.isRequired,
   currentScreenKey: PropTypes.string.isRequired,
+  dataLoadStatus: PropTypes.string.isRequired,
   screens: PropTypes.object.isRequired,
   projects: PropTypes.object.isRequired,
 

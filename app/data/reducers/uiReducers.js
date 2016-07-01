@@ -1,8 +1,9 @@
 import {
   ACTIONS,
+  DATA_LOAD_STATUSES,
+  DROP_MODALS,
   MODALS,
   TOOLS,
-  DROP_MODALS,
 } from '../../constants.js';
 
 const activeBox = (state = {}, action) => {
@@ -74,6 +75,16 @@ const currentModal = (state = MODALS.NONE, action) => {
   }
 };
 
+const dataLoadStatus = (state = DATA_LOAD_STATUSES.NOT_COMPLETE, action) => {
+  switch (action.type) {
+    case ACTIONS.SET_DATA_LOAD_STATUS:
+      return action.dataLoadStatus;
+
+    default:
+      return state;
+  }
+};
+
 const interaction = (state = null, action) => {
   switch (action.type) {
     case ACTIONS.SET_INTERACTION:
@@ -90,5 +101,6 @@ export default {
   currentDropModal,
   currentModal,
   currentScreenKey,
+  dataLoadStatus,
   interaction,
 };

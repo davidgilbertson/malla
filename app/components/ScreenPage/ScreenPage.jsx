@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   user: state.user,
   currentTool: state.currentTool,
   currentScreenKey: state.currentScreenKey,
+  dataLoadStatus: state.dataLoadStatus,
   screens: state.screens,
   projects: state.projects,
 });

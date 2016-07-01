@@ -25,9 +25,11 @@ const styles = {
     ...css.inputStyle,
     ...css.shadow('inset'),
   },
+  row: {
+    marginBottom: DIMENSIONS.SPACE_S,
+  },
   descInput: {
     width: '100%',
-    marginTop: DIMENSIONS.SPACE_S,
     height: DIMENSIONS.SPACE_L * 2,
     resize: 'none',
     ...css.inputStyle,
@@ -123,7 +125,9 @@ const ScreenDetails = props => {
       okText={'Save'}
       onOk={upsertScreenAndClose}
     >
-      <div>
+      <div style={styles.row}>
+        <label style={css.labelStyle}>Screen name</label>
+
         <Input
           ref={comp => nameComp = comp}
           defaultValue={screen.name}
@@ -133,7 +137,9 @@ const ScreenDetails = props => {
         />
       </div>
 
-      <div>
+      <div style={styles.row}>
+        <label style={css.labelStyle}>Notes</label>
+
         <TextArea
           ref={comp => descriptionComp = comp}
           defaultValue={screen.description}

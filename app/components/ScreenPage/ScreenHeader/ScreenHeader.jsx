@@ -103,6 +103,8 @@ const ScreenHeader = props => {
 
   const currentProject = props.projects[currentScreen.projectKey];
 
+  if (!currentProject) return null; // while loading for a new user
+
   const renderToolButtons = () => tools.map(tool => {
     let style = styles.toolButton;
 

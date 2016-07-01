@@ -40,6 +40,11 @@ export const buttonStyle = {
   textTransform: 'uppercase',
 };
 
+export const labelStyle = {
+  fontWeight: 400,
+  marginBottom: 4,
+};
+
 export function padding(top, right, bottom, left) {
   return {
     paddingTop: top,
@@ -68,6 +73,17 @@ export function background(rules) {
   if (rules.size) result.backgroundSize = rules.size;
 
   return result;
+}
+
+export function squareImage({url, size = DIMENSIONS.SPACE_S}) {
+  return {
+    height: size,
+    width: size,
+    backgroundImage: `url(${url})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    borderRadius: 4,
+  };
 }
 
 export function shadow(style = 'medium') {

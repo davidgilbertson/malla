@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import {getAppInGodMode} from './firebaseAppGodMode.js';
 
 import {
   getBoxJson,
@@ -8,18 +8,7 @@ import {
   API_TEXT_FORMATS,
 } from '../constants.js';
 
-const config = {
-  serviceAccount: {
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  },
-  databaseURL: process.env.FIREBASE_URL,
-};
-
-firebase.initializeApp(config);
-
-const db = firebase.database().ref();
+const db = getAppInGodMode().database().ref();
 
 export default function(req, res) {
   const projectId = req.params.projectId;

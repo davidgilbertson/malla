@@ -23,6 +23,7 @@ import {match} from 'react-router';
 require('./utils/normalizeNodeAndBrowser.js');
 
 import firebaseMiddleware from './server/firebaseMiddleware.js';
+import getUsers from './server/getUsers.js';
 
 import {
   cacher,
@@ -106,6 +107,7 @@ function getHtml(req, props, MALLA_TEXT) {
 }
 
 app.get('/api/:projectId.*json', firebaseMiddleware);
+app.get('/api/users', getUsers);
 
 app.use(cacher.checkForCache);
 

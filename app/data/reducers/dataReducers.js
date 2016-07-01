@@ -6,10 +6,13 @@ import {
   SIGN_IN_STATUSES,
 } from '../../constants.js';
 
+// this is only called from the firebase watchers.
+// so we know we'll get the entire object (e.g. project, screen, etc.)
+// so removing nested things (users on a project) takes effect, we just switch out the whole object
 function upsert(state, action) {
-  const nextState = {};
+  const nextState = merge({}, state);
 
-  merge(nextState, state, {[action.key]: action.val});
+  nextState[action.key] = action.val;
 
   return nextState;
 }
@@ -19,6 +22,12 @@ const projects = (state = {}, action) => {
 
     case ACTIONS.UPSERT_PROJECT:
       return upsert(state, action);
+
+    case ACTIONS.REMOVE_PROJECT: {
+      const newState = cloneDeep(state);
+      delete newState[action.key];
+      return newState;
+    }
 
     case ACTIONS.SIGN_OUT:
       return {};

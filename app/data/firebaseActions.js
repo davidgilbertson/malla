@@ -1,6 +1,12 @@
 import {
   BOX_TYPES,
+  ROLES,
 } from '../constants.js';
+
+import {
+  getPublicUserProps,
+} from '../utils';
+
 import {getApp} from './firebaseApp.js';
 import * as tracker from '../tracker.js';
 import slug from 'speakingurl';
@@ -40,21 +46,22 @@ function createUser(providerUser) {
     dateCreated: now,
     lastSignIn: now,
     projectKeys: {
-      [newProjectKey]: true,
-    },
-    screenKeys: {
-      [newScreenKey]: true,
-    },
-    boxKeys: {
-      [newBoxKey]: true,
+      [newProjectKey]: ROLES.OWNER,
     },
   };
 
+  // TODO (davidg): centralise this project/screen/box creation, it's done for adding a project too
   const newProject = {
     name: 'My project',
     description: '',
     lastBoxLabelId: 1,
     slug: 'my-project',
+    users: {
+      [uid]: {
+        ...getPublicUserProps(newUser),
+        role: ROLES.OWNER,
+      },
+    },
     screenKeys: {
       [newScreenKey]: true,
     },
@@ -209,16 +216,30 @@ export function signOut() {
 
 /*  --  PROJECTS  --  */
 
-export function addProject(project) {
+export function addProject(project = {}) {
+  // TODO (davidg): will I EVER pass in a project object? Cloning one day?
+  const currentUser = reduxStore.getState().user;
   const userKey = firebaseApp.auth().currentUser.uid;
   const newProjectKey = db.child('data/projects').push().key;
   const newScreenKey = db.child('data/screens').push().key;
+  const newBoxKey = db.child('data/boxes').push().key;
 
   const newProject = {
-    ...project,
-    slug: slug(project.name),
+    name: project.name || 'My project',
+    description: '',
+    lastBoxLabelId: 1,
+    slug: slug(project.name || 'My project'),
+    users: {
+      [currentUser.uid]: {
+        ...getPublicUserProps(currentUser),
+        role: ROLES.OWNER,
+      },
+    },
     screenKeys: {
       [newScreenKey]: true,
+    },
+    boxKeys: {
+      [newBoxKey]: true,
     },
   };
 
@@ -227,13 +248,30 @@ export function addProject(project) {
     slug: 'main-screen',
     description: '',
     projectKey: newProjectKey,
+    boxKeys: {
+      [newBoxKey]: true,
+    },
+  };
+
+  const newBox = {
+    height: 40,
+    label: `${newScreen.slug}-label`,
+    type: BOX_TYPES.LABEL,
+    left: 20,
+    text: newScreen.name, // don't put the project name in the label because it will always be 'My project'
+    top: 20,
+    width: 500,
+    projectKey: newProjectKey,
+    screenKeys: {
+      [newScreenKey]: true,
+    },
   };
 
   const newData = {
-    [`users/${userKey}/projectKeys/${newProjectKey}`]: true,
-    [`users/${userKey}/screenKeys/${newScreenKey}`]: true,
+    [`users/${userKey}/projectKeys/${newProjectKey}`]: ROLES.OWNER,
     [`data/projects/${newProjectKey}`]: newProject,
     [`data/screens/${newScreenKey}`]: newScreen,
+    [`data/boxes/${newBoxKey}`]: newBox,
   };
 
   db.update(newData);
@@ -243,6 +281,31 @@ export function addProject(project) {
 
 export function updateProject({key, val}) {
   db.child('data/projects').child(key).update(val);
+}
+
+export function addUserToProject({projectKey, role, userKey, user}) {
+  const projectUser = {
+    ...user,
+    role,
+  };
+
+  const newData = {
+    [`data/projects/${projectKey}/users/${userKey}`]: projectUser,
+    [`users/${userKey}/projectKeys/${projectKey}`]: role,
+  };
+
+  db.update(newData);
+}
+
+export function removeUserFromProject({projectKey, userKey}) {
+  // can't just remove the project record from the user because
+  // we need to trigger it to be removed from their localStorage next time they connect
+  const updateData = {
+    [`data/projects/${projectKey}/users/${userKey}/role`]: ROLES.NO_ACCESS,
+    [`users/${userKey}/projectKeys/${projectKey}`]: ROLES.NO_ACCESS,
+  };
+
+  db.update(updateData);
 }
 
 export function removeProject(projectKey) {
@@ -260,18 +323,14 @@ export function removeProject(projectKey) {
       [`data/projects/${projectKey}/deleted`]: deleteDate,
     };
 
-    if (project.screenKeys) {
-      Object.keys(project.screenKeys).forEach(screenKey => {
-        updateData[`data/screens/${screenKey}/deleted`] = deleteDate;
-      });
-    }
+    Object.keys(project.screenKeys || {}).forEach(screenKey => {
+      updateData[`data/screens/${screenKey}/deleted`] = deleteDate;
+    });
 
     // When the feature of box linking is in, deleting a project should not delete the boxes on it.
-    if (project.boxKeys) {
-      Object.keys(project.boxKeys).forEach(boxKey => {
-        updateData[`data/boxes/${boxKey}/deleted`] = deleteDate;
-      });
-    }
+    Object.keys(project.boxKeys || {}).forEach(boxKey => {
+      updateData[`data/boxes/${boxKey}/deleted`] = deleteDate;
+    });
 
     db.update(updateData);
   });
@@ -281,7 +340,6 @@ export function removeProject(projectKey) {
 /*  --  SCREENS  --  */
 
 export function addScreen(screen, currentProjectKey) {
-  const userKey = firebaseApp.auth().currentUser.uid;
   const newScreenKey = db.child('data/screens').push().key;
   const newBoxKey = db.child('data/boxes').push().key;
 
@@ -309,8 +367,6 @@ export function addScreen(screen, currentProjectKey) {
   };
 
   const newData = {
-    [`users/${userKey}/screenKeys/${newScreenKey}`]: true,
-    [`users/${userKey}/boxKeys/${newBoxKey}`]: true,
     [`data/projects/${currentProjectKey}/screenKeys/${newScreenKey}`]: true,
     [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
     [`data/screens/${newScreenKey}`]: newScreen,
@@ -362,7 +418,6 @@ export function addBox(box) {
   const state = reduxStore.getState();
   const currentScreenKey = state.currentScreenKey;
   const currentProjectKey = state.screens[currentScreenKey].projectKey;
-  const {uid} = state.user;
 
   const newBoxKey = db.child('data/boxes').push().key;
 
@@ -375,7 +430,6 @@ export function addBox(box) {
   };
 
   const newData = {
-    [`users/${uid}/boxKeys/${newBoxKey}`]: true,
     [`data/projects/${currentProjectKey}/boxKeys/${newBoxKey}`]: true,
     [`data/screens/${currentScreenKey}/boxKeys/${newBoxKey}`]: true,
     [`data/boxes/${newBoxKey}`]: newBox,

@@ -30,6 +30,7 @@ const ScreenOrProjectSelector = props => {
       currentKey: props.currentScreenKey,
       onAdd: () => {
         props.hideDropModal();
+        // TODO (davidg): do here what I do for projects (actually add one first)
         props.showModal(MODALS.ADD_SCREEN);
       },
       onSelect: key => {
@@ -51,6 +52,7 @@ const ScreenOrProjectSelector = props => {
       currentKey: currentProjectKey,
       onAdd: () => {
         props.hideDropModal();
+        props.addProject(null, true);
         props.showModal(MODALS.ADD_PROJECT);
       },
       onSelect: key => {
@@ -114,6 +116,8 @@ const ScreenOrProjectSelector = props => {
   const renderList = () => options.itemArray
     .filter(item => !item.deleted)
     .map(item => {
+      if (!item) return null;
+
       const style = {...styles.listItem};
 
       if (item._key === options.currentKey) {

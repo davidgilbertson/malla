@@ -8,8 +8,11 @@ export const VENDORS = {
 };
 
 export const KEYS = {
-  ESC: 27,
+  DOWN: 40,
   ENTER: 13,
+  ESC: 27,
+  SPACE: 32,
+  UP: 38,
 };
 
 export const ICONS = {
@@ -57,6 +60,7 @@ export const ACTIONS = {
   SET_INTERACTION: 'SET_INTERACTION',
   SELECT_TOOL: 'SELECT_TOOL',
   REPLACE_STATE: 'REPLACE_STATE',
+  SET_DATA_LOAD_STATUS: 'SET_DATA_LOAD_STATUS',
 };
 
 export const API_TEXT_FORMATS = {
@@ -67,6 +71,11 @@ export const API_TEXT_FORMATS = {
 export const SIGN_IN_STATUSES = {
   SIGNED_IN: 'SIGNED_IN',
   SIGNED_OUT: 'SIGNED_OUT',
+};
+
+export const DATA_LOAD_STATUSES = {
+  NOT_COMPLETE: 'NOT_COMPLETE',
+  COMPLETE: 'COMPLETE',
 };
 
 export const INTERACTIONS = {
@@ -123,6 +132,12 @@ export const ITEM_TYPES = { // the major items in the app/database
   SCREEN: 'SCREEN',
   PROJECT: 'PROJECT',
   USER: 'USER',
+};
+
+export const ROLES = {
+  NO_ACCESS: 'NO_ACCESS',
+  WRITE: 'WRITE',
+  OWNER: 'OWNER',
 };
 
 export const GRID_SIZE = 10;

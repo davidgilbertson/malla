@@ -1,8 +1,9 @@
+require('babel-register');
 const express = require('express');
-const firebase = require('firebase');
 const app = express();
+const firebaseAppGodMode = require('../app/server/firebaseAppGodMode.js');
 
-const config = {
+const prodConfig = {
   serviceAccount: {
     projectId: process.env.FIREBASE_PROJECT_ID_PROD,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL_PROD,
@@ -11,8 +12,10 @@ const config = {
   databaseURL: process.env.FIREBASE_URL_PROD,
 };
 
-firebase.initializeApp(config);
-const ref = firebase.database().ref();
+firebaseAppGodMode.init(prodConfig);
+const firebaseApp = firebaseAppGodMode.getAppInGodMode();
+
+const ref = firebaseApp.database().ref();
 
 app.use(express.static('dashboard'));
 

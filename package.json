@@ -21,6 +21,7 @@
     "compression": "^1.6.1",
     "express": "^4.13.4",
     "firebase": "^3.0.0",
+    "fuzzy": "^0.1.1",
     "isomorphic-fetch": "^2.2.1",
     "json-loader": "^0.5.4",
     "lodash": "^4.11.1",
@@ -37,7 +38,8 @@
     "rimraf": "^2.5.2",
     "sanitize-html": "^1.11.4",
     "speakingurl": "^9.0.0",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "yargs": "^4.7.1"
   },
   "description": "Wireframe CMS",
   "devDependencies": {
