@@ -83,7 +83,7 @@ function renderFeedback() {
       getEl('.feedback-wrapper').appendChild(dom);
     })
     .catch(err => {
-      console.log('Error fetching data:', err);
+      console.error('Error fetching data:', err);
     });
 }
 
@@ -94,7 +94,7 @@ function renderUsers() {
       getEl('.user-wrapper').appendChild(dom);
     })
     .catch(err => {
-      console.log('Error fetching data:', err);
+      console.error('Error fetching data:', err);
     });
 }
 

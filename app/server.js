@@ -131,5 +131,5 @@ app.get('*', (req, res) => {
 
 app.listen(port, '0.0.0.0', (err) => {
   err && console.error(err);
-  console.log(`> App listening on port ${port}`);
+  console.info(`> App listening on port ${port}`);
 });
