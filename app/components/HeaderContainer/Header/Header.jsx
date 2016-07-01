@@ -200,6 +200,7 @@ class Header extends React.Component {
         <span
           key="userName"
           style={styles.userName}
+          title={`Signed in with ${user.provider}`}
         >{user.name}</span>
       ),
       feedback: (
