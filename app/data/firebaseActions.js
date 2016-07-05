@@ -5,6 +5,7 @@ import {
 
 import {
   getPublicUserProps,
+  getRandomString,
 } from '../utils';
 
 import {getApp} from './firebaseApp.js';
@@ -56,6 +57,8 @@ function createUser(providerUser) {
     description: '',
     lastBoxLabelId: 1,
     slug: 'my-project',
+    requireApiKey: true,
+    apiKey: getRandomString(),
     users: {
       [uid]: {
         ...getPublicUserProps(newUser),
@@ -229,6 +232,8 @@ export function addProject(project = {}) {
     description: '',
     lastBoxLabelId: 1,
     slug: slug(project.name || 'My project'),
+    requireApiKey: true,
+    apiKey: getRandomString(),
     users: {
       [currentUser.uid]: {
         ...getPublicUserProps(currentUser),

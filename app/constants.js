@@ -192,6 +192,7 @@ export const COLORS = {
   GRAY_DARK: '#212121',
   GRAY: '#727272',
   GRAY_FADE: 'rgba(0, 0, 0, 0.618)',
+  GRAY_LIGHT_FADE: 'rgba(0, 0, 0, 0.382)',
   GRAY_LIGHT: '#B6B6B6',
   OFF_WHITE: '#F5F5F5',
   WHITE: '#FFFFFF',

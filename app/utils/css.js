@@ -45,6 +45,17 @@ export const labelStyle = {
   marginBottom: 4,
 };
 
+export const settingsRow = {
+  marginBottom: 30,
+};
+
+export const radioButton = {
+  width: 16,
+  height: 16,
+  marginRight: 8,
+  verticalAlign: 'sub',
+};
+
 export function padding(top, right, bottom, left) {
   return {
     paddingTop: top,

@@ -15,7 +15,6 @@ import {
 import {
   ANIMATION_DURATION,
   COLORS,
-  DIMENSIONS,
   KEYS,
   ROLES,
 } from '../../../constants.js';
@@ -281,9 +280,6 @@ class ProjectUsers extends Component {
     const {props} = this;
 
     const styles = {
-      row: {
-        marginBottom: DIMENSIONS.SPACE_M,
-      },
       ownerRow: {
         display: 'flex',
         flexDirection: 'row',
@@ -302,7 +298,7 @@ class ProjectUsers extends Component {
     const you = owner._key === props.user.uid ? ' (you)' : '';
 
     return (
-      <div style={styles.row}>
+      <div style={css.settingsRow}>
         <p style={css.labelStyle}>Owner</p>
 
         <div style={styles.ownerRow}>
@@ -344,7 +340,7 @@ class ProjectUsers extends Component {
     const styles = {
       row: {
         position: 'relative', // to contain the absolute drop-down
-        marginTop: DIMENSIONS.SPACE_M,
+        ...css.settingsRow,
       },
     };
 

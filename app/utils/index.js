@@ -16,5 +16,6 @@ export const makeArray = require('./makeArray.js').makeArray;
 export const fuzzySearch = require('./fuzzySearch.js').fuzzySearch;
 export const getPublicUserProps = require('./getPublicUserProps.js').getPublicUserProps;
 export const userOwnsProject = require('./userOwnsProject.js').userOwnsProject;
+export const getRandomString = require('./getRandomString.js').getRandomString;
 
 /* eslint-enable global-require */

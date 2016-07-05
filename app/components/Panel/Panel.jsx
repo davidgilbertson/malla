@@ -37,9 +37,10 @@ const Panel = props => {
       flexFlow: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottom: `3px solid ${COLORS.PRIMARY_LIGHT}`,
       backgroundColor: COLORS.PRIMARY,
       color: COLORS.WHITE,
+      boxShadow: `0 1px 3px ${COLORS.GRAY_LIGHT_FADE}`,
+      zIndex: 1, // to put the shadow above the panel body
     },
     title: {
       fontSize: 22,
@@ -106,7 +107,7 @@ const Panel = props => {
           {closeButton}
         </div>
 
-        <div style={styles.body}>
+        <div style={{...styles.body, ...props.panelBodyStyle}}>
           {props.children}
         </div>
 
@@ -118,6 +119,7 @@ const Panel = props => {
 
 Panel.propTypes = {
   // props
+  panelBodyStyle: PropTypes.object,
   title: PropTypes.string,
   showClose: PropTypes.bool,
   showOk: PropTypes.bool,
