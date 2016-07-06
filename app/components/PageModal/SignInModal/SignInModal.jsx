@@ -29,9 +29,6 @@ const styles = {
   googleButton: {
     backgroundColor: '#DB4437',
   },
-  twitterButton: {
-    backgroundColor: '#55ACEE',
-  },
 };
 
 const SignInModal = props => {
@@ -68,16 +65,6 @@ const SignInModal = props => {
         label="Social sign in modal"
       >
         Google
-      </Button>
-
-      <Button
-        style={{...styles.button, ...styles.twitterButton}}
-        onClick={() => signIn('twitter')}
-        category={EVENTS.CATEGORIES.UI_INTERACTION}
-        action={EVENTS.ACTIONS.CLICKED.SIGN_IN_WITH_TWITTER}
-        label="Social sign in modal"
-      >
-        Twitter
       </Button>
     </PageModalWrapper>
   );

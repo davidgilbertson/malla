@@ -122,9 +122,6 @@ export function signIn(providerString) {
       provider = new firebaseApp.auth.GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/userinfo.email');
       break;
-    case 'twitter':
-      provider = new firebaseApp.auth.TwitterAuthProvider();
-      break;
     default:
       console.warn(`The provider '${providerString}' is not supported`);
       return Promise.reject(`The provider '${providerString}' is not supported`);

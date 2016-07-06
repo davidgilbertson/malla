@@ -36,7 +36,7 @@ export const EVENTS = {
       SIGN_IN: 'Clicked "Sign in"',
       SIGN_IN_WITH_FACEBOOK: 'Clicked "Sign in with Facebook"',
       SIGN_IN_WITH_GOOGLE: 'Clicked "Sign in with Google"',
-      SIGN_IN_WITH_TWITTER: 'Clicked "Sign in with Twitter"',
+      SIGN_IN_WITH_TWITTER: 'Clicked "Sign in with Twitter"', // not used, but may be again one day
       SIGN_UP: 'Clicked "Sign up"',
       SIGN_OUT: 'Clicked "Sign out"',
     },
