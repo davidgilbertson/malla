@@ -52,8 +52,8 @@ function makeUserDom(users) {
   headerRowEl.appendChild(makeEl('th', `Name (${users.length})`));
   headerRowEl.appendChild(makeEl('th', 'Sign ins'));
   headerRowEl.appendChild(makeEl('th', 'Projects'));
-  headerRowEl.appendChild(makeEl('th', 'Screens'));
-  headerRowEl.appendChild(makeEl('th', 'Boxes'));
+  // headerRowEl.appendChild(makeEl('th', 'Screens'));
+  // headerRowEl.appendChild(makeEl('th', 'Boxes'));
   headerRowEl.appendChild(makeEl('th', 'Last sign in (local)'));
   headerRowEl.appendChild(makeEl('th', 'Key'));
   headerRowEl.appendChild(makeEl('th', 'Provider'));
@@ -64,8 +64,8 @@ function makeUserDom(users) {
     rowEl.appendChild(makeEl('td', user.name));
     rowEl.appendChild(makeEl('td', user.signInCount));
     rowEl.appendChild(makeEl('td', user.projectCount));
-    rowEl.appendChild(makeEl('td', user.screenCount));
-    rowEl.appendChild(makeEl('td', user.boxCount));
+    // rowEl.appendChild(makeEl('td', user.screenCount));
+    // rowEl.appendChild(makeEl('td', user.boxCount));
     rowEl.appendChild(makeEl('td', new Date(user.lastSignIn).toLocaleString()));
     rowEl.appendChild(makeEl('td', user.key));
     rowEl.appendChild(makeEl('td', user.provider));
