@@ -11,7 +11,9 @@ function fetchMallaText() {
     .then(data => {
       textCache = data;
 
-      fs.writeFile(textFilePath, JSON.stringify(textCache, null, 2), 'utf8');
+      fs.writeFile(textFilePath, JSON.stringify(textCache, null, 2), 'utf8', err => {
+        if (err) console.error(err);
+      });
 
       return Promise.resolve(textCache);
     })
