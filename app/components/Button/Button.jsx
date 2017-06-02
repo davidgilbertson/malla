@@ -53,7 +53,7 @@ Button.propTypes = {
   ]).isRequired,
   category: PropTypes.string,
   action: PropTypes.string,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   title: PropTypes.string,
   value: PropTypes.number,
   disabled: PropTypes.bool,

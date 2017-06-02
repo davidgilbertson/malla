@@ -232,7 +232,6 @@ class Header extends React.Component {
     const actionItemElements = [];
     let homeLink = null;
 
-    const {props} = this;
     if (atHome) {
       styles.header.backgroundColor = 'transparent';
       styles.header.height = DIMENSIONS.LAYOUT.HEADER_HEIGHT_HOME;
@@ -243,7 +242,6 @@ class Header extends React.Component {
           style={styles.gettingStarted}
         >
           <Link to="/docs/getting-started">Getting started guide</Link>
-
         </span>
       );
     }
@@ -306,7 +304,6 @@ Header.propTypes = {
   location: PropTypes.object.isRequired,
   // actions
   showModal: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   navigateToScreen: PropTypes.func.isRequired,
