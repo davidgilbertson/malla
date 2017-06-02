@@ -29,7 +29,7 @@ export function startListening() {
 
   setInterval(() => {
     fetchMallaText();
-  }, 1000);
+  }, 60000);
 }
 
 // as soon as text has been fetched once, it will be in textCache

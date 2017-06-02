@@ -55,12 +55,11 @@ class Draggable extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // if something else updates the position, update the box
-    // setStates will be batched
-    if (newProps.left !== this.props.left) this.setState({left: newProps.left});
-    if (newProps.top !== this.props.top) this.setState({top: newProps.top});
-    if (newProps.width !== this.props.width) this.setState({width: newProps.width});
-    if (newProps.height !== this.props.height) this.setState({height: newProps.height});
+    const wasProcessing = this.props.DATA_PROCESSING_STATUS === 'PROCESSING';
+    const isNowNotProcessing = newProps.DATA_PROCESSING_STATUS !== 'PROCESSING';
+    if (wasProcessing && isNowNotProcessing) {
+      // new data is ready, use it in some way
+    }
   }
 
   onMouseOver() {

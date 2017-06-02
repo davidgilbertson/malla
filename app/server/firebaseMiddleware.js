@@ -10,10 +10,23 @@ import {
 
 const db = getAppInGodMode().database().ref();
 
+// let requestCounts = {};
+// setTimeout(() => {
+//   console.log('  --  >  firebaseMiddleware.js:15 > resetting requst counts ');
+//   requestCounts = {};
+// }, 5000);
+
 export default function(req, res) {
   const projectId = req.params.projectId;
   const format = req.query.format || API_TEXT_FORMATS.HTML;
   const apiKey = req.query.key;
+
+  // requestCounts[projectId] = (requestCounts[projectId] || 0) + 1;
+  // TODO (davidg): make this x per hour
+  // if (requestCounts[projectId] > 2) {
+  //   res.json({error: 'quota exceeded. A maximum of 1 request per minute. Try again in a minute.'});
+  //   return;
+  // }
 
   console.log(`API request for ${projectId}`);
 

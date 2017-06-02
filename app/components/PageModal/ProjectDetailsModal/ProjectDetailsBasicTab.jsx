@@ -81,7 +81,15 @@ const ProjectDetailsBasicTab = props => {
           }}
           autoFocus
         />
+
+        <Input
+          defaultValue={project.name}
+          onChange={data => updateProject(data)}
+        />
       </div>
+
+
+
 
       <div style={css.settingsRow}>
         <ProjectUsers
