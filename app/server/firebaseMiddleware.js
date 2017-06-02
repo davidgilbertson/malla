@@ -15,6 +15,8 @@ export default function(req, res) {
   const format = req.query.format || API_TEXT_FORMATS.HTML;
   const apiKey = req.query.key;
 
+  console.log(`API request for ${projectId}`);
+
   function returnBoxes() {
     db
       .child('data/boxes')
