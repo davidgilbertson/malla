@@ -12,4 +12,3 @@ export function makeArray(obj) {
     return result;
   }, []);
 }
-
